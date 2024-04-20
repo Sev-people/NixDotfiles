@@ -95,12 +95,23 @@
     foot
     gammastep
     hyprpaper
-    waybar
     wofi
     # Screenshots
     grim
     slurp
     wl-clipboard
+    # Eww
+    gtk3
+    gtk-layer-shell
+    gnome2.pango
+    gdk-pixbuf
+    libdbusmenu-gtk3
+    cairo
+    rubyPackages.glib2
+    libgcc
+    glibc
+    rustc
+    cargo
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
