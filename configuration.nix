@@ -22,6 +22,10 @@
     wireplumber.enable = true;
   };
 
+  users.users.marc.shell = pkgs.zsh;
+  environment.shells = with pkgs; [ zsh ];
+  programs.zsh.enable = true;
+
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
