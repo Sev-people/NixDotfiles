@@ -31,7 +31,7 @@ in
           echo -ne '\e[1 q'
         elif [[ ${KEYMAP} == main ]] ||
              [[ ${KEYMAP} == viins ]] ||
-             [[ ${KEYMAP} = '' ]] ||
+             [[ ${KEYMAP} = "" ]] ||
              [[ $1 = 'beam' ]]; then
           echo -ne '\e[5 q'
         fi
