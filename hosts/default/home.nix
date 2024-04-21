@@ -2,7 +2,8 @@
 
 {
   imports = [
-    ./terminal/sh.nix
+    ../../modules/home-manager/terminal/sh.nix
+    ../../modules/home-manager/display/wm/hyprland.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -21,6 +22,14 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    discord
+    chromium
+    xournalpp
+    krita
+    kdenlive
+    firefox-wayland
+    emacs
+    ani-cli
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

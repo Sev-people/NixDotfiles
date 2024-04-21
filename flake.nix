@@ -17,10 +17,15 @@
     in {
     nixosConfigurations = {
       default = nixpkgs.lib.nixosSystem {
-        extraSpecialArgs = {inherit inputs;};
+        specialArgs = {inherit inputs;};
           modules = [
             ./hosts/default/configuration.nix
             inputs.home-manager.nixosModules.default
+            {
+	      home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.marc = import ./hosts/default/home.nix;
+	    }
           ];
         };
       };
