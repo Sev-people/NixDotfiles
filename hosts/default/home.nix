@@ -3,7 +3,7 @@
 {
   imports = [
     ../../modules/home-manager/terminal/sh.nix
-    ../../modules/home-manager/display/wm/hyprland.nix
+    ../../modules/home-manager/wm/hyprland.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
