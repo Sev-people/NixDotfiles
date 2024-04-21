@@ -6,12 +6,8 @@
 
 {
   programs.zsh.enable = true;
+  programs.hyprland.enable = true;
   environment.shells = with pkgs; [ zsh ];
-
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
 
   imports =
     [

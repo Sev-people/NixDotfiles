@@ -3,11 +3,13 @@
 {
   imports = [
     ../../modules/home-manager/terminal/sh.nix
+    ../../modules/home-manager/display/wm/hyprland.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "marc";
   home.homeDirectory = "/home/marc";
+  nixpkgs.config.allowUnfree = true;
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
