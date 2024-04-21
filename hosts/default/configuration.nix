@@ -40,6 +40,10 @@
     shell = pkgs.zsh;
   };
 
+  networking.hostName = "nixos";
+
+  networking.networkmanager.enable = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
