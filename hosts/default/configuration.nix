@@ -16,6 +16,7 @@
   imports =
     [
       ./hardware-configuration.nix
+      inputs.home-manager.nixosModules.default
       ../../modules/nixos/pipewire.nix
       ../../modules/nixos/locale.nix
     ];
