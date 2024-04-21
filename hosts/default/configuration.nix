@@ -6,8 +6,25 @@
 
 {
   programs.zsh.enable = true;
-  programs.hyprland.enable = true;
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
   environment.shells = with pkgs; [ zsh ];
+
+  fonts.packages = with pkgs; [
+    font-awesome
+  ];
+
+  nix.optimise.automatic = true;
+
+  # Run the GC weekly keeping the 5 most recent generation of each profiles.
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+    options = "--delete-older-than 1d";
+  };
 
   imports =
     [
@@ -27,6 +44,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.configurationLimit = 5;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.marc = {
@@ -56,18 +74,6 @@
     grim
     slurp
     wl-clipboard
-    # Eww
-    gtk3
-    gtk-layer-shell
-    gnome2.pango
-    gdk-pixbuf
-    libdbusmenu-gtk3
-    cairo
-    rubyPackages.glib2
-    libgcc
-    glibc
-    rustc
-    cargo
   ];
 
   system.stateVersion = "23.11"; # Did you read the comment?

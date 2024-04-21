@@ -3,7 +3,7 @@
 {
   imports = [
     ../../modules/home-manager/terminal/sh.nix
-    ../../modules/home-manager/wm/hyprland.nix
+    #../../modules/home-manager/wm/hyprland.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -31,6 +31,7 @@
     firefox-wayland
     emacs
     ani-cli
+    waybar
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
