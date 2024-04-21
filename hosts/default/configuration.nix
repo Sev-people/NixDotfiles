@@ -8,6 +8,11 @@
   programs.zsh.enable = true;
   environment.shells = with pkgs; [ zsh ];
 
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
   imports =
     [
       ./hardware-configuration.nix
