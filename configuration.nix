@@ -89,8 +89,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim
-    zsh
-    zsh-syntax-highlighting
     git
     foot
     gammastep
