@@ -8,7 +8,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
@@ -25,15 +24,6 @@
           inputs.home-manager.nixosModules.default
         ];
       };
-    homeConfigurations = {
-      default = inputs.home-manager.lib.homeManagerConfiguration {
-        specialArgs = {inherit inputs;};
-        modules = [
-          inputs.hyprland.homeManagerModules.default
-          {wayland.windowManager.hyprland.enable = true;}
-        ];
-      };
-    };
     };
   };
 }

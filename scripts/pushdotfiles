@@ -1,0 +1,5 @@
+#!/bin/bash
+
+( cd ~/.config ; git add wofi wallpapers README.org emacs/config.org emacs/init.el emacs/early-init.el foot hypr waybar zsh scripts vim )
+( cd ~/.config ; git commit -m "Changes pc" )
+( cd ~/.config ; git push -u git@github.com:Sev-people/Dotfiles.git master )

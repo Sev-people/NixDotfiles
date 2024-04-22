@@ -1,0 +1,3 @@
+#!/bin/bash
+
+pomo s -d $1m --pomodoros 1 "Work"

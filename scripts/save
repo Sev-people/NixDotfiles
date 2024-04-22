@@ -1,0 +1,5 @@
+#!/bin/bash
+
+( cd ~/Documents/Work ; git add . )
+( cd ~/Documents/Work ; git commit -m "Changes pc" )
+( cd ~/Documents/Work ; git push -u git@github.com:Sev-people/work.git main )

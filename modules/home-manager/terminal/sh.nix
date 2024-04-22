@@ -21,7 +21,7 @@ in
       autoload -U colors && colors
       PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 
-      export PATH=/home/marc/.config/scripts:$PATH
+      export PATH=/home/marc/.dotfiles/scripts:$PATH
 
       bindkey -v
       export KEYTIMEOUT=1
