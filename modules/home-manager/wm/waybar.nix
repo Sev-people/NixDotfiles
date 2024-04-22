@@ -4,26 +4,25 @@
 
 programs.waybar = {
     enable = true;
-    systemd.enable = true;
     style = ./waybar.css;
     settings = {
       mainBar = {
-	      layer = "top";
-	      modules-left = ["cpu" "memory" "temperature" "hyprland/workspaces"];
-	      modules-center = ["custom/date"];
-	      modules-right = ["battery" "network" "clock"];
+	layer = "top";
+	modules-left = ["cpu" "memory" "temperature" "hyprland/workspaces"];
+	modules-center = ["custom/date"];
+	modules-right = ["battery" "network" "clock"];
         "hyprland/workspaces" = {
-	          persistent-workspaces = {
-            	    "*" = 5;
-          	};
-         };
+	  persistent-workspaces = {
+              "*" = 5;
+          };
+        };
         "custom/date" = {
-	        format = "{}";
-	        exec = "date \"+%a %b %d %Y\"";
+	  format = "{}";
+	  exec = "date \"+%a %b %d %Y\"";
         };
         clock = {
-          format = "{ :%H :%M}";
-	        timezone = "Europe/Madrid";
+          format = "{:%H:%M}";
+	  timezone = "Europe/Madrid";
         };
         cpu = {
           interval = 30;
@@ -31,7 +30,7 @@ programs.waybar = {
           max-length = 10;
         };
         network = {
-	        format-wifi = "{essid} ({signalStrength}%) ";
+	  format-wifi = "{essid} ({signalStrength}%) ";
           format-disconnected = "Disconnected ⚠";
           interval = 30;
           max-length = 30;
@@ -47,7 +46,7 @@ programs.waybar = {
             max-length = 10;
         };
         battery = {
-	          bat = "BAT1";
+	    bat = "BAT1";
             states = {
               good = 60;
               warning = 30;
