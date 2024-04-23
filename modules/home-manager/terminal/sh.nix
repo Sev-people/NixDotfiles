@@ -5,8 +5,6 @@ let
   myAliases = {
     ls="ls --color=auto";
     grep="grep --color=auto";
-    vim="vim -u ~/.config/vim/.vimrc";
-    svim="sudo vim -u ~/.config/vim/.vimrc";
   };
 in
 {

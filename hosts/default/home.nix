@@ -6,6 +6,7 @@
     ../../modules/home-manager/wm/hyprland.nix
     ../../modules/home-manager/wm/waybar.nix
     ../../modules/home-manager/wm/wofi.nix
+    ../../modules/home-manager/editors/vim.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
