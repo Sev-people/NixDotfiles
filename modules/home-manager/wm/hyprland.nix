@@ -98,9 +98,9 @@
 
   home.file.".config/hypr/hyprpaper.conf" = {
     text = ''
-      preload = ~/.config/wallpapers/wallpaper.jpg
+      preload = ~/.dotfiles/wallpapers/wallpaper.jpg
        
-      wallpaper = ,~/.config/wallpapers/wallpaper.jpg
+      wallpaper = ,~/.dotfiles/wallpapers/wallpaper.jpg
        
       splash = false
     '';
