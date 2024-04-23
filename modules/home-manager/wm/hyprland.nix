@@ -5,7 +5,7 @@
     xwayland.enable = true;
     settings = {
       monitor=",1920x1080@74.97,auto,auto";
-      exec-once = ["waybar" "hyprpaper" "gammastep -O 3000" "emacs --daemon"];
+      exec-once = ["waybar" "hyprpaper" "gammastep -O 3000" "emacs --daemon --init-directory ~/.config/emacs"];
       "$terminal" = "foot";
       "$fileManager" = "dolphin";
       "$menu" = "wofi --show drun";
