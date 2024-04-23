@@ -34,6 +34,7 @@
     krita
     kdenlive
     firefox-wayland
+    qutebrowser
     emacs
     ani-cli
     waybar

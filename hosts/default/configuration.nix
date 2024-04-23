@@ -74,6 +74,8 @@
     grim
     slurp
     wl-clipboard
+    # Zathura
+    zathura
   ];
 
   system.stateVersion = "23.11"; # Did you read the comment?
