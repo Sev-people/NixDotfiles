@@ -3,6 +3,7 @@
 {
   imports = [
     ../../modules/home-manager/terminal/sh.nix
+    ../../modules/home-manager/terminal/foot.nix
     ../../modules/home-manager/wm/hyprland.nix
     ../../modules/home-manager/wm/waybar.nix
     ../../modules/home-manager/wm/wofi.nix
