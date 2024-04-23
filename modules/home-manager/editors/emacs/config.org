@@ -153,7 +153,7 @@
 
 (marc/leader-keys
   "." '(find-file :wk "Find file")
-  "f c" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "Edit emacs config")
+  "f c" '((lambda () (interactive) (find-file "~/.dotfiles/modules/home-manager/editors/emacs/config.org")) :wk "Edit emacs config")
   "f w" '((lambda () (interactive) (find-file "~/Documents/Work")) :wk "Open work directory")
   "f a" '((lambda () (interactive) (find-file "~/Documents/Work/Agenda.org")) :wk "Open Agenda file")
   "TAB TAB" '(comment-line :wk "Comment lines"))
