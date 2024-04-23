@@ -21,8 +21,8 @@
        
       :syntax on
        
-      imap jk ^[
-      imap kj ^[
+      imap jk <Esc>
+      imap kj <Esc>
     '';
   };
 
