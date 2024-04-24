@@ -38,6 +38,8 @@
     emacs
     ani-cli
     waybar
+    ranger
+    htop
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

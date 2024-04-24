@@ -70,6 +70,7 @@
     gammastep
     hyprpaper
     wofi
+    pulseaudio
     # Screenshots
     grim
     slurp
