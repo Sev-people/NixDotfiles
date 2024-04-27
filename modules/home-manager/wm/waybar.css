@@ -2,12 +2,12 @@
 	border: none;
 	border-radius: 0px;
     	font-family: "JetbrainsMono Nerd Font" ;
-	font-size: 12px;
+	font-size: 11px;
 }
 
 window#waybar {
 	background: transparent;
-	min-height: 20px;
+	min-height: 10px;
 	background: #000000;
 }
 
