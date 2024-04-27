@@ -20,11 +20,14 @@
       general = {
           gaps_in = 3;
           gaps_out = 3;
-          border_size = 2;
+          border_size = 1;
           "col.active_border" = "rgba(bcc9cfaa)";
-          "col.inactive_border" = "rgba(2B303Caa)";
+          "col.inactive_border" = "rgba(000000aa)";
 
           layout = "dwindle";
+      };
+      animations = {
+        enabled = false;
       };
       dwindle = {
           pseudotile = "yes";
@@ -35,7 +38,7 @@
           new_is_master = true;
       };
       decoration = {
-	rounding = 5; 
+	rounding = 0; 
       };
       "$mainMod" = "ALT";
       bind = [

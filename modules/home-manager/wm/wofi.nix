@@ -6,9 +6,8 @@
     enable = true;
     settings = {
       mode="drun";
-      allow_images=true;
-      image_size=32;
-      width="20%";
+      width="40%";
+      columns=3;
       normal_window=true;
     };
   };
@@ -25,7 +24,7 @@
       #window {
               font-size: 16px;
               font-family: "JetbrainsMono Nerd Font";
-              background-color: rgba(22, 19, 32, 0.9);
+              background-color: #000000;
               color: #f8f8f2;
               border-radius: 5px;
       }      
@@ -37,7 +36,6 @@
       #entry:selected {
               background-color: #C73770;
               color: #161320;
-              background: linear-gradient(90deg, #C73770, #d6c84c);
       }      
              
       #text:selected {
@@ -45,7 +43,7 @@
       }      
              
       #input {
-              background-color: rgba(22, 19, 32, 0.9);
+              background-color: #000000;
               color: #f8f8f2;
               padding: 0.5em;
               border-radius: 5px 5px 0px 0px;
