@@ -5,7 +5,7 @@
     xwayland.enable = true;
     settings = {
       monitor=",1920x1080@74.97,auto,auto";
-      exec-once = ["waybar" "hyprpaper" "gammastep -O 3000" "emacs --daemon --init-directory ~/.config/emacs"];
+      exec-once = ["waybar" "gammastep -O 3000" "emacs --daemon --init-directory ~/.config/emacs"];
       "$terminal" = "foot";
       "$fileManager" = "dolphin";
       "$menu" = "wofi --show drun";
@@ -18,13 +18,16 @@
           kb_variant = "altgr-intl";
       };
       general = {
-          gaps_in = 3;
-          gaps_out = 3;
+          gaps_in = 0;
+          gaps_out = 0;
           border_size = 1;
-          "col.active_border" = "rgba(bcc9cfaa)";
-          "col.inactive_border" = "rgba(000000aa)";
+          "col.active_border" = "rgba(FFFFFFaa)";
+          "col.inactive_border" = "rgba(bcc9cfaa)";
 
           layout = "dwindle";
+      };
+      misc = {
+        disable_hyprland_logo = true;
       };
       animations = {
         enabled = false;
@@ -97,16 +100,6 @@
         "$mainMod, mouse:273, resizewindow"
       ];
     };
-  };
-
-  home.file.".config/hypr/hyprpaper.conf" = {
-    text = ''
-      preload = ~/.dotfiles/wallpapers/wallpaper.jpg
-       
-      wallpaper = ,~/.dotfiles/wallpapers/wallpaper.jpg
-       
-      splash = false
-    '';
   };
 
 }

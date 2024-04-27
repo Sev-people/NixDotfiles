@@ -68,7 +68,6 @@
     git
     foot
     gammastep
-    hyprpaper
     wofi
     pulseaudio
     # Screenshots
