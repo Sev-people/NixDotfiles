@@ -36,7 +36,6 @@
     kdenlive
     #browsers
     firefox-wayland
-    qutebrowser
     #editors
     emacs
     #wm

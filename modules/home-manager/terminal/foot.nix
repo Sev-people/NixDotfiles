@@ -9,7 +9,7 @@
       [colors]
       background=000000
       foreground=c0c5ce
-      alpha=0.6
+      alpha=0.7
 
       regular0=2b303b  # black
       regular1=bf616a  # red

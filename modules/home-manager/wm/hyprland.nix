@@ -41,16 +41,27 @@
 	rounding = 5; 
         blur = {
           enabled = true;
-          size = 10;
+          size = 18;
           passes = 2;
         };
+      };
+      animations = {
+        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
+        animation = [
+          "windows, 1, 5, default, popin 80%"
+          "windowsMove, 1, 1, default"
+          "border, 1, 5, default"
+          "borderangle, 1, 4, default"
+          "fade, 1, 3, default"
+          "workspaces, 1, 3, default"
+        ];
       };
       "$mainMod" = "ALT";
       bind = [
         "$mainMod SHIFT, I, exec, $terminal"
         "$mainMod SHIFT, C, killactive,"
         "$mainMod SHIFT, Q, exit,"
-        "$mainMod, F, exec, qutebrowser"
+        "$mainMod, F, exec, firefox"
         "$mainMod, E, exec, bash em"
         "$mainMod, Y, exec, spotify-launcher "
         "$mainMod, D, exec, discord "
