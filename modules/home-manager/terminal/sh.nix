@@ -17,7 +17,7 @@ in
     shellAliases = myAliases;
     initExtra = ''
       autoload -U colors && colors
-      PS1="%B%{$fg[white]%}[%{$fg[white]%}%n%{$fg[white]%}@%{$fg[white]%}%M %{$fg[white]%}%~%{$fg[white]%}]%{$reset_color%}$%b "
+      PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[blue]%}@%{$fg[green]%}%M %{$fg[green]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 
       export PATH=/home/marc/.dotfiles/scripts:$PATH
 

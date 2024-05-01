@@ -5,9 +5,9 @@
     xwayland.enable = true;
     settings = {
       monitor=",1920x1080@74.97,auto,auto";
-      exec-once = ["waybar" "gammastep -O 3000" "emacs --daemon --init-directory ~/.config/emacs"];
+      exec-once = ["waybar" "swww-daemon --format xrgb" "gammastep -O 3000" "emacs --daemon --init-directory ~/.config/emacs"];
       "$terminal" = "foot";
-      "$fileManager" = "dolphin";
+      "$fileManager" = "ranger";
       "$menu" = "wofi --show drun";
       env = [
         "XCURSOR_SIZE,24"
@@ -18,9 +18,9 @@
           kb_variant = "altgr-intl";
       };
       general = {
-          gaps_in = 0;
-          gaps_out = 0;
-          border_size = 1;
+          gaps_in = 4;
+          gaps_out = 5;
+          border_size = 0;
           "col.active_border" = "rgba(FFFFFFaa)";
           "col.inactive_border" = "rgba(bcc9cfaa)";
 
@@ -28,9 +28,6 @@
       };
       misc = {
         disable_hyprland_logo = true;
-      };
-      animations = {
-        enabled = false;
       };
       dwindle = {
           pseudotile = "yes";
@@ -41,14 +38,19 @@
           new_is_master = true;
       };
       decoration = {
-	rounding = 0; 
+	rounding = 5; 
+        blur = {
+          enabled = true;
+          size = 10;
+          passes = 2;
+        };
       };
       "$mainMod" = "ALT";
       bind = [
         "$mainMod SHIFT, I, exec, $terminal"
         "$mainMod SHIFT, C, killactive,"
         "$mainMod SHIFT, Q, exit,"
-        "$mainMod, F, exec, firefox"
+        "$mainMod, F, exec, qutebrowser"
         "$mainMod, E, exec, bash em"
         "$mainMod, Y, exec, spotify-launcher "
         "$mainMod, D, exec, discord "

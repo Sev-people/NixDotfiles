@@ -28,18 +28,35 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    #apps
     discord
     chromium
     xournalpp
     krita
     kdenlive
+    #browsers
     firefox-wayland
     qutebrowser
+    #editors
     emacs
-    ani-cli
+    #wm
     waybar
+    wofi
     ranger
+    swww
+    gammastep
+    #terminal
+    foot
+    ani-cli
     htop
+    tmux
+    #screenshots
+    grim
+    slurp
+    wl-clipboard
+    #misc
+    git
+    zathura
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

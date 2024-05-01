@@ -24,7 +24,7 @@
       #window {
               font-size: 16px;
               font-family: "JetbrainsMono Nerd Font";
-              background-color: #000000;
+              background-color: #1c1416;
               color: #f8f8f2;
               border-radius: 5px;
       }      
@@ -43,7 +43,7 @@
       }      
              
       #input {
-              background-color: #000000;
+              background-color: #1c1416;
               color: #f8f8f2;
               padding: 0.5em;
               border-radius: 5px 5px 0px 0px;

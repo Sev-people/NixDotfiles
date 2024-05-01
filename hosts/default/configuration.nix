@@ -64,18 +64,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim
-    git
-    foot
-    gammastep
-    wofi
     pulseaudio
-    # Screenshots
-    grim
-    slurp
-    wl-clipboard
-    # Zathura
-    zathura
+    vim
   ];
 
   system.stateVersion = "23.11"; # Did you read the comment?
