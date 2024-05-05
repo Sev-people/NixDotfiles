@@ -6,8 +6,9 @@
     enable = true;
     settings = {
       mode="drun";
-      width="40%";
-      columns=3;
+      width="20%";
+      columns=1;
+      opacity = 0.8;
       normal_window=true;
     };
   };
