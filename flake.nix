@@ -24,13 +24,6 @@
           inputs.home-manager.nixosModules.default
         ];
       };
-      kde = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
-        modules = [
-          ./hosts/kde/configuration.nix
-          inputs.home-manager.nixosModules.default
-        ];
-      };
     };
   };
 }
