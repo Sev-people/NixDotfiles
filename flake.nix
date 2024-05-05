@@ -28,7 +28,7 @@
         specialArgs = {inherit inputs;};
         modules = [
           ./hosts/kde/configuration.nix
-          inputs.home-manager.nixosModules.kde
+          inputs.home-manager.nixosModules.default
         ];
       };
     };

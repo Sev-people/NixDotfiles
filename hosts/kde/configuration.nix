@@ -6,8 +6,8 @@
 
 {
   programs.zsh.enable = true;
-  services.xserver.enable = true;
-  services.xserver.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
+  services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
   environment.shells = with pkgs; [ zsh ];
@@ -28,8 +28,9 @@
   imports =
     [
       ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.kde
+      inputs.home-manager.nixosModules.default
       ../../modules/nixos/locale.nix
+      ../../modules/nixos/pipewire.nix
     ];
 
   home-manager = {
