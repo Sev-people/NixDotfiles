@@ -545,7 +545,6 @@ Code completion.
   :ensure t
   :init
   (which-key-mode 1)
-  :diminish
   :config
   (setq which-key-inside-window-location 'bottom
 	which-key-sort-order #'which-key-key-order-alpha
