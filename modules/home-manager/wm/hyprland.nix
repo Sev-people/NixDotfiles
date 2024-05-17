@@ -61,7 +61,7 @@
         "$mainMod SHIFT, I, exec, $terminal"
         "$mainMod SHIFT, C, killactive,"
         "$mainMod SHIFT, Q, exit,"
-        "$mainMod, F, exec, firefox"
+        "$mainMod, F, exec, chromium"
         "$mainMod, E, exec, bash em"
         "$mainMod, Y, exec, spotify-launcher "
         "$mainMod, D, exec, discord "

@@ -7,9 +7,9 @@
       font=monospace:size=12
       pad=15x6
       [colors]
-      background=000000
+      background=1c1416
       foreground=c0c5ce
-      alpha=0.7
+      alpha=0.8
 
       regular0=2b303b  # black
       regular1=bf616a  # red
