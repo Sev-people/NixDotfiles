@@ -20,9 +20,9 @@
       general = {
           gaps_in = 4;
           gaps_out = 5;
-          border_size = 0;
-          "col.active_border" = "rgba(FFFFFFaa)";
-          "col.inactive_border" = "rgba(bcc9cfaa)";
+          border_size = 2;
+          "col.active_border" = "#87C0CF";
+          "col.inactive_border" = "#232832";
 
           layout = "dwindle";
       };
@@ -41,19 +41,18 @@
 	rounding = 5; 
         blur = {
           enabled = true;
-          size = 18;
-          passes = 2;
+          size = 2;
+          passes = 1;
         };
       };
       animations = {
         bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
         animation = [
-          "windows, 1, 5, default, popin 80%"
-          "windowsMove, 1, 1, default"
-          "border, 1, 5, default"
-          "borderangle, 1, 4, default"
-          "fade, 1, 3, default"
-          "workspaces, 1, 3, default"
+          "windows, 1, 5, myBezier"
+          "windowsOut, 1, 7, default, popin 80%"
+          "border, 1, 10, default"
+          "fade, 1, 7, default"
+          "workspaces, 1, 6, default"
         ];
       };
       "$mainMod" = "ALT";
