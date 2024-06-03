@@ -34,6 +34,7 @@
     xournalpp
     krita
     kdenlive
+    rnote
     #browsers
     firefox-wayland
     #editors
