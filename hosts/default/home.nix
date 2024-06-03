@@ -43,8 +43,8 @@
     waybar
     wofi
     ranger
-    swww
     gammastep
+    ags
     #terminal
     foot
     ani-cli

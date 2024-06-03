@@ -4,12 +4,12 @@
 
   home.file.".config/foot/foot.ini" = {
     text = ''
-      font=monospace:size=16
+      font=monospace:size=14
       pad=15x6
       [colors]
       background=232832
       foreground=c0c5ce
-      alpha=0.8
+      alpha=1
 
       regular0=2b303b  # black
       regular1=bf616a  # red
