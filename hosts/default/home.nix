@@ -45,6 +45,7 @@
     ranger
     gammastep
     ags
+    swww
     #terminal
     foot
     ani-cli
