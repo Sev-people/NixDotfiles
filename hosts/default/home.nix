@@ -8,7 +8,6 @@
     ../../modules/home-manager/wm/waybar.nix
     ../../modules/home-manager/wm/wofi.nix
     ../../modules/home-manager/editors/vim.nix
-    ../../modules/home-manager/editors/emacs/emacs.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
