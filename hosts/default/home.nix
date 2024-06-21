@@ -37,7 +37,7 @@
     #browsers
     firefox-wayland
     #editors
-    emacs29-pgtk
+    emacs
     #wm
     waybar
     wofi
