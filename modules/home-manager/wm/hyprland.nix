@@ -18,11 +18,11 @@
           kb_variant = "altgr-intl";
       };
       general = {
-          gaps_in = 4;
+          gaps_in = 5;
           gaps_out = 5;
           border_size = 2;
-          "col.active_border" = "#87C0CF";
-          "col.inactive_border" = "#232832";
+          "col.active_border" = "#1A1A1A";
+          "col.inactive_border" = "#707070";
 
           layout = "dwindle";
       };

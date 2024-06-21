@@ -526,7 +526,7 @@ Code completion.
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-one t)
+  (load-theme 'doom-nord-light t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
@@ -537,7 +537,7 @@ Code completion.
 
 * TRANSPARENCY
 #+begin_src emacs-lisp
-(add-to-list 'default-frame-alist '(alpha-background . 80))
+(add-to-list 'default-frame-alist '(alpha-background 1))
 #+end_src
 
 * WHICH-KEY
