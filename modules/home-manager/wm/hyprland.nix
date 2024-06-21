@@ -20,10 +20,7 @@
       general = {
           gaps_in = 5;
           gaps_out = 5;
-          border_size = 2;
-          "col.active_border" = "#1A1A1A";
-          "col.inactive_border" = "#707070";
-
+          border_size = 1;
           layout = "dwindle";
       };
       misc = {
@@ -38,7 +35,7 @@
           new_is_master = true;
       };
       decoration = {
-	rounding = 5; 
+	rounding = 9; 
         blur = {
           enabled = true;
           size = 2;

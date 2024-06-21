@@ -7,7 +7,7 @@
       font=monospace:size=14
       pad=15x6
       [colors]
-      background=232832
+      background=000000
       foreground=c0c5ce
       alpha=0.8
 
