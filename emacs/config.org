@@ -537,7 +537,7 @@ Code completion.
 
 * TRANSPARENCY
 #+begin_src emacs-lisp
-(add-to-list 'default-frame-alist '(alpha-background 1))
+;;(add-to-list 'default-frame-alist '(alpha-background . 80))
 #+end_src
 
 * WHICH-KEY
