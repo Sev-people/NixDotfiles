@@ -26,6 +26,9 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
+
+  programs.texlive.enable = true;
+
   home.packages = with pkgs; [
     #apps
     discord

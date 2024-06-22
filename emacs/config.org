@@ -179,7 +179,7 @@
   "h" '(:ignore t :wk "Help")
   "h f" '(describe-function :wk "Describe function")
   "h v" '(describe-variable :wk "Describe variable")
-  "h r r" '((lambda () (interactive) (load-file "~/.config/emacs/init.el")) :wk "Reload emacs config"))
+  "h r r" '((lambda () (interactive) (load-file "~/.dotfiles/emacs/init.el")) :wk "Reload emacs config"))
 
  (marc/leader-keys
   "m" '(:ignore t :wk "Org")    
@@ -337,8 +337,7 @@ Code completion.
 
 ** Display Line Numbers And Truncated Lines
 #+begin_src emacs-lisp
-(global-display-line-numbers-mode 1)
-(global-visual-line-mode t)
+;;(global-display-line-numbers-mode 1)
 #+end_src
 
 * IVY (COUNSEL)
