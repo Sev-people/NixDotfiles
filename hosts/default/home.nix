@@ -27,8 +27,6 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
 
-  programs.texlive.enable = true;
-
   home.packages = with pkgs; [
     #apps
     discord
@@ -61,6 +59,7 @@
     git
     zathura
     nodejs_20
+    texlive.combined.scheme-medium
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

@@ -24,6 +24,7 @@
 - [[#gui-tweaks][GUI TWEAKS]]
   - [[#disable-menubar-toolbars-and-scrollbars][Disable Menubar, Toolbars and Scrollbars]]
   - [[#display-line-numbers-and-truncated-lines][Display Line Numbers And Truncated Lines]]
+  - [[#olivetti-mode][Olivetti Mode]]
 - [[#ivy-counsel][IVY (COUNSEL)]]
 - [[#latex][LaTeX]]
 - [[#minibuffer-escape][MINIBUFFER ESCAPE]]
@@ -338,6 +339,11 @@ Code completion.
 ** Display Line Numbers And Truncated Lines
 #+begin_src emacs-lisp
 ;;(global-display-line-numbers-mode 1)
+(global-visual-line-mode t)
+#+end_src
+
+** Olivetti Mode
+#+begin_src emacs-lisp
 #+end_src
 
 * IVY (COUNSEL)
