@@ -384,13 +384,10 @@ Code completion.
                                'ivy-rich-switch-buffer-transformer))
 #+end_src
 
-<<<<<<< HEAD
 * LaTeX
 #+begin_src emacs-lisp
 #+end_src
 
-=======
->>>>>>> 6d1676fa6d4dde0e449940ae8b4ff30469b1f7e1
 * MINIBUFFER ESCAPE
 #+begin_src emacs-lisp
 (global-set-key [escape] 'keyboard-escape-quit)

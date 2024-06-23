@@ -59,7 +59,7 @@
     git
     zathura
     nodejs_20
-    texlive.combined.scheme-medium
+    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of; })
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
