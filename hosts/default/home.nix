@@ -2,12 +2,12 @@
 
 {
   imports = [
-    ../../modules/home-manager/terminal/sh.nix
-    ../../modules/home-manager/terminal/foot.nix
-    ../../modules/home-manager/wm/hyprland.nix
-    ../../modules/home-manager/wm/waybar.nix
-    ../../modules/home-manager/wm/wofi.nix
-    ../../modules/home-manager/editors/vim.nix
+    ../../modules/home-manager/sh.nix
+    ../../modules/home-manager/foot.nix
+    ../../modules/home-manager/hyprland.nix
+    ../../modules/home-manager/waybar.nix
+    ../../modules/home-manager/wofi.nix
+    ../../modules/home-manager/vim.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.

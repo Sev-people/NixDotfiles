@@ -18,8 +18,8 @@
           kb_variant = "altgr-intl";
       };
       general = {
-          gaps_in = 5;
-          gaps_out = 5;
+          gaps_in = 7;
+          gaps_out = 9;
           border_size = 1;
           layout = "dwindle";
       };
@@ -35,7 +35,7 @@
           new_is_master = true;
       };
       decoration = {
-	rounding = 9; 
+	rounding = 0; 
         blur = {
           enabled = true;
           size = 2;

@@ -16,11 +16,10 @@
   - [[#flycheck][Flycheck]]
 - [[#company][COMPANY]]
 - [[#dashboard][DASHBOARD]]
-- [[#dired][DIRED]]
 - [[#fonts][FONTS]]
   - [[#setting-the-font-face][Setting The Font Face]]
   - [[#zooming-in-and-out][Zooming In And Out]]
-  - [[#centering-the-cursor][Centering The Cursor]]
+  - [[#frame-border][Frame Border]]
 - [[#gui-tweaks][GUI TWEAKS]]
   - [[#disable-menubar-toolbars-and-scrollbars][Disable Menubar, Toolbars and Scrollbars]]
   - [[#display-line-numbers-and-truncated-lines][Display Line Numbers And Truncated Lines]]
@@ -128,11 +127,6 @@
 ;; Set super key to meta
 (setq x-super-keysym 'meta)
 ;; Split windows
-(global-set-key (kbd "M-I") 'split-window-right)
-(global-set-key (kbd "M-U") 'split-window-below)
-(global-set-key (kbd "M-H") '(lambda() (interactive) (other-window -1)))
-(global-set-key (kbd "M-L") 'other-window)
-(global-set-key (kbd "M-C") 'delete-window)
 (global-set-key (kbd "M-l") 'org-do-demote)
 (define-key org-mode-map (kbd "M-h") nil)
 (global-set-key (kbd "M-h") 'org-do-promote)
@@ -140,56 +134,6 @@
 (global-set-key (kbd "M-j") 'org-move-subtree-down)
 ;; Neotree
 (global-set-key [f8] 'neotree-toggle)
-;; General keybindings
-(use-package general
-  :config
-  (general-evil-setup)
-
-;; set up 'SPC' as the global leader key
-(general-create-definer marc/leader-keys
-  :states '(normal insert visual emacs)
-  :keymaps 'override
-  :prefix "SPC" ;; set leader
-  :global-prefix "M-SPC") ;; access leader in insert mode
-
-(marc/leader-keys
-  "." '(find-file :wk "Find file")
-  "f c" '((lambda () (interactive) (find-file "~/.dotfiles/emacs/config.org")) :wk "Edit emacs config")
-  "f w" '((lambda () (interactive) (find-file "~/Documents/Work")) :wk "Open work directory")
-  "f a" '((lambda () (interactive) (find-file "~/Documents/Work/Agenda.org")) :wk "Open Agenda file")
-  "TAB TAB" '(comment-line :wk "Comment lines"))
-
-(marc/leader-keys
-  "b" '(:ignore t :wk "buffer")
-  "b b" '(switch-to-buffer :wk "Switch buffer")
-  "b i" '(ibuffer :wk "Ibuffer")
-  "b k" '(kill-this-buffer :wk "Kill this buffer")
-  "b n" '(next-buffer :wk "Next buffer")
-  "b p" '(previous-buffer :wk "Previous buffer")
-  "b r" '(revert-buffer :wk "Reload buffer"))
-
-(marc/leader-keys
-  "e" '(:ignore t :wk "Evaluate")    
-  "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
-  "e d" '(eval-defun :wk "Evaluate defun containing or after point")
-  "e e" '(eval-expression :wk "Evaluate and elisp expression")
-  "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
-  "e r" '(eval-region :wk "Evaluate elisp in region")) 
-
- (marc/leader-keys
-  "h" '(:ignore t :wk "Help")
-  "h f" '(describe-function :wk "Describe function")
-  "h v" '(describe-variable :wk "Describe variable")
-  "h r r" '((lambda () (interactive) (load-file "~/.dotfiles/emacs/init.el")) :wk "Reload emacs config"))
-
- (marc/leader-keys
-  "m" '(:ignore t :wk "Org")    
-  "m a" '(org-agenda :wk "Org agenda")    
-  "m c" '(org-toggle-checkbox :wk "Org toggle")    
-  "m t" '(org-time-stamp :wk "Org time stamp")
-  "m k" '(org-todo :wk "Org todo")
-  "m q" '(org-set-tags-command :wk "Org set tag"))
-)
 #+end_src
 
 ** Editing Keybindings
@@ -199,14 +143,6 @@
   :init
   (key-chord-mode 1)
   (key-chord-define evil-insert-state-map  "jk" 'evil-normal-state))
- (use-package evil-numbers
-   :ensure t
-   :init
-   (define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
-   (define-key evil-visual-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
-   (define-key evil-normal-state-map (kbd "C-x") 'evil-numbers/dec-at-pt)
-   (define-key evil-visual-state-map (kbd "C-x") 'evil-numbers/dec-at-pt)
- )
 #+end_src
 
 * ALL THE ICONS
@@ -269,24 +205,8 @@ Code completion.
   (setq dashboard-banner-logo-title "I didn't say enjoy your breakfast. I said eat it.")
   (setq dashboard-startup-banner 'logo)
   (setq dashboard-center-content t)
-  (setq dashboard-items '((recents . 5)
-                          (agenda . 5 )
-                          (bookmarks . 3)
-                          (registers . 3)))
   :config
   (dashboard-setup-startup-hook))
-#+end_src
-
-* DIRED
-#+begin_src emacs-lisp
-(use-package dired-open
-  :ensure t
-  :config
-  (setq dired-open-extensions '(("gif" . "sxiv")
-                                ("jpg" . "sxiv")
-                                ("png" . "sxiv")
-                                ("mkv" . "mpv")
-                                ("mp4" . "mpv"))))
 #+end_src
 
 * FONTS
@@ -319,13 +239,9 @@ Code completion.
 (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
 #+end_src
 
-** Centering The Cursor
+** Frame Border
 #+begin_src emacs-lisp
-(use-package centered-cursor-mode
-  :ensure t
-  :init
-  (global-centered-cursor-mode 1)
-  )
+(add-to-list 'default-frame-alist '(internal-border-width . 15))
 #+end_src
 
 * GUI TWEAKS
@@ -344,6 +260,15 @@ Code completion.
 
 ** Olivetti Mode
 #+begin_src emacs-lisp
+(use-package olivetti
+  :demand t
+  :diminish
+  :bind
+  (("<f9>" . olivetti-mode))
+  :init
+  (add-hook 'org-mode-hook (lambda () (olivetti-mode 1)))
+  :config
+  (setq-default olivetti-body-width 100))
 #+end_src
 
 * IVY (COUNSEL)
@@ -409,7 +334,11 @@ Code completion.
     :ensure t
     :init
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-(setq org-startup-folded t)
+(setq org-startup-folded t
+      org-hide-emphasis-markers t)
+ (use-package org-appear
+    :hook
+    (org-mode . org-appear-mode))
 #+end_src
 ** Agenda
 *** General Settings
@@ -528,7 +457,7 @@ Code completion.
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-one t)
+  (load-theme 'doom-rouge t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
