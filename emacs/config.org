@@ -26,6 +26,7 @@
   - [[#olivetti-mode][Olivetti Mode]]
 - [[#ivy-counsel][IVY (COUNSEL)]]
 - [[#latex][LaTeX]]
+  - [[#pdf-tools][PDF Tools]]
 - [[#minibuffer-escape][MINIBUFFER ESCAPE]]
 - [[#neotree][NEOTREE]]
 - [[#org-mode][ORG-MODE]]
@@ -310,7 +311,12 @@ Code completion.
 #+end_src
 
 * LaTeX
+** PDF Tools
 #+begin_src emacs-lisp
+(use-package pdf-tools
+         :demand t
+         :init
+         (pdf-tools-install))
 #+end_src
 
 * MINIBUFFER ESCAPE
