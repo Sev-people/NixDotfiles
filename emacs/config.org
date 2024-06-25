@@ -1,3 +1,4 @@
+
 #+TITLE: GNU Emacs Config
 #+AUTHOR: Marc Murray
 #+DESCRIPTION: Marc's Emacs config.
@@ -27,6 +28,8 @@
 - [[#ivy-counsel][IVY (COUNSEL)]]
 - [[#latex][LaTeX]]
   - [[#pdf-tools][PDF Tools]]
+  - [[#exporting][Exporting]]
+  - [[#setup][Setup]]
 - [[#minibuffer-escape][MINIBUFFER ESCAPE]]
 - [[#neotree][NEOTREE]]
 - [[#org-mode][ORG-MODE]]
@@ -317,6 +320,25 @@ Code completion.
          :demand t
          :init
          (pdf-tools-install))
+#+end_src
+** Exporting
+#+begin_src emacs-lisp
+(setq org-latex-to-pdf-process (list "latexmk -f -pdf %f"))
+#+end_src
+** Setup
+#+begin_src emacs-lisp
+(with-eval-after-load 'ox-latex
+(add-to-list 'org-latex-classes
+             '("org-plain-latex"
+               "\\documentclass{article}
+           [NO-DEFAULT-PACKAGES]
+           [PACKAGES]
+           [EXTRA]"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 #+end_src
 
 * MINIBUFFER ESCAPE
