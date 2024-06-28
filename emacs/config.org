@@ -17,7 +17,6 @@
   - [[#flyspell][Flyspell]]
 - [[#backups][BACKUPS]]
 - [[#company][COMPANY]]
-- [[#dashboard][DASHBOARD]]
 - [[#fonts][FONTS]]
   - [[#setting-the-font-face][Setting The Font Face]]
   - [[#zooming-in-and-out][Zooming In And Out]]
@@ -26,13 +25,14 @@
   - [[#disable-menubar-toolbars-and-scrollbars][Disable Menubar, Toolbars and Scrollbars]]
   - [[#display-line-numbers-and-truncated-lines][Display Line Numbers And Truncated Lines]]
   - [[#olivetti-mode][Olivetti Mode]]
+  - [[#startup-screen][Startup Screen]]
+  - [[#diminish][Diminish]]
 - [[#ivy-counsel][IVY (COUNSEL)]]
 - [[#latex][LaTeX]]
   - [[#pdf-tools][PDF Tools]]
   - [[#exporting][Exporting]]
   - [[#setup][Setup]]
 - [[#minibuffer-escape][MINIBUFFER ESCAPE]]
-- [[#neotree][NEOTREE]]
 - [[#org-mode][ORG-MODE]]
   - [[#appearance][Appearance]]
   - [[#agenda][Agenda]]
@@ -42,7 +42,6 @@
 - [[#programming-languages][PROGRAMMING LANGUAGES]]
 - [[#sane-defaults][SANE DEFAULTS]]
 - [[#theme][THEME]]
-- [[#transparency][TRANSPARENCY]]
 - [[#which-key][WHICH-KEY]]
 
 * IMPORTANT PROGRAMS TO LOAD FIRST
@@ -137,8 +136,6 @@
 (global-set-key (kbd "M-h") 'org-do-promote)
 (global-set-key (kbd "M-k") 'org-move-subtree-up)
 (global-set-key (kbd "M-j") 'org-move-subtree-down)
-;; Neotree
-(global-set-key [f8] 'neotree-toggle)
 #+end_src
 
 ** Editing Keybindings
@@ -167,8 +164,8 @@ For correcting code.
 (use-package flycheck
   :ensure t
   :defer t
-  :diminish
-  :init (global-flycheck-mode))
+  :init (global-flycheck-mode)
+  :diminish)
 #+end_src
 ** Flyspell
 #+begin_src emacs-lisp
@@ -204,35 +201,20 @@ Code completion.
 (use-package company
   :ensure t
   :defer 2
-  :diminish
   :custom
   (company-begin-commands '(self-insert-command))
   (company-idle-delay .1)
   (company-minimum-prefix-length 2)
   (company-show-numbers t)
   (company-tooltip-align-annotations 't)
-  (global-company-mode t))
+  (global-company-mode t)
+  :diminish)
 
 (use-package company-box
   :after company
   :ensure t
-  :diminish
-  :hook (company-mode . company-box-mode))
-#+end_src
-
-* DASHBOARD
-#+begin_src emacs-lisp
-(use-package dashboard
-  :ensure t 
-  :init
-  (setq initial-buffer-choice 'dashboard-open)
-  (setq dashboard-set-heading-icons t)
-  (setq dashboard-set-file-icons t)
-  (setq dashboard-banner-logo-title "I didn't say enjoy your breakfast. I said eat it.")
-  (setq dashboard-startup-banner 'logo)
-  (setq dashboard-center-content t)
-  :config
-  (dashboard-setup-startup-hook))
+  :hook (company-mode . company-box-mode)
+  :diminish)
 #+end_src
 
 * FONTS
@@ -267,7 +249,7 @@ Code completion.
 
 ** Frame Border
 #+begin_src emacs-lisp
-(add-to-list 'default-frame-alist '(internal-border-width . 15))
+(set-window-margins (selected-window) 1 1)
 #+end_src
 
 * GUI TWEAKS
@@ -294,7 +276,19 @@ Code completion.
   :init
   (add-hook 'org-mode-hook (lambda () (olivetti-mode 1)))
   :config
-  (setq-default olivetti-body-width 100))
+  (setq-default olivetti-body-width 100)
+  :diminish)
+#+end_src
+
+** Startup Screen
+#+begin_src emacs-lisp
+(setq initial-scratch-message "")
+(setq inhibit-startup-screen t)
+#+end_src
+
+** Diminish
+#+begin_src emacs-lisp
+(use-package diminish)
 #+end_src
 
 * IVY (COUNSEL)
@@ -302,11 +296,11 @@ Code completion.
 (use-package counsel
   :after ivy
   :ensure t
-  :config (counsel-mode))
+  :config (counsel-mode)
+  :diminish)
 
 (use-package ivy
   :ensure t
-  :diminish
   :bind
   ;; ivy-resume resumes the last Ivy-based completion.
   (("C-c C-r" . ivy-resume)
@@ -316,7 +310,8 @@ Code completion.
   (setq ivy-count-format "(%d/%d) ")
   (setq enable-recursive-minibuffers t)
   :config
-  (ivy-mode))
+  (ivy-mode)
+  :diminish)
 
 (use-package all-the-icons-ivy-rich
   :ensure t
@@ -366,15 +361,6 @@ Code completion.
 * MINIBUFFER ESCAPE
 #+begin_src emacs-lisp
 (global-set-key [escape] 'keyboard-escape-quit)
-#+end_src
-
-* NEOTREE
-#+begin_src emacs-lisp
-(use-package neotree
-  :ensure t
-  :config
-  (setq neo-smart-open t
-        neo-show-hidden-files t))
 #+end_src
 
 * ORG-MODE
@@ -510,14 +496,10 @@ Code completion.
   (doom-themes-org-config))
 #+end_src
 
-* TRANSPARENCY
-#+begin_src emacs-lisp
-;;(add-to-list 'default-frame-alist '(alpha-background . 80))
-#+end_src
-
 * WHICH-KEY
 #+begin_src emacs-lisp
 (use-package which-key
+  :diminish
   :ensure t
   :init
   (which-key-mode 1)
