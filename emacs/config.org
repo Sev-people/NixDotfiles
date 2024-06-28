@@ -12,9 +12,10 @@
 - [[#general-keybindings][General Keybindings]]
   - [[#editing-keybindings][Editing Keybindings]]
 - [[#all-the-icons][ALL THE ICONS]]
-- [[#backups][BACKUPS]]
 - [[#correcting-code-and-text][CORRECTING CODE AND TEXT]]
   - [[#flycheck][Flycheck]]
+  - [[#flyspell][Flyspell]]
+- [[#backups][BACKUPS]]
 - [[#company][COMPANY]]
 - [[#dashboard][DASHBOARD]]
 - [[#fonts][FONTS]]
@@ -159,12 +160,6 @@
   :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
 #+end_src
 
-* BACKUPS
-Moves automatic emacs backups to the =TRASH= directory.
-#+begin_src emacs-lisp
-(setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
-#+end_src
-
 * CORRECTING CODE AND TEXT
 ** Flycheck
 For correcting code.
@@ -174,6 +169,33 @@ For correcting code.
   :defer t
   :diminish
   :init (global-flycheck-mode))
+#+end_src
+** Flyspell
+#+begin_src emacs-lisp
+(use-package flyspell
+  :defer t
+  :ensure nil
+  :config
+  (add-to-list 'ispell-skip-region-alist '("~" "~"))
+  (add-to-list 'ispell-skip-region-alist '("=" "="))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXPORT" . "^#\\+END_EXPORT"))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXPORT" . "^#\\+END_EXPORT"))
+  (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+
+  (dolist (mode '(
+                  ;;org-mode-hook
+                  mu4e-compose-mode-hook))
+    (add-hook mode (lambda () (flyspell-mode 1))))
+
+  (setq flyspell-issue-welcome-flag nil
+        flyspell-issue-message-flag nil))
+#+end_src
+
+* BACKUPS
+Moves automatic emacs backups to the =TRASH= directory.
+#+begin_src emacs-lisp
+(setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
 #+end_src
 
 * COMPANY
@@ -330,10 +352,10 @@ Code completion.
 (with-eval-after-load 'ox-latex
 (add-to-list 'org-latex-classes
              '("org-plain-latex"
-               "\\documentclass{article}
-           [NO-DEFAULT-PACKAGES]
-           [PACKAGES]
-           [EXTRA]"
+	      "\\documentclass{article}
+                 [NO-DEFAULT-PACKAGES]
+                 [PACKAGES]
+                 [EXTRA]"
                ("\\section{%s}" . "\\section*{%s}")
                ("\\subsection{%s}" . "\\subsection*{%s}")
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -358,10 +380,6 @@ Code completion.
 * ORG-MODE
 ** Appearance
 #+begin_src emacs-lisp
-(use-package org-bullets
-    :ensure t
-    :init
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 (setq org-startup-folded t
       org-hide-emphasis-markers t)
  (use-package org-appear
@@ -394,11 +412,10 @@ Code completion.
 #+begin_src emacs-lisp
 (setq org-super-agenda-groups
        '(
-        (:name "Business" :tag "@business")
-        (:name "Academics" :tag "@academics")
-        (:name "Activities" :tag "@activities")
-        (:name "Piano" :tag "@piano")
-        (:name "Essays" :tag "@essays")
+        (:name "Learning" :tag "learning")
+        (:name "Academics" :tag "academics")
+        (:name "Business" :tag "business")
+        (:name "Practical" :tag "practical")
         ))
 
 (use-package org-super-agenda
@@ -411,12 +428,11 @@ Code completion.
 *** Tags And TODO Keywords
 #+begin_src emacs-lisp
 (setq org-tag-persistent-alist '((:startgroup . nil)
-                      ("@business" . ?b) ("@academics" . ?a)
-                      ("@essays" . ?e) ("@piano" . ?p)
-		      ("@activities" . ?g)
+                      ("learning" . ?l) ("academics" . ?a)
+                      ("business" . ?b) ("practical" . ?p)
                       (:endgroup . nil)
                       ))
-(setq org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "NEXT(n)" "EVNT(e)" "|" "DONE(d)")))
+(setq org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "EVNT(e)" "|" "DONE(d)")))
 #+end_src
 ** Enabling Table Of Contents
 #+begin_src emacs-lisp
@@ -485,7 +501,7 @@ Code completion.
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-rouge t)
+  (load-theme 'doom-one t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)

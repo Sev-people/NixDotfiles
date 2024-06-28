@@ -60,6 +60,8 @@
     zathura
     nodejs_20
     (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of; })
+    pkgs.zotero_7
+    ispell
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

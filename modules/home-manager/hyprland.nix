@@ -19,7 +19,7 @@
       };
       general = {
           gaps_in = 7;
-          gaps_out = 9;
+          gaps_out = 10;
           border_size = 1;
           layout = "dwindle";
       };
