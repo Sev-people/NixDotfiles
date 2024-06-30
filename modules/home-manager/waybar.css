@@ -2,12 +2,12 @@
 	border: none;
 	border-radius: 0px;
     	font-family: "JetbrainsMono Nerd Font" ;
-	font-size: 11px;
+	font-size: 10px;
 }
 
 window#waybar {
-	background: transparent;
-	min-height: 7px;
+	min-height: 4px;
+	background: rgba(28,20,22,0.7);
 }
 
 window#waybar.hidden {
@@ -17,27 +17,16 @@ window#waybar.hidden {
 #window {
 	padding-left: 10px;
 	padding-right: 10px;
-	border-radius: 10px;
 	transition: none;
 }
 
 .modules-right {
-	background: rgb(28,20,22);
-	border-radius: 10px;
-	margin-top: 3px;
-	margin-right: 3px;
 }
 
 .modules-left {
-	background: transparent;
-	margin-top: 3px;
-	margin-left: 3px;
 }
 
 .modules-center {
-	background: rgb(28,20,22);
-	border-radius: 10px;
-	margin-top: 3px;
 }
 
 #workspaces button {
@@ -62,7 +51,6 @@ window#waybar.hidden {
 	margin-bottom: 0px;
 	margin-left: 6px;
 	border-radius: 10px;
-	background: #1c1416;
 }
 
 #workspaces button {
@@ -129,23 +117,4 @@ window#waybar.hidden {
 	border-radius: 10px;
 	transition: none;
 	color: #f8f8f2;
-}
-
-#memory, #temperature {
-	margin-left: 8px;
-	padding-left: 10px;
-	padding-right: 10px;
-	border-radius: 10px;
-	transition: none;
-	color: #f8f8f2;
-	background: rgb(28,20,22);
-}
-
-#cpu {
-	padding-left: 10px;
-	padding-right: 10px;
-	border-radius: 10px;
-	transition: none;
-	color: #f8f8f2;
-	background: rgb(28,20,22);
 }

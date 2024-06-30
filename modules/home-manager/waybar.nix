@@ -8,9 +8,9 @@ programs.waybar = {
     settings = {
       mainBar = {
 	layer = "top";
-	modules-left = ["cpu" "memory" "temperature" "hyprland/workspaces"];
+	modules-left = ["hyprland/workspaces"];
 	modules-center = ["custom/date"];
-	modules-right = ["battery" "network" "clock"];
+	modules-right = [ "battery" "network" "clock"];
         "hyprland/workspaces" = {
 	  persistent-workspaces = {
               "*" = 5;
@@ -24,26 +24,11 @@ programs.waybar = {
           format = "{:%H:%M}";
 	  timezone = "Europe/Madrid";
         };
-        cpu = {
-          interval = 30;
-          format = " {}%";
-          max-length = 10;
-        };
         network = {
 	  format-wifi = "{essid} ({signalStrength}%) ";
           format-disconnected = "Disconnected ⚠";
           interval = 30;
           max-length = 30;
-        };
-        memory = {
-            interval = 30;
-            format = " {}%";
-            max-length = 10;
-        };
-        temperature = {
-            interval = 30;
-            format = " {}°C";
-            max-length = 10;
         };
         battery = {
 	    bat = "BAT1";
