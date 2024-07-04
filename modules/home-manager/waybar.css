@@ -3,11 +3,11 @@
 	border-radius: 0px;
     	font-family: "JetbrainsMono Nerd Font" ;
 	font-size: 10px;
+	min-height: 0;
 }
 
 window#waybar {
-	min-height: 4px;
-	background: rgba(28,20,22,0.7);
+	background: rgb(28,20,22);
 }
 
 window#waybar.hidden {
@@ -15,8 +15,6 @@ window#waybar.hidden {
 }
 
 #window {
-	padding-left: 10px;
-	padding-right: 10px;
 	transition: none;
 }
 
@@ -33,7 +31,6 @@ window#waybar.hidden {
 	transition: none;
 	color: #B5E8E0;
 	background: transparent;
-	font-size: 16px;
 	border-radius: 2px;
 }
 
@@ -49,7 +46,6 @@ window#waybar.hidden {
 
 #workspaces {
 	margin-bottom: 0px;
-	margin-left: 6px;
 	border-radius: 10px;
 }
 
@@ -110,7 +106,6 @@ window#waybar.hidden {
 
 #clock {
 	margin-left: 8px;
-	margin-right: 8px;
 	padding-left: 10px;
 	padding-right: 10px;
 	margin-bottom: 0px;

@@ -32,6 +32,7 @@
   - [[#pdf-tools][PDF Tools]]
   - [[#exporting][Exporting]]
   - [[#setup][Setup]]
+  - [[#more][More]]
 - [[#minibuffer-escape][MINIBUFFER ESCAPE]]
 - [[#org-mode][ORG-MODE]]
   - [[#appearance][Appearance]]
@@ -106,7 +107,7 @@
 ;;  (define-key evil-motion-state-map (kbd "RET") nil)
 ;;  (define-key evil-motion-state-map (kbd "TAB") nil))
 
-;;  (setq org-return-follows-link  t)
+(setq org-return-follows-link  t)
 #+end_src
 
 * General Keybindings
@@ -259,7 +260,7 @@ Code completion.
   :init
   (add-hook 'org-mode-hook (lambda () (olivetti-mode 1)))
   :config
-  (setq-default olivetti-body-width 100)
+  (setq-default olivetti-body-width 150)
   :diminish)
 #+end_src
 
@@ -339,6 +340,10 @@ Code completion.
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+#+end_src
+** More
+#+begin_src emacs-lisp
+
 #+end_src
 
 * MINIBUFFER ESCAPE
