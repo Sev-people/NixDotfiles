@@ -1,4 +1,3 @@
-
 #+TITLE: GNU Emacs Config
 #+AUTHOR: Marc Murray
 #+DESCRIPTION: Marc's Emacs config.
@@ -324,7 +323,7 @@ Code completion.
 #+end_src
 ** Exporting
 #+begin_src emacs-lisp
-(setq org-latex-to-pdf-process (list "latexmk -f -pdf %f"))
+(setq org-latex-to-pdf-process (list "latexmk %f"))
 #+end_src
 ** Setup
 #+begin_src emacs-lisp
@@ -343,7 +342,11 @@ Code completion.
 #+end_src
 ** More
 #+begin_src emacs-lisp
-
+(use-package auctex
+  :defer t
+  :ensure t)
+(use-package cdlatex
+  :ensure t)
 #+end_src
 
 * MINIBUFFER ESCAPE

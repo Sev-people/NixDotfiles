@@ -59,7 +59,7 @@
     git
     zathura
     nodejs_20
-    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of; })
+    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling; })
     auctex
     pkgs.zotero_7
     ispell
