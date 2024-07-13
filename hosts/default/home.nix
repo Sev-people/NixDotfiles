@@ -59,10 +59,11 @@
     git
     zathura
     nodejs_20
-    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling; })
+    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket; })
     auctex
     pkgs.zotero_7
     ispell
+    cups
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

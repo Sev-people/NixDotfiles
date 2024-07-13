@@ -31,6 +31,7 @@
   - [[#pdf-tools][PDF Tools]]
   - [[#exporting][Exporting]]
   - [[#setup][Setup]]
+  - [[#latex-minor-modes][LaTeX Minor Modes]]
   - [[#more][More]]
 - [[#minibuffer-escape][MINIBUFFER ESCAPE]]
 - [[#org-mode][ORG-MODE]]
@@ -340,6 +341,10 @@ Code completion.
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 #+end_src
+** LaTeX Minor Modes
+#+begin_src emacs-lisp
+(global-set-key (kbd "<f4>") (lambda () (interactive) (org-toggle-pretty-entities) (org-cdlatex-mode)))
+#+end_src
 ** More
 #+begin_src emacs-lisp
 (use-package auctex
@@ -347,6 +352,7 @@ Code completion.
   :ensure t)
 (use-package cdlatex
   :ensure t)
+(global-auto-revert-mode 1)
 #+end_src
 
 * MINIBUFFER ESCAPE
