@@ -19,6 +19,8 @@
 
   nix.optimise.automatic = true;
 
+  services.printing.enable = true;
+
   # Run the GC weekly keeping the 5 most recent generation of each profiles.
   nix.gc = {
     automatic = true;

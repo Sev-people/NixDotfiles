@@ -63,7 +63,6 @@
     auctex
     pkgs.zotero_7
     ispell
-    cups
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
