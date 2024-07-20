@@ -35,6 +35,7 @@
     krita
     kdenlive
     rnote
+    nyxt
     #browsers
     firefox-wayland
     #editors
