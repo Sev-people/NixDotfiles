@@ -115,6 +115,8 @@
 ;; Set super key to meta
 (setq x-super-keysym 'meta)
 ;; Split windows
+(set-register ?c (cons 'file "~/.dotfiles/emacs/config.org"))
+(set-register ?a (cons 'file "~/Documents/Work/Agenda.org"))
 ;;(global-set-key (kbd "M-l") 'org-do-demote)
 ;;(define-key org-mode-map (kbd "M-h") nil)
 ;;(global-set-key (kbd "M-h") 'org-do-promote)
