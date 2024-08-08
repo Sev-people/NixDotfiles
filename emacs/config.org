@@ -1,0 +1,508 @@
+#+TITLE: GNU Emacs Config
+#+AUTHOR: Marc Murray
+#+DESCRIPTION: Marc's Emacs config.
+#+STARTUP: showeverything
+#+OPTIONS: toc:2
+
+* TABLE OF CONTENTS :toc:
+- [[#important-programs-to-load-first][IMPORTANT PROGRAMS TO LOAD FIRST]]
+  - [[#elpaca-package-manager][Elpaca Package Manager]]
+  - [[#evil-mode][Evil Mode]]
+- [[#general-keybindings][General Keybindings]]
+  - [[#editing-keybindings][Editing Keybindings]]
+- [[#all-the-icons][ALL THE ICONS]]
+- [[#correcting-code-and-text][CORRECTING CODE AND TEXT]]
+  - [[#flycheck][Flycheck]]
+  - [[#flyspell][Flyspell]]
+- [[#backups][BACKUPS]]
+- [[#company][COMPANY]]
+- [[#fonts][FONTS]]
+  - [[#setting-the-font-face][Setting The Font Face]]
+  - [[#zooming-in-and-out][Zooming In And Out]]
+  - [[#frame-border][Frame Border]]
+- [[#gui-tweaks][GUI TWEAKS]]
+  - [[#disable-menubar-toolbars-and-scrollbars][Disable Menubar, Toolbars and Scrollbars]]
+  - [[#display-line-numbers-and-truncated-lines][Display Line Numbers And Truncated Lines]]
+  - [[#olivetti-mode][Olivetti Mode]]
+  - [[#startup-screen][Startup Screen]]
+  - [[#diminish][Diminish]]
+- [[#ivy-counsel][IVY (COUNSEL)]]
+- [[#latex][LaTeX]]
+  - [[#pdf-tools][PDF Tools]]
+  - [[#exporting][Exporting]]
+  - [[#setup][Setup]]
+  - [[#latex-minor-modes][LaTeX Minor Modes]]
+  - [[#more][More]]
+- [[#minibuffer-escape][MINIBUFFER ESCAPE]]
+- [[#org-mode][ORG-MODE]]
+  - [[#appearance][Appearance]]
+  - [[#agenda][Agenda]]
+  - [[#enabling-table-of-contents][Enabling Table Of Contents]]
+  - [[#source-code-block-expansion][Source Code Block Expansion]]
+- [[#programming-languages][PROGRAMMING LANGUAGES]]
+- [[#sane-defaults][SANE DEFAULTS]]
+- [[#theme][THEME]]
+- [[#which-key][WHICH-KEY]]
+
+* IMPORTANT PROGRAMS TO LOAD FIRST
+** Elpaca Package Manager
+#+begin_src emacs-lisp
+(defvar elpaca-installer-version 0.7)
+(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+			:ref nil :depth 1
+			:files (:defaults "elpaca-test.el" (:exclude "extensions"))
+			:build (:not elpaca--activate-package)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+ (build (expand-file-name "elpaca/" elpaca-builds-directory))
+ (order (cdr elpaca-order))
+ (default-directory repo))
+  (add-to-list 'load-path (if (file-exists-p build) build repo))
+  (unless (file-exists-p repo)
+    (make-directory repo t)
+    (when (< emacs-major-version 28) (require 'subr-x))
+    (condition-case-unless-debug err
+  (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+	   ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+					   ,@(when-let ((depth (plist-get order :depth)))
+					       (list (format "--depth=%d" depth) "--no-single-branch"))
+					   ,(plist-get order :repo) ,repo))))
+	   ((zerop (call-process "git" nil buffer t "checkout"
+				 (or (plist-get order :ref) "--"))))
+	   (emacs (concat invocation-directory invocation-name))
+	   ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+				 "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+	   ((require 'elpaca))
+	   ((elpaca-generate-autoloads "elpaca" repo)))
+      (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+    (error "%s" (with-current-buffer buffer (buffer-string))))
+((error) (warn "%s" err) (delete-directory repo 'recursive))))
+  (unless (require 'elpaca-autoloads nil t)
+    (require 'elpaca)
+    (elpaca-generate-autoloads "elpaca" repo)
+    (load "./elpaca-autoloads")))
+(add-hook 'after-init-hook #'elpaca-process-queues)
+(elpaca `(,@elpaca-order))
+#+end_src
+
+** Evil Mode
+#+begin_src emacs-lisp
+(elpaca elpaca-use-package
+  (elpaca-use-package-mode)
+  (setq elpaca-use-package-by-default t))
+(elpaca-wait)
+
+;;(use-package evil
+;;    :ensure t
+;;    :init      ;; tweak evil's configuration before loading it
+;;    (setq evil-want-integration t  ;; This is optional since it's already set to t by default.
+;;          evil-want-keybinding nil
+;;          evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
+;;    (evil-mode))
+
+;;(with-eval-after-load 'evil-maps
+;;  (define-key evil-motion-state-map (kbd "SPC") nil)
+;;  (define-key evil-motion-state-map (kbd "RET") nil)
+;;  (define-key evil-motion-state-map (kbd "TAB") nil))
+
+(setq org-return-follows-link  t)
+#+end_src
+
+* General Keybindings
+#+begin_src emacs-lisp
+;; Set super key to meta
+(setq x-super-keysym 'meta)
+;; Split windows
+(set-register ?c (cons 'file "~/.dotfiles/emacs/config.org"))
+(set-register ?a (cons 'file "~/Documents/Work/Agenda.org"))
+;;(global-set-key (kbd "M-l") 'org-do-demote)
+;;(define-key org-mode-map (kbd "M-h") nil)
+;;(global-set-key (kbd "M-h") 'org-do-promote)
+;;(global-set-key (kbd "M-k") 'org-move-subtree-up)
+;;(global-set-key (kbd "M-j") 'org-move-subtree-down)
+#+end_src
+
+** Editing Keybindings
+#+begin_src emacs-lisp
+;;(use-package key-chord
+;;  :ensure t
+;;  :init
+;;  (key-chord-mode 1)
+;;  (key-chord-define evil-insert-state-map  "jk" 'evil-normal-state))
+#+end_src
+
+* ALL THE ICONS
+#+begin_src emacs-lisp
+(use-package all-the-icons
+  :ensure t
+  :if (display-graphic-p))
+
+(use-package all-the-icons-dired
+  :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+#+end_src
+
+* CORRECTING CODE AND TEXT
+** Flycheck
+For correcting code.
+#+begin_src emacs-lisp
+(use-package flycheck
+  :ensure t
+  :defer t
+  :init (global-flycheck-mode)
+  :diminish)
+#+end_src
+** Flyspell
+#+begin_src emacs-lisp
+(use-package flyspell
+  :defer t
+  :ensure nil
+  :config
+  (add-to-list 'ispell-skip-region-alist '("~" "~"))
+  (add-to-list 'ispell-skip-region-alist '("=" "="))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXPORT" . "^#\\+END_EXPORT"))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXPORT" . "^#\\+END_EXPORT"))
+  (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+
+  (dolist (mode '(
+                  ;;org-mode-hook
+                  mu4e-compose-mode-hook))
+    (add-hook mode (lambda () (flyspell-mode 1))))
+
+  (setq flyspell-issue-welcome-flag nil
+        flyspell-issue-message-flag nil))
+#+end_src
+
+* BACKUPS
+Moves automatic emacs backups to the =TRASH= directory.
+#+begin_src emacs-lisp
+(setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+#+end_src
+
+* COMPANY
+Code completion.
+#+begin_src emacs-lisp
+(use-package company
+  :ensure t
+  :defer 2
+  :custom
+  (company-begin-commands '(self-insert-command))
+  (company-idle-delay .1)
+  (company-minimum-prefix-length 2)
+  (company-show-numbers t)
+  (company-tooltip-align-annotations 't)
+  (global-company-mode t)
+  :diminish)
+
+(use-package company-box
+  :after company
+  :ensure t
+  :hook (company-mode . company-box-mode)
+  :diminish)
+#+end_src
+
+* FONTS
+** Setting The Font Face
+#+begin_src emacs-lisp
+(set-face-attribute 'default nil
+  :height 110
+  :weight 'medium)
+(set-face-attribute 'variable-pitch nil
+  :height 120
+  :weight 'medium)
+(set-face-attribute 'fixed-pitch nil
+  :height 110
+  :weight 'medium)
+;; Makes commented text and keywords italics.
+(set-face-attribute 'font-lock-comment-face nil
+  :slant 'italic)
+(set-face-attribute 'font-lock-keyword-face nil
+  :slant 'italic)
+
+;; Adjust line spacing.
+(setq-default line-spacing 0.12)
+#+end_src
+
+** Zooming In And Out
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-=") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
+(global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+#+end_src
+
+** Frame Border
+#+begin_src emacs-lisp
+(set-window-margins (selected-window) 1 1)
+#+end_src
+
+* GUI TWEAKS
+** Disable Menubar, Toolbars and Scrollbars
+#+begin_src emacs-lisp
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+#+end_src
+
+** Display Line Numbers And Truncated Lines
+#+begin_src emacs-lisp
+;;(global-display-line-numbers-mode 1)
+(global-visual-line-mode t)
+#+end_src
+
+** Olivetti Mode
+#+begin_src emacs-lisp
+(use-package olivetti
+  :demand t
+  :diminish
+  :bind
+  (("<f9>" . olivetti-mode))
+  :init
+  (add-hook 'org-mode-hook (lambda () (olivetti-mode 1)))
+  :config
+  (setq-default olivetti-body-width 150)
+  :diminish)
+#+end_src
+
+** Startup Screen
+#+begin_src emacs-lisp
+(setq initial-scratch-message "")
+(setq inhibit-startup-screen t)
+#+end_src
+
+** Diminish
+#+begin_src emacs-lisp
+(use-package diminish)
+#+end_src
+
+* IVY (COUNSEL)
+#+begin_src emacs-lisp
+(use-package counsel
+  :after ivy
+  :ensure t
+  :config (counsel-mode)
+  :diminish)
+
+(use-package ivy
+  :ensure t
+  :bind
+  ;; ivy-resume resumes the last Ivy-based completion.
+  (("C-c C-r" . ivy-resume)
+   ("C-x B" . ivy-switch-buffer-other-window))
+  :custom
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq enable-recursive-minibuffers t)
+  :config
+  (ivy-mode)
+  :diminish)
+
+(use-package all-the-icons-ivy-rich
+  :ensure t
+  :init (all-the-icons-ivy-rich-mode 1))
+
+(use-package ivy-rich
+  :after ivy
+  :ensure t
+  :init (ivy-rich-mode 1) ;; this gets us descriptions in M-x.
+  :custom
+  (ivy-virtual-abbreviate 'full
+   ivy-rich-switch-buffer-align-virtual-buffer t
+   ivy-rich-path-style 'abbrev)
+  :config
+  (ivy-set-display-transformer 'ivy-switch-buffer
+                               'ivy-rich-switch-buffer-transformer))
+#+end_src
+
+* LaTeX
+** PDF Tools
+#+begin_src emacs-lisp
+(use-package pdf-tools
+         :demand t
+         :init
+         (pdf-tools-install))
+#+end_src
+** Exporting
+#+begin_src emacs-lisp
+(setq org-latex-to-pdf-process (list "latexmk %f"))
+#+end_src
+** Setup
+#+begin_src emacs-lisp
+(with-eval-after-load 'ox-latex
+(add-to-list 'org-latex-classes
+             '("org-plain-latex"
+	      "\\documentclass{article}
+                 [NO-DEFAULT-PACKAGES]
+                 [PACKAGES]
+                 [EXTRA]"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+#+end_src
+** LaTeX Minor Modes
+#+begin_src emacs-lisp
+(global-set-key (kbd "<f4>") (lambda () (interactive) (org-toggle-pretty-entities) (org-cdlatex-mode)))
+#+end_src
+** More
+#+begin_src emacs-lisp
+(use-package auctex
+  :defer t
+  :ensure t)
+(use-package cdlatex
+  :ensure t)
+(global-auto-revert-mode 1)
+#+end_src
+
+* MINIBUFFER ESCAPE
+#+begin_src emacs-lisp
+(global-set-key [escape] 'keyboard-escape-quit)
+#+end_src
+
+* ORG-MODE
+** Appearance
+#+begin_src emacs-lisp
+(setq org-startup-folded t
+      org-hide-emphasis-markers t)
+ (use-package org-appear
+    :hook
+    (org-mode . org-appear-mode))
+#+end_src
+** Agenda
+*** General Settings
+#+begin_src emacs-lisp
+(setq org-agenda-span 1
+      org-agenda-start-day "+0d"
+      org-agenda-skip-timestamp-if-done t
+      org-agenda-skip-deadline-if-done t
+      org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-scheduled-if-deadline-is-shown t
+      org-agenda-skip-timestamp-if-deadline-is-shown t)
+
+(setq org-agenda-prefix-format '(
+(agenda . "  %?-2i %t ")
+ (todo . " %i %-12:c")
+ (tags . " %i %-12:c")
+ (search . " %i %-12:c")))
+
+(setq org-agenda-hide-tags-regexp ".*")
+
+(setq org-agenda-current-time-string "")
+(setq org-agenda-time-grid '((daily) () "" ""))
+#+end_src
+*** Super Agenda
+#+begin_src emacs-lisp
+(setq org-super-agenda-groups
+       '(
+        (:name "Learning" :tag "learning")
+        (:name "Academics" :tag "academics")
+        (:name "Business" :tag "business")
+        (:name "Practical" :tag "practical")
+        ))
+
+(use-package org-super-agenda
+  :ensure t
+  :after org
+  :defer t
+  :init
+(org-super-agenda-mode))
+#+end_src
+*** Tags And TODO Keywords
+#+begin_src emacs-lisp
+(setq org-tag-persistent-alist '((:startgroup . nil)
+                      ("learning" . ?l) ("academics" . ?a)
+                      ("business" . ?b) ("practical" . ?p)
+                      (:endgroup . nil)
+                      ))
+(setq org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "EVNT(e)" "|" "DONE(d)")))
+#+end_src
+** Enabling Table Of Contents
+#+begin_src emacs-lisp
+(use-package toc-org
+    :ensure t
+    :commands toc-org-enable
+    :init (add-hook 'org-mode-hook 'toc-org-enable))
+#+end_src
+
+** Source Code Block Expansion
+| Typing the below + TAB | Expands to ...                          |
+|------------------------+-----------------------------------------|
+| <a                     | '#+BEGIN_EXPORT ascii' … '#+END_EXPORT  |
+| <c                     | '#+BEGIN_CENTER' … '#+END_CENTER'       |
+| <C                     | '#+BEGIN_COMMENT' … '#+END_COMMENT'     |
+| <e                     | '#+BEGIN_EXAMPLE' … '#+END_EXAMPLE'     |
+| <E                     | '#+BEGIN_EXPORT' … '#+END_EXPORT'       |
+| <h                     | '#+BEGIN_EXPORT html' … '#+END_EXPORT'  |
+| <l                     | '#+BEGIN_EXPORT latex' … '#+END_EXPORT' |
+| <q                     | '#+BEGIN_QUOTE' … '#+END_QUOTE'         |
+| <s                     | '#+BEGIN_SRC' … '#+END_SRC'             |
+| <v                     | '#+BEGIN_VERSE' … '#+END_VERSE'         |
+
+#+begin_src emacs-lisp
+(require 'org-tempo)
+#+end_src
+
+* PROGRAMMING LANGUAGES
+#+begin_src emacs-lisp
+(use-package web-mode)
+(use-package python-mode)
+(use-package nix-mode
+  :mode ("\\.nix\\'" "\\.nix.in\\'"))
+(use-package emmet-mode)
+#+end_src
+
+* SANE DEFAULTS
+#+begin_src emacs-lisp
+(electric-indent-mode -1)
+(setq org-edit-src-content-indentation 0)
+(electric-pair-mode 1)
+(add-hook 'org-mode-hook (lambda ()
+           (setq-local electric-pair-inhibit-predicate
+                   `(lambda (c)
+                  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+(setq org-startup-indented t)
+#+end_src
+
+* THEME
+#+begin_src emacs-lisp
+(progn
+(setq modus-themes-org-blocks 'gray-background
+	modus-themes-fringes 'subtle
+	modus-themes-italic-constructs t
+	modus-themes-bold-constructs t
+	modus-themes-syntax '(alt-syntax)
+	modus-themes-hl-line '(intense)
+	modus-themes-paren-match '(intense)
+	modus-themes-mode-line '(borderless (padding . 4)))
+  (setq modus-themes-headings
+        (quote ((1 . (overline variable-pitch 1.3))
+                (2 . (variable-pitch 1.15))
+                (3 . (1.05))
+                (t . (monochrome)))))
+(load-theme 'modus-operandi t))
+#+end_src
+
+* WHICH-KEY
+#+begin_src emacs-lisp
+(use-package which-key
+  :diminish
+  :ensure t
+  :init
+  (which-key-mode 1)
+  :config
+  (setq which-key-inside-window-location 'bottom
+	which-key-sort-order #'which-key-key-order-alpha
+	which-key-sort-uppercase-first nil
+	which-key-add-column-padding 1
+	which-key-max-display-columns nil
+	which-key-min-display-lines 6
+        which-key-side-window-slot -10
+	which-key-side-window-max-height 0.25
+	which-key-idle-delay 0.8
+	which-key-max-description-length 25
+	which-key-allow-imprecise-window-fit nil
+	which-key-separator " → " ))
+#+end_src
