@@ -21,6 +21,12 @@
          STOP_CHARGE_THRESH_BAT1 = 80;
   
         };
-    };
+  };
+
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+  services.blueman.enable = true;
 
 }
