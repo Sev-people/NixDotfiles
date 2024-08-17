@@ -90,22 +90,22 @@
 ** Evil Mode
 #+begin_src emacs-lisp
 (elpaca elpaca-use-package
-  (elpaca-use-package-mode)
+ (elpaca-use-package-mode)
   (setq elpaca-use-package-by-default t))
 (elpaca-wait)
 
-;;(use-package evil
-;;    :ensure t
-;;    :init      ;; tweak evil's configuration before loading it
-;;    (setq evil-want-integration t  ;; This is optional since it's already set to t by default.
-;;          evil-want-keybinding nil
-;;          evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
-;;    (evil-mode))
+(use-package evil
+    :ensure t
+    :init      ;; tweak evil's configuration before loading it
+    (setq evil-want-integration t  ;; This is optional since it's already set to t by default.
+          evil-want-keybinding nil
+          evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
+    (evil-mode))
 
-;;(with-eval-after-load 'evil-maps
-;;  (define-key evil-motion-state-map (kbd "SPC") nil)
-;;  (define-key evil-motion-state-map (kbd "RET") nil)
-;;  (define-key evil-motion-state-map (kbd "TAB") nil))
+(with-eval-after-load 'evil-maps
+  (define-key evil-motion-state-map (kbd "SPC") nil)
+  (define-key evil-motion-state-map (kbd "RET") nil)
+  (define-key evil-motion-state-map (kbd "TAB") nil))
 
 (setq org-return-follows-link  t)
 #+end_src
@@ -117,21 +117,21 @@
 ;; Split windows
 (set-register ?c (cons 'file "~/.dotfiles/emacs/config.org"))
 (set-register ?a (cons 'file "~/Documents/Work/Agenda.org"))
-;;(global-set-key (kbd "M-l") 'org-do-demote)
-;;(define-key org-mode-map (kbd "M-h") nil)
+(global-set-key (kbd "M-l") 'org-do-demote)
+(define-key org-mode-map (kbd "M-h") nil)
 (global-set-key (kbd "C-S-u") nil)
-;;(global-set-key (kbd "M-h") 'org-do-promote)
-;;(global-set-key (kbd "M-k") 'org-move-subtree-up)
-;;(global-set-key (kbd "M-j") 'org-move-subtree-down)
+(global-set-key (kbd "M-h") 'org-do-promote)
+(global-set-key (kbd "M-k") 'org-move-subtree-up)
+(global-set-key (kbd "M-j") 'org-move-subtree-down)
 #+end_src
 
 ** Editing Keybindings
 #+begin_src emacs-lisp
-;;(use-package key-chord
-;;  :ensure t
-;;  :init
-;;  (key-chord-mode 1)
-;;  (key-chord-define evil-insert-state-map  "jk" 'evil-normal-state))
+(use-package key-chord
+  :ensure t
+  :init
+  (key-chord-mode 1)
+  (key-chord-define evil-insert-state-map  "jk" 'evil-normal-state))
 #+end_src
 
 * ALL THE ICONS
@@ -183,26 +183,26 @@ Moves automatic emacs backups to the =TRASH= directory.
 #+end_src
 
 * COMPANY
-Code completion.
-#+begin_src emacs-lisp
-(use-package company
-  :ensure t
-  :defer 2
-  :custom
-  (company-begin-commands '(self-insert-command))
-  (company-idle-delay .1)
-  (company-minimum-prefix-length 2)
-  (company-show-numbers t)
-  (company-tooltip-align-annotations 't)
-  (global-company-mode t)
-  :diminish)
+;; Code completion.
+;; #+begin_src emacs-lisp
+;; (use-package company
+;;  :ensure t
+;;  :defer 2
+;;  :custom
+;;  (company-begin-commands '(self-insert-command))
+;;  (company-idle-delay .1)
+;;  (company-minimum-prefix-length 2)
+;;  (company-show-numbers t)
+;;  (company-tooltip-align-annotations 't)
+;;  (global-company-mode t)
+;;  :diminish)
 
-(use-package company-box
-  :after company
-  :ensure t
-  :hook (company-mode . company-box-mode)
-  :diminish)
-#+end_src
+;;(use-package company-box
+;;  :after company
+;;  :ensure t
+;;  :hook (company-mode . company-box-mode)
+;;  :diminish)
+;;#+end_src
 
 * FONTS
 ** Setting The Font Face
@@ -453,6 +453,21 @@ Code completion.
 (use-package nix-mode
   :mode ("\\.nix\\'" "\\.nix.in\\'"))
 (use-package emmet-mode)
+
+(use-package lsp-mode
+  :init
+  (add-hook 'prog-mode-hook #'lsp))
+
+(use-package dap-mode
+  :config 
+  (dap-auto-configure-mode)
+
+  :bind
+  (("<f7>" . dap-step-in)
+   ("<f8>" . dap-next)
+   ("<f9>" . dap-continue)))
+
+(setq js-indent-level 2)
 #+end_src
 
 * SANE DEFAULTS
@@ -483,7 +498,7 @@ Code completion.
                 (2 . (variable-pitch 1.15))
                 (3 . (1.05))
                 (t . (monochrome)))))
-(load-theme 'modus-operandi t))
+(load-theme 'modus-vivendi t))
 #+end_src
 
 * WHICH-KEY
