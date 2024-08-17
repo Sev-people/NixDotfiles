@@ -35,7 +35,6 @@
     krita
     kdenlive
     rnote
-    nyxt
     #browsers
     firefox-wayland
     #editors
@@ -65,6 +64,8 @@
     pkgs.zotero_7
     ispell
     easyeffects
+    unzip
+    ffmpeg
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
