@@ -99,6 +99,7 @@
     :init      ;; tweak evil's configuration before loading it
     (setq evil-want-integration t  ;; This is optional since it's already set to t by default.
           evil-want-keybinding nil
+	      evil-want-C-u-scroll t
           evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
     (evil-mode))
 
@@ -122,6 +123,7 @@
 (global-set-key (kbd "C-S-u") nil)
 (global-set-key (kbd "M-h") 'org-do-promote)
 (global-set-key (kbd "M-k") 'org-move-subtree-up)
+(global-set-key (kbd "M-j") 'org-move-subtree-down)
 (global-set-key (kbd "M-j") 'org-move-subtree-down)
 #+end_src
 
@@ -250,6 +252,8 @@ Moves automatic emacs backups to the =TRASH= directory.
 ** Display Line Numbers And Truncated Lines
 #+begin_src emacs-lisp
 ;;(global-display-line-numbers-mode 1)
+(setq display-line-numbers-type 'relative) 
+(global-display-line-numbers-mode)
 (global-visual-line-mode t)
 #+end_src
 
