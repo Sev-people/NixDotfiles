@@ -13,6 +13,13 @@
   # manage.
   home.username = "marc";
   home.homeDirectory = "/home/marc";
+  home.pointerCursor = {
+    gtk.enable = true;
+    package = pkgs.gnome.adwaita-icon-theme;
+    name = "Adwaita";
+    size = 16;
+  };
+
   nixpkgs.config.allowUnfree = true;
 
   # This value determines the Home Manager release that your configuration is
@@ -46,6 +53,7 @@
     gammastep
     ags
     swww
+    hyprpicker
     #terminal
     foot
     ani-cli

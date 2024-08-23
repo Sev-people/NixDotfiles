@@ -183,26 +183,26 @@ Moves automatic emacs backups to the =TRASH= directory.
 #+end_src
 
 * COMPANY
-;; Code completion.
-;; #+begin_src emacs-lisp
-;; (use-package company
-;;  :ensure t
-;;  :defer 2
-;;  :custom
-;;  (company-begin-commands '(self-insert-command))
-;;  (company-idle-delay .1)
-;;  (company-minimum-prefix-length 2)
-;;  (company-show-numbers t)
-;;  (company-tooltip-align-annotations 't)
-;;  (global-company-mode t)
-;;  :diminish)
+ Code completion.
+ #+begin_src emacs-lisp
+ (use-package company
+  :ensure t
+  :defer 2
+  :custom
+  (company-begin-commands '(self-insert-command))
+  (company-idle-delay .1)
+  (company-minimum-prefix-length 2)
+  (company-show-numbers t)
+  (company-tooltip-align-annotations 't)
+  (global-company-mode t)
+  :diminish)
 
-;;(use-package company-box
-;;  :after company
-;;  :ensure t
-;;  :hook (company-mode . company-box-mode)
-;;  :diminish)
-;;#+end_src
+(use-package company-box
+  :after company
+  :ensure t
+  :hook (company-mode . company-box-mode)
+  :diminish)
+#+end_src
 
 * FONTS
 ** Setting The Font Face
@@ -454,19 +454,6 @@ Moves automatic emacs backups to the =TRASH= directory.
   :mode ("\\.nix\\'" "\\.nix.in\\'"))
 (use-package emmet-mode)
 
-(use-package lsp-mode
-  :init
-  (add-hook 'prog-mode-hook #'lsp))
-
-(use-package dap-mode
-  :config 
-  (dap-auto-configure-mode)
-
-  :bind
-  (("<f7>" . dap-step-in)
-   ("<f8>" . dap-next)
-   ("<f9>" . dap-continue)))
-
 (setq js-indent-level 2)
 #+end_src
 
@@ -485,7 +472,7 @@ Moves automatic emacs backups to the =TRASH= directory.
 * THEME
 #+begin_src emacs-lisp
 (progn
-(setq modus-themes-org-blocks 'gray-background
+  (setq modus-themes-org-blocks 'gray-background
 	modus-themes-fringes 'subtle
 	modus-themes-italic-constructs t
 	modus-themes-bold-constructs t
@@ -498,6 +485,12 @@ Moves automatic emacs backups to the =TRASH= directory.
                 (2 . (variable-pitch 1.15))
                 (3 . (1.05))
                 (t . (monochrome)))))
+  (setq modus-themes-vivendi-color-overrides
+        '((bg-header . "#4c566a")
+          (bg-hl-line . "#434c5e")
+          (bg-inactive . "#3b4252")
+          (bg-main . "#2e3440")
+          ))
 (load-theme 'modus-vivendi t))
 #+end_src
 
