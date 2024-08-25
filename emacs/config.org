@@ -475,27 +475,31 @@ Moves automatic emacs backups to the =TRASH= directory.
 
 * THEME
 #+begin_src emacs-lisp
-(progn
-  (setq modus-themes-org-blocks 'gray-background
-	modus-themes-fringes 'subtle
-	modus-themes-italic-constructs t
-	modus-themes-bold-constructs t
-	modus-themes-syntax '(alt-syntax)
-	modus-themes-hl-line '(intense)
-	modus-themes-paren-match '(intense)
-	modus-themes-mode-line '(borderless (padding . 4)))
-  (setq modus-themes-headings
-        (quote ((1 . (overline variable-pitch 1.3))
-                (2 . (variable-pitch 1.15))
-                (3 . (1.05))
-                (t . (monochrome)))))
-  (setq modus-themes-vivendi-color-overrides
-        '((bg-header . "#4c566a")
-          (bg-hl-line . "#434c5e")
-          (bg-inactive . "#3b4252")
-          (bg-main . "#2e3440")
-          ))
-(load-theme 'modus-vivendi t))
+(require-theme 'modus-themes)
+(setq modus-themes-org-blocks 'gray-background
+      modus-themes-italic-constructs t
+      modus-themes-bold-constructs t
+      ;;modus-themes-syntax '(alt-syntax)
+      modus-themes-hl-line '(intense)
+      modus-themes-paren-match '(intense)
+      modus-themes-mode-line '(borderless (padding . 4)))
+(setq modus-themes-headings
+      (quote ((1 . (overline variable-pitch 1.3))
+              (2 . (variable-pitch 1.15))
+              (3 . (1.05))
+              (t . (monochrome)))))
+(setq modus-themes-vivendi-color-overrides
+      '((bg-main . "#2e3440") ;; Background color
+          (bg-active . "#616E87") ;; Mode line
+          (bg-dim . "#424C5E") ;; Code blocks
+          (bg-alt . "#3B4252") ;; Code blocks start/end
+        ))
+(setq modus-themes-common-palette-overrides
+      `(
+	  (bg-line-number-inactive unspecified)
+	  (bg-line-number-active unspecified)
+       ))
+(load-theme 'modus-vivendi)
 #+end_src
 
 * WHICH-KEY
