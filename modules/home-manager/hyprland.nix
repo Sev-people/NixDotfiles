@@ -5,7 +5,7 @@
     xwayland.enable = true;
     settings = {
       monitor=",1920x1080@74.97,auto,auto";
-      exec-once = ["waybar" "swww-daemon --format xrgb" "gammastep -O 2500" "emacs --daemon --init-directory ~/.dotfiles/emacs"];
+      exec-once = ["waybar" "swww-daemon --format xrgb" "gammastep -O 2500" "emacs --daemon --init-directory ~/.dotfiles/emacs" "bash wallpaper.sh"];
       "$terminal" = "foot";
       "$fileManager" = "ranger";
       "$menu" = "wofi --show drun";
