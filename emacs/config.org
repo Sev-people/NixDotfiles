@@ -120,7 +120,6 @@
 (set-register ?a (cons 'file "~/Documents/Work/Agenda.org"))
 (global-set-key (kbd "M-l") 'org-do-demote)
 (define-key org-mode-map (kbd "M-h") nil)
-(global-set-key (kbd "C-S-u") nil)
 (global-set-key (kbd "M-h") 'org-do-promote)
 (global-set-key (kbd "M-k") 'org-move-subtree-up)
 (global-set-key (kbd "M-j") 'org-move-subtree-down)
