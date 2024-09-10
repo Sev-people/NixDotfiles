@@ -17,7 +17,7 @@
     gtk.enable = true;
     package = pkgs.gnome.adwaita-icon-theme;
     name = "Adwaita";
-    size = 16;
+    size = 24;
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -42,6 +42,7 @@
     krita
     kdenlive
     rnote
+    inkscape-with-extensions
     #browsers
     firefox-wayland
     #editors

@@ -13,6 +13,9 @@
         "XCURSOR_SIZE,24"
         "QT_QPA_PLATFORMTHEME,qt5t"
       ];
+      cursor = {
+          enable_hyprcursor = false;
+      };
       input = {
           kb_layout = "us";
           kb_variant = "altgr-intl";
