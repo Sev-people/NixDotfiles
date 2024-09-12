@@ -6,6 +6,7 @@
 
 * TABLE OF CONTENTS :toc:
 - [[#important-programs-to-load-first][IMPORTANT PROGRAMS TO LOAD FIRST]]
+  - [[#org-mode-setting][Org Mode Setting]]
   - [[#elpaca-package-manager][Elpaca Package Manager]]
   - [[#evil-mode][Evil Mode]]
 - [[#general-keybindings][General Keybindings]]
@@ -45,6 +46,17 @@
 - [[#which-key][WHICH-KEY]]
 
 * IMPORTANT PROGRAMS TO LOAD FIRST
+** Org Mode Setting
+#+begin_src emacs-lisp
+(setq org-emphasis-regexp-components
+  '("-—[:space:]('\"{"
+    "-[:space:].,:!?;'\")}\\["
+    "[:space:]"
+    "."
+    1))
+
+(require 'org)
+#+end_src
 ** Elpaca Package Manager
 #+begin_src emacs-lisp
 (defvar elpaca-installer-version 0.7)
