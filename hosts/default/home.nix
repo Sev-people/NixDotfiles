@@ -15,7 +15,7 @@
   home.homeDirectory = "/home/marc";
   home.pointerCursor = {
     gtk.enable = true;
-    package = pkgs.gnome.adwaita-icon-theme;
+    package = pkgs.adwaita-icon-theme;
     name = "Adwaita";
     size = 24;
   };
@@ -68,7 +68,7 @@
     git
     zathura
     nodejs_20
-    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket; })
+    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket pgfplots; })
     auctex
     pkgs.zotero_7
     ispell
