@@ -43,6 +43,7 @@
     kdenlive
     rnote
     inkscape-with-extensions
+    albert
     #browsers
     firefox-wayland
     #editors

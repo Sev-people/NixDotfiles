@@ -126,7 +126,8 @@
 * General Keybindings
 #+begin_src emacs-lisp
 ;; Set super key to meta
-(setq x-super-keysym 'meta)
+(setq  x-meta-keysym 'super
+       x-super-keysym 'meta)
 ;; Split windows
 (set-register ?c (cons 'file "~/.dotfiles/emacs/config.org"))
 (set-register ?a (cons 'file "~/Documents/Work/Agenda.org"))
@@ -482,6 +483,9 @@ Moves automatic emacs backups to the =TRASH= directory.
                    `(lambda (c)
                   (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 (setq org-startup-indented t)
+
+(setq visible-bell t)
+(setq ring-bell-function 'ignore)
 #+end_src
 
 * THEME
