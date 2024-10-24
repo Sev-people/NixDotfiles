@@ -21,7 +21,7 @@
           kb_variant = "altgr-intl";
       };
       workspace = [
-        "1, on-created-empty:chromium"
+        "1, on-created-empty:chromium --profile-directory=Default"
       ];
       general = {
           gaps_in = 7;
