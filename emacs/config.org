@@ -126,11 +126,11 @@
 * General Keybindings
 #+begin_src emacs-lisp
 ;; Set super key to meta
-(setq  x-meta-keysym 'super
-       x-super-keysym 'meta)
-;; Split windows
+(setq x-super-keysym 'meta)
+(global-set-key (kbd "M-r") 'jump-to-register)
 (set-register ?c (cons 'file "~/.dotfiles/emacs/config.org"))
 (set-register ?a (cons 'file "~/Documents/Work/Agenda.org"))
+(set-register ?g (cons 'file "~/Documents/Work/Thoughts/General.org"))
 (global-set-key (kbd "M-l") 'org-do-demote)
 (define-key org-mode-map (kbd "M-h") nil)
 (global-set-key (kbd "M-h") 'org-do-promote)
