@@ -19,6 +19,7 @@
       input = {
           kb_layout = "us";
           kb_variant = "altgr-intl";
+          kb_options = "compose:lwin";
       };
       workspace = [
         "1, on-created-empty:chromium --profile-directory=Default"
