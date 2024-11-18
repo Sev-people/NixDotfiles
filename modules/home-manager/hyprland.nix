@@ -23,6 +23,7 @@
       };
       workspace = [
         "1, on-created-empty:chromium --profile-directory=Default"
+        "5, on-created-empty:easyeffects"
       ];
       general = {
           gaps_in = 7;

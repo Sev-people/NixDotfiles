@@ -73,12 +73,18 @@
     auctex
     pkgs.zotero_7
     ispell
-    easyeffects
     unzip
     ffmpeg
     feh
     aria2
     vlc
+    cairo
+    pango
+    python3
+    python312Packages.pip 
+    python312Packages.manim 
+    gnome.gnome-sound-recorder
+    easyeffects
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
