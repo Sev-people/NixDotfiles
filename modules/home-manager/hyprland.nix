@@ -24,7 +24,6 @@
       workspace = [
         "1, on-created-empty:chromium --profile-directory=Default"
         "2, on-created-empty:bash em ~/Documents/Work/Agenda.org"
-        "5, on-created-empty:easyeffects"
       ];
       general = {
           gaps_in = 7;
