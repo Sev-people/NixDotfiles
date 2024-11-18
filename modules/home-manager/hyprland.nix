@@ -23,6 +23,7 @@
       };
       workspace = [
         "1, on-created-empty:chromium --profile-directory=Default"
+        "1, on-created-empty:bash em ~/Documents/Work/Agenda.org"
         "5, on-created-empty:easyeffects"
       ];
       general = {
