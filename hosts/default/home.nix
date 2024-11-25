@@ -84,7 +84,6 @@
     python312Packages.pip 
     python312Packages.manim 
     gnome.gnome-sound-recorder
-    easyeffects
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

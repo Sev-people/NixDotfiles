@@ -264,8 +264,14 @@ Moves automatic emacs backups to the =TRASH= directory.
 ** Display Line Numbers And Truncated Lines
 #+begin_src emacs-lisp
 ;;(global-display-line-numbers-mode 1)
+(require 'display-line-numbers)
+(defun display-line-numbers--turn-on ()
+  "Turn on `display-line-numbers-mode'."
+  (unless (or (minibufferp) (eq major-mode 'pdf-view-mode))
+    (display-line-numbers-mode)))
+
 (setq display-line-numbers-type 'relative) 
-(global-display-line-numbers-mode)
+(global-display-line-numbers-mode 1)
 (global-visual-line-mode t)
 #+end_src
 
