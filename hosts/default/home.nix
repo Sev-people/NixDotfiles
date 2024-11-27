@@ -83,6 +83,8 @@
     python3
     python312Packages.pip 
     python312Packages.manim 
+    python312Packages.matplotlib
+    python312Packages.numpy
     gnome.gnome-sound-recorder
   ];
 
