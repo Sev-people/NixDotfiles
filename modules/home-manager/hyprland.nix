@@ -22,8 +22,7 @@
           kb_options = "compose:lwin";
       };
       workspace = [
-        "1, on-created-empty:zen"
-        "2, on-created-empty:bash em ~/Documents/Work/Agenda.org"
+        "1, on-created-empty:chromium --profile-directory=Default"
       ];
       general = {
           gaps_in = 7;
@@ -65,7 +64,7 @@
         "$mainMod SHIFT, I, exec, $terminal"
         "$mainMod SHIFT, C, killactive,"
         "$mainMod SHIFT, Q, exit,"
-        "$mainMod, F, exec, zen"
+        "$mainMod, F, exec, chromium"
         "$mainMod, E, exec, bash em"
         "$mainMod, Y, exec, spotify-launcher "
         "$mainMod, D, exec, discord "
