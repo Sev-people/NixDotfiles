@@ -368,7 +368,7 @@ Moves automatic emacs backups to the =TRASH= directory.
 #+end_src
 ** LaTeX Minor Modes
 #+begin_src emacs-lisp
-(global-set-key (kbd "<f4>") (lambda () (interactive) (org-toggle-pretty-entities) (org-cdlatex-mode)))
+(global-set-key (kbd "<f4>") (lambda () (interactive) (org-cdlatex-mode)))
 #+end_src
 ** More
 #+begin_src emacs-lisp

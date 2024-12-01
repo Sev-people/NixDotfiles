@@ -69,6 +69,7 @@
   environment.systemPackages = with pkgs; [
     pulseaudio
     vim
+    inputs.zen-browser.packages."${system}".default
   ];
 
   system.stateVersion = "23.11"; # Did you read the comment?
