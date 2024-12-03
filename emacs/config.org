@@ -440,7 +440,7 @@ Moves automatic emacs backups to the =TRASH= directory.
                       ("business" . ?b) ("practical" . ?p)
                       (:endgroup . nil)
                       ))
-(setq org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "EVNT(e)" "|" "DONE(d)")))
+(setq org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "EVNT(e)" "PEND(w)" "|" "DONE(d)")))
 #+end_src
 ** Enabling Table Of Contents
 #+begin_src emacs-lisp
