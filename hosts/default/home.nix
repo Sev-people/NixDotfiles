@@ -86,6 +86,7 @@
     python312Packages.matplotlib
     python312Packages.numpy
     gnome-sound-recorder
+    gparted
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
