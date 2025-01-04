@@ -58,7 +58,6 @@
     hyprpicker
     #terminal
     foot
-    ani-cli
     htop
     tmux
     #screenshots

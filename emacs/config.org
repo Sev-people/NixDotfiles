@@ -378,6 +378,7 @@ Moves automatic emacs backups to the =TRASH= directory.
 (use-package cdlatex
   :ensure t)
 (global-auto-revert-mode 1)
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 #+end_src
 
 * MINIBUFFER ESCAPE
