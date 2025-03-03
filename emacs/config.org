@@ -487,6 +487,14 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 (use-package emmet-mode)
 
 (setq js-indent-level 2)
+
+(use-package org-babel
+  :no-require
+  :straight nil
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t))))
 #+end_src
 
 * SANE DEFAULTS

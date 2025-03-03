@@ -60,6 +60,7 @@
     foot
     htop
     tmux
+    ani-cli
     #screenshots
     grim
     slurp
@@ -68,7 +69,7 @@
     git
     zathura
     nodejs_20
-    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket pgfplots; })
+    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket pgfplots tikz-3dplot chemfig mhchem; })
     auctex
     pkgs.zotero_7
     ispell
@@ -84,6 +85,7 @@
     python312Packages.manim 
     python312Packages.matplotlib
     python312Packages.numpy
+    python312Packages.scipy
     gnome-sound-recorder
     gparted
   ];
