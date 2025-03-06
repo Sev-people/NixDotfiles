@@ -35,44 +35,37 @@
   # environment.
 
   home.packages = with pkgs; [
-    #apps
+    #essentials
     discord
     chromium
-    xournalpp
-    krita
-    kdenlive
-    rnote
-    inkscape-with-extensions
-    albert
-    #browsers
-    firefox-wayland
-    #editors
-    emacs
     #wm
     waybar
     wofi
     ranger
     gammastep
-    ags
     swww
     hyprpicker
     #terminal
     foot
     htop
-    tmux
     ani-cli
-    #screenshots
-    grim
-    slurp
-    wl-clipboard
-    #misc
+    #editing and coding
+    emacs
     git
     zathura
     nodejs_20
-    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket pgfplots tikz-3dplot chemfig mhchem; })
     auctex
+    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket pgfplots tikz-3dplot chemfig mhchem; })
     pkgs.zotero_7
     ispell
+    #recording and editing
+    grim
+    slurp
+    wl-clipboard
+    gnome-sound-recorder
+    gparted
+    kdePackages.kdenlive
+    #misc
     unzip
     ffmpeg
     feh
@@ -80,14 +73,6 @@
     vlc
     cairo
     pango
-    python3
-    python312Packages.pip 
-    python312Packages.manim 
-    python312Packages.matplotlib
-    python312Packages.numpy
-    python312Packages.scipy
-    gnome-sound-recorder
-    gparted
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

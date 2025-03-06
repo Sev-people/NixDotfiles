@@ -490,7 +490,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 (use-package org-babel
   :no-require
-  :straight nil
+  :ensure nil
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
