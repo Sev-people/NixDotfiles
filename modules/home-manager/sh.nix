@@ -36,6 +36,8 @@ in
     '';
   };
 
+  environment.shells = with pkgs; [ zsh ];
+
   programs.bash = {
     enable = true;
     enableCompletion = true;

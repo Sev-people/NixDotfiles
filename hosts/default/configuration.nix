@@ -1,6 +1,7 @@
 { config, pkgs, inputs, ... }:
 
 {
+
   imports =
     [
       ./hardware-configuration.nix
@@ -9,22 +10,17 @@
       ../../modules/nixos/locale.nix
       ../../modules/nixos/bluetooth.nix
       ../../modules/nixos/terminal.nix
+      ../../modules/nixos/maintenance.nix
     ];
+
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
 
   fonts.packages = with pkgs; [
     font-awesome
   ];
-
-  nix.optimise.automatic = true;
-
-  services.printing.enable = true;
-
-  # Run the GC weekly keeping the 5 most recent generation of each profiles.
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 1d";
-  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -45,10 +41,6 @@
     extraGroups = [ "networkmanager" "audio" "wheel" ];
     shell = pkgs.zsh;
   };
-
-  networking.hostName = "nixos";
-
-  networking.networkmanager.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
