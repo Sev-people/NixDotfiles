@@ -5,21 +5,20 @@
 { config, pkgs, inputs, ... }:
 
 {
-  programs.zsh.enable = true;
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
 
-  environment.shells = with pkgs; [ zsh ];
+  imports =
+    [
+      ./hardware-configuration.nix
+      inputs.home-manager.nixosModules.default
+    ];
+
+  laptop.enable = true;
 
   fonts.packages = with pkgs; [
     font-awesome
   ];
 
   nix.optimise.automatic = true;
-
-  services.printing.enable = true;
 
   # Run the GC weekly keeping the 5 most recent generation of each profiles.
   nix.gc = {
@@ -28,19 +27,15 @@
     options = "--delete-older-than 1d";
   };
 
-  imports =
-    [
-      ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default
-      ../../modules/nixos/pipewire.nix
-      ../../modules/nixos/locale.nix
-      ../../modules/nixos/laptop.nix
-    ];
-
   home-manager = {
     extraSpecialArgs = {inherit inputs;};
     users = {
-      "marc" = import ./home.nix;
+      "marc" = {
+        imports = [
+          ./home.nix
+          inputs.self.outputs.homeManagerModules.default 
+        ];
+      };
     };
   };
 
@@ -57,20 +52,11 @@
     shell = pkgs.zsh;
   };
 
-  networking.hostName = "nixos";
-
-  networking.networkmanager.enable = true;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    pulseaudio
-    vim
-  ];
-
   system.stateVersion = "23.11"; # Did you read the comment?
   
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

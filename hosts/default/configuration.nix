@@ -6,12 +6,6 @@
     [
       ./hardware-configuration.nix
       inputs.home-manager.nixosModules.default
-      ../../nixosModules/pipewire.nix
-      ../../nixosModules/locale.nix
-      ../../nixosModules/bluetooth.nix
-      ../../nixosModules/programs.nix
-      ../../nixosModules/maintenance.nix
-      ../../nixosModules/connectivity.nix
     ];
 
   fonts.packages = with pkgs; [
@@ -23,13 +17,15 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.configurationLimit = 5;
 
-  home-manager."marc" = {
+  home-manager = {
     extraSpecialArgs = {inherit inputs;};
     users = {
-      modules = [
-        ./home.nix
-        inputs.self.outputs.homeManagerModules.default 
-      ];
+      "marc" = {
+        imports = [
+          ./home.nix
+          inputs.self.outputs.homeManagerModules.default 
+        ];
+      };
     };
   };
 

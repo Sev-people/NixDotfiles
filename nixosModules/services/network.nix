@@ -6,6 +6,5 @@
 
   networking.networkmanager.enable = true;
 
-  services.printing.enable = true;
-
 }
+
