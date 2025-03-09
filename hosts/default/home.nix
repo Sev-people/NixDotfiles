@@ -24,8 +24,7 @@
   defaultHyprland.enable = true;
 
   home.packages = with pkgs; [
-    #essentials
-    discord
+    #browser
     inputs.zen-browser.packages.${pkgs.system}.default
     #terminal
     foot

@@ -20,30 +20,30 @@
   # environment.
 
   home.packages = with pkgs; [
-    #apps
-    discord
-    xournalpp
-    krita
-    kdenlive
-    rnote
-    nyxt
-    #browsers
-    firefox-wayland
-    chromium
-    #editors
-    emacs
+    #browser
+    inputs.zen-browser.packages.${pkgs.system}.default
     #terminal
     foot
     htop
-    #misc
-    zathura
-    nodejs_20
-    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket; })
-    auctex
-    pkgs.zotero_7
-    ispell
     brightnessctl
     acpi
+    #editing and coding
+    emacs
+    zathura
+    nodejs_20
+    auctex
+    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket pgfplots tikz-3dplot chemfig mhchem; })
+    pkgs.zotero_7
+    ispell
+    #misc
+    pulseaudio
+    unzip
+    ffmpeg
+    feh
+    aria2
+    vlc
+    cairo
+    pango
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
