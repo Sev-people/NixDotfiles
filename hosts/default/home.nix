@@ -1,14 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    ../../modules/home-manager/sh.nix
-    ../../modules/home-manager/foot.nix
-    ../../modules/home-manager/hyprland.nix
-    ../../modules/home-manager/waybar.nix
-    ../../modules/home-manager/wofi.nix
-    ../../modules/home-manager/vim.nix
-  ];
+
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "marc";
@@ -39,6 +32,8 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
+
+  defaultHyprland.enable = true;
 
   home.packages = with pkgs; [
     #essentials
