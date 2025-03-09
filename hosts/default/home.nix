@@ -22,6 +22,12 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  programs.git = {
+    enable = true;
+    userName = "Sev-people";
+    userEmail = "07marczoyd.murray@gmail.com";
+  };
+
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
   # introduces backwards incompatible changes.
@@ -66,6 +72,7 @@
     gparted
     kdePackages.kdenlive
     #misc
+    pulseaudio
     unzip
     ffmpeg
     feh

@@ -1,13 +1,15 @@
 { config, pkgs, inputs, ... }:
 
 {
-  programs.zsh.enable = true;
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-
-  environment.shells = with pkgs; [ zsh ];
+  imports =
+    [
+      ./hardware-configuration.nix
+      inputs.home-manager.nixosModules.default
+      ../../modules/nixos/pipewire.nix
+      ../../modules/nixos/locale.nix
+      ../../modules/nixos/bluetooth.nix
+      ../../modules/nixos/terminal.nix
+    ];
 
   fonts.packages = with pkgs; [
     font-awesome
@@ -24,14 +26,10 @@
     options = "--delete-older-than 1d";
   };
 
-  imports =
-    [
-      ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default
-      ../../modules/nixos/pipewire.nix
-      ../../modules/nixos/locale.nix
-      ../../modules/nixos/bluetooth.nix
-    ];
+  # Bootloader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.configurationLimit = 5;
 
   home-manager = {
     extraSpecialArgs = {inherit inputs;};
@@ -39,11 +37,6 @@
       "marc" = import ./home.nix;
     };
   };
-
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.configurationLimit = 5;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.marc = {
@@ -59,13 +52,6 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    pulseaudio
-    vim
-  ];
 
   system.stateVersion = "23.11"; # Did you read the comment?
   
