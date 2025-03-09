@@ -1,5 +1,7 @@
 { config, pkgs, ... }:
+
 {
+
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
@@ -118,5 +120,18 @@
       ];
     };
   };
+
+  home.packages = with pkgs; [
+    waybar
+    wofi
+    ranger
+    gammastep
+    swww
+    ags
+    hyprpicker
+    grim
+    slurp
+    wl-clipboard
+  ];
 
 }

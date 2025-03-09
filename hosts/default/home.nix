@@ -44,13 +44,6 @@
     #essentials
     discord
     chromium
-    #wm
-    waybar
-    wofi
-    ranger
-    gammastep
-    swww
-    hyprpicker
     #terminal
     foot
     htop
@@ -65,9 +58,6 @@
     pkgs.zotero_7
     ispell
     #recording and editing
-    grim
-    slurp
-    wl-clipboard
     gnome-sound-recorder
     gparted
     kdePackages.kdenlive
