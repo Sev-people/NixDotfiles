@@ -1,5 +1,5 @@
 #!/bin/bash
 
-( cd ~/.dotfiles ; git add emacs/init.el emacs/early-init.el emacs/config.org emacs/latex flake.lock flake.nix hosts modules scripts wallpapers )
+( cd ~/.dotfiles ; git add emacs/init.el emacs/early-init.el emacs/config.org emacs/latex flake.lock flake.nix hosts nixosModules homeManagerModules scripts wallpapers )
 ( cd ~/.dotfiles ; git commit -m "Changes" )
 ( cd ~/.dotfiles ; git push )
