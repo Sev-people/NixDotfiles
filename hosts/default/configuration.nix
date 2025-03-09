@@ -11,6 +11,7 @@
       ../../modules/nixos/bluetooth.nix
       ../../modules/nixos/programs.nix
       ../../modules/nixos/maintenance.nix
+      ../../modules/nixos/connectivity.nix
     ];
 
   fonts.packages = with pkgs; [
