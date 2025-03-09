@@ -45,7 +45,6 @@
     ani-cli
     #editing and coding
     emacs
-    git
     zathura
     nodejs_20
     auctex
