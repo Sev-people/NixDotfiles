@@ -9,14 +9,9 @@
       ../../modules/nixos/pipewire.nix
       ../../modules/nixos/locale.nix
       ../../modules/nixos/bluetooth.nix
-      ../../modules/nixos/terminal.nix
+      ../../modules/nixos/programs.nix
       ../../modules/nixos/maintenance.nix
     ];
-
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
 
   fonts.packages = with pkgs; [
     font-awesome
