@@ -1,14 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    ../../modules/home-manager/sh.nix
-    ../../modules/home-manager/foot.nix
-    ../../modules/home-manager/hyprland-laptop.nix
-    ../../modules/home-manager/waybar.nix
-    ../../modules/home-manager/wofi.nix
-    ../../modules/home-manager/vim.nix
-  ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "marc";
@@ -44,7 +36,6 @@
     foot
     htop
     #misc
-    git
     zathura
     nodejs_20
     (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket; })

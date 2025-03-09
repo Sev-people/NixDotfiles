@@ -30,7 +30,7 @@
             kb_options = "compose:lwin";
         };
         workspace = [
-          "2, on-created-empty:chromium --profile-directory=Default"
+          "2, on-created-empty:zen"
           "1, on-created-empty:emacsclient -c -a 'emacs --init-directory ~/.dotfiles/emacs' ~/Documents/Work/Agenda.org"
         ];
         general = {

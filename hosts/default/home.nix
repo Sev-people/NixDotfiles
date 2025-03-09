@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
 
@@ -6,20 +6,8 @@
   # manage.
   home.username = "marc";
   home.homeDirectory = "/home/marc";
-  home.pointerCursor = {
-    gtk.enable = true;
-    package = pkgs.adwaita-icon-theme;
-    name = "Adwaita";
-    size = 24;
-  };
 
   nixpkgs.config.allowUnfree = true;
-
-  programs.git = {
-    enable = true;
-    userName = "Sev-people";
-    userEmail = "07marczoyd.murray@gmail.com";
-  };
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -38,7 +26,7 @@
   home.packages = with pkgs; [
     #essentials
     discord
-    chromium
+    inputs.zen-browser.packages.${pkgs.system}.default
     #terminal
     foot
     htop
