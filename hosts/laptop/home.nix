@@ -40,21 +40,9 @@
     chromium
     #editors
     emacs
-    #wm
-    waybar
-    wofi
-    ranger
-    gammastep
-    ags
-    swww
     #terminal
     foot
     htop
-    tmux
-    #screenshots
-    grim
-    slurp
-    wl-clipboard
     #misc
     git
     zathura
