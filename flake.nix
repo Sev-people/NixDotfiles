@@ -29,7 +29,6 @@
           ./hosts/default/configuration.nix
           ./nixosModules
           inputs.home-manager.nixosModules.default
-          inputs.stylix.nixosModules.stylix
         ];
       };
       laptop = nixpkgs.lib.nixosSystem {
@@ -38,7 +37,6 @@
           ./hosts/laptop/configuration.nix
           ./nixosModules
           inputs.home-manager.nixosModules.default
-          inputs.stylix.nixosModules.stylix
         ];
       };
     };
