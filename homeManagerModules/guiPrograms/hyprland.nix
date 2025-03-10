@@ -133,7 +133,6 @@
       ranger
       gammastep
       swww
-      ags
       hyprpicker
       grim
       slurp
