@@ -27,7 +27,7 @@
         input = {
             kb_layout = "us";
             kb_variant = "altgr-intl";
-            kb_options = "compose:lwin";
+            kb_options = "compose:ralt";
         };
         workspace = [
           "2, on-created-empty:zen"
@@ -51,7 +51,7 @@
             new_on_top = true;
         };
         decoration = {
-          rounding = 0; 
+          rounding = 5; 
           blur = {
             enabled = true;
             size = 2;
