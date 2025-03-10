@@ -24,6 +24,7 @@
         input = {
             kb_layout = "us";
             kb_variant = "altgr-intl";
+            kb_options = "compose:ralt";
         };
         general = {
             gaps_in = 0;

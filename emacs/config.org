@@ -42,7 +42,6 @@
   - [[#source-code-block-expansion][Source Code Block Expansion]]
 - [[#programming-languages][PROGRAMMING LANGUAGES]]
 - [[#sane-defaults][SANE DEFAULTS]]
-- [[#terminal][TERMINAL]]
 - [[#theme][THEME]]
 - [[#which-key][WHICH-KEY]]
 
@@ -130,7 +129,7 @@
 (setq x-super-keysym 'meta)
 (global-set-key (kbd "M-r") 'jump-to-register)
 (set-register ?c (cons 'file "~/.dotfiles/emacs/config.org"))
-(set-register ?a (cons 'file "~/Documents/Work/Agenda.org")))
+(set-register ?a (cons 'file "~/Documents/Work/Agenda.org"))
 (global-set-key (kbd "M-l") 'org-do-demote)
 (define-key org-mode-map (kbd "M-h") nil)
 (global-set-key (kbd "M-h") 'org-do-promote)
@@ -510,14 +509,6 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 (setq visible-bell t)
 (setq ring-bell-function 'ignore)
-#+end_src
-
-* TERMINAL
-#+begin_src emacs-lisp
-(use-package vterm
-    :ensure t)
-(use-package multi-vterm
-    :ensure t)
 #+end_src
 
 * THEME
