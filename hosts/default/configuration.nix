@@ -8,10 +8,6 @@
       inputs.home-manager.nixosModules.default
     ];
 
-  fonts.packages = with pkgs; [
-    font-awesome
-  ];
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

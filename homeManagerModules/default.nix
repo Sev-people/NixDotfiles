@@ -10,6 +10,8 @@
     ./guiPrograms/waybar.nix
     ./guiPrograms/wofi.nix
     ./guiPrograms/hyprland.nix
+    ./guiPrograms/ags.nix
+    ./guiPrograms/cursor.nix
     ./laptopPrograms/laptopHyprland.nix
   ];
 
