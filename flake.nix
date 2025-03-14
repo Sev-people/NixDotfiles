@@ -7,9 +7,6 @@
     # Browser
     zen-browser.url = "github:youwen5/zen-browser-flake";
 
-    # For bars and widgets
-    ags.url = "github:aylur/ags";
-
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
