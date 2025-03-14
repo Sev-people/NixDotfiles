@@ -13,7 +13,7 @@
       xwayland.enable = true;
       settings = {
         monitor=",preferred,auto,1";
-        exec-once = ["waybar" "swww-daemon --format xrgb" "gammastep -O 3000" "emacs --daemon --init-directory ~/.dotfiles/emacs"];
+        exec-once = ["swww-daemon --format xrgb" "gammastep -O 3000" "emacs --daemon --init-directory ~/.dotfiles/emacs"];
         "$terminal" = "foot";
         "$fileManager" = "ranger";
         "$menu" = "emacsclient -cF \"((visibility . nil))\" -e \"(emacs-counsel-launcher)\"";
@@ -126,7 +126,6 @@
     };
 
     home.packages = with pkgs; [
-      waybar
       gammastep
       swww
       hyprpicker
