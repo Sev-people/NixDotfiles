@@ -16,7 +16,7 @@
         exec-once = ["waybar" "swww-daemon --format xrgb" "gammastep -O 3000" "emacs --daemon --init-directory ~/.dotfiles/emacs"];
         "$terminal" = "foot";
         "$fileManager" = "ranger";
-        "$menu" = "wofi --show drun";
+        "$menu" = "emacsclient -cF \"((visibility . nil))\" -e \"(emacs-counsel-launcher)\"";
         env = [
           "XCURSOR_SIZE,24"
           "QT_QPA_PLATFORMTHEME,qt5t"
@@ -118,13 +118,15 @@
           "$mainMod, mouse:272, movewindow"
           "$mainMod, mouse:273, resizewindow"
         ];
+        windowrule = [
+          "float, title:emacs-run-launcher"
+          "size 50% 20%, title:emacs-run-launcher"
+        ];
       };
     };
 
     home.packages = with pkgs; [
       waybar
-      wofi
-      ranger
       gammastep
       swww
       hyprpicker
