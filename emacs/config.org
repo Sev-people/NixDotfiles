@@ -1,6 +1,6 @@
 #+Title: GNU Emacs Config
 #+AUTHOR: Marc Murray
-#+DESCRIPTION: Marc's Emacs config.
+#+DESCRIPTION: Marc's Emacs config
 #+STARTUP: showeverything
 #+OPTIONS: toc:2
 
@@ -28,6 +28,7 @@
   - [[#olivetti-mode][Olivetti Mode]]
   - [[#startup-screen][Startup Screen]]
   - [[#diminish][Diminish]]
+  - [[#mode-line][Mode line]]
 - [[#ivy-counsel][IVY (COUNSEL)]]
 - [[#latex][LaTeX]]
   - [[#pdf-tools][PDF Tools]]
@@ -315,6 +316,13 @@ Moves automatic emacs backups to the =TRASH= directory.
 ** Diminish
 #+begin_src emacs-lisp
 (use-package diminish)
+#+end_src
+
+** Mode line
+#+begin_src emacs-lisp
+(setq display-time-day-and-date t
+   display-time-24hr-format t)
+(display-time)
 #+end_src
 
 * IVY (COUNSEL)
