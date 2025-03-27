@@ -35,7 +35,7 @@
     zathura
     nodejs_20
     auctex
-    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket pgfplots tikz-3dplot chemfig mhchem; })
+    (texlive.combine { inherit (texlive) booktabs scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket pgfplots tikz-3dplot chemfig mhchem; })
     pkgs.zotero_7
     ispell
     #recording and editing
@@ -50,6 +50,7 @@
     aria2
     vlc
     gtk3
+    easyeffects
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
