@@ -50,6 +50,7 @@
     aria2
     vlc
     gtk3
+    easyeffects
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

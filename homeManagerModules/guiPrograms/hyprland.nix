@@ -46,6 +46,7 @@
             pseudotile = "yes";
             preserve_split = "yes"; # you probably want this
             force_split = 2;
+            no_gaps_when_only = 1;
         };
         master = {
             new_on_top = true;
