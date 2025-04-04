@@ -30,6 +30,9 @@
             kb_options = "compose:ralt";
         };
         workspace = [
+          "w[t1], gapsout:0, gapsin:0"
+          "w[tg1], gapsout:0, gapsin:0"
+          "f[1], gapsout:0, gapsin:0"
           "2, on-created-empty:zen"
           "1, on-created-empty:emacsclient -c -a 'emacs --init-directory ~/.dotfiles/emacs' ~/Documents/Work/Agenda.org"
         ];
@@ -46,7 +49,6 @@
             pseudotile = "yes";
             preserve_split = "yes"; # you probably want this
             force_split = 2;
-            no_gaps_when_only = 1;
         };
         master = {
             new_on_top = true;
@@ -125,9 +127,15 @@
           "$mainMod, mouse:272, movewindow"
           "$mainMod, mouse:273, resizewindow"
         ];
-        windowrule = [
+        windowrulev2 = [
           "float, title:emacs-run-launcher"
           "size 50% 20%, title:emacs-run-launcher"
+          "bordersize 0, floating:0, onworkspace:w[t1]"
+          "rounding 0, floating:0, onworkspace:w[t1]"
+          "bordersize 0, floating:0, onworkspace:w[tg1]"
+          "rounding 0, floating:0, onworkspace:w[tg1]"
+          "bordersize 0, floating:0, onworkspace:f[1]"
+          "rounding 0, floating:0, onworkspace:f[1]"
         ];
       };
     };
