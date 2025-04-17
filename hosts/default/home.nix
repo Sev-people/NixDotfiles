@@ -38,6 +38,7 @@
     (texlive.combine { inherit (texlive) booktabs scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket pgfplots tikz-3dplot chemfig mhchem; })
     pkgs.zotero_7
     ispell
+    lilypond-with-fonts
     #recording and editing
     gnome-sound-recorder
     gparted
@@ -51,6 +52,7 @@
     vlc
     gtk3
     easyeffects
+    steam
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
