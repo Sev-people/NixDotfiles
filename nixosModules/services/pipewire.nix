@@ -12,4 +12,15 @@
     wireplumber.enable = true;
   };
 
+  services.mpd = {
+    enable = true;
+    musicDirectory = "/home/marc/Music";
+    extraConfig = ''
+      audio_output {
+        type "pipewire"
+        name "My PipeWire Output"
+      }
+    '';
+  };
+
 }
