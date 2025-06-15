@@ -26,6 +26,7 @@
   home.packages = with pkgs; [
     #browser
     inputs.zen-browser.packages.${pkgs.system}.default
+    chromium
     #terminal
     foot
     htop
