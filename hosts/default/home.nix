@@ -53,6 +53,7 @@
     feh
     aria2
     vlc
+    mpv
     gtk3
     easyeffects
     yt-dlp
