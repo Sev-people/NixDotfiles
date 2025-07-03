@@ -12,6 +12,7 @@
     ./services/network.nix
     ./services/printing.nix
     ./services/locale.nix
+    ./services/keyboard.nix
     ./services/battery.nix
   ];
 

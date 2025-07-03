@@ -57,6 +57,8 @@
     gtk3
     easyeffects
     yt-dlp
+    #unpack files
+    unp
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
