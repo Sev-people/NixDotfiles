@@ -25,9 +25,12 @@
             enable_hyprcursor = false;
         };
         input = {
-            kb_layout = "us";
-            kb_variant = "altgr-intl";
-            kb_options = "compose:ralt";
+            kb_layout = "us,gr";
+            kb_variant = "altgr-intl,polytonic";
+            kb_options = [
+                "grp:caps_toggle"
+                "compose:ralt"
+            ];
         };
         workspace = [
           "w[t1], gapsout:0, gapsin:0"
