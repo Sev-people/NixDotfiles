@@ -28,7 +28,6 @@
             kb_layout = "us,gr";
             kb_variant = "altgr-intl,polytonic";
             kb_options = [
-                "grp:caps_toggle"
                 "compose:ralt"
             ];
         };
@@ -89,6 +88,8 @@
           "$mainMod SHIFT, X, exec, grim -g \"$(slurp)\" - | wl-copy && wl-paste > ~/Pictures/Screenshots/Screenshot-$(date +%F_%T).png"
           "$mainMod, N, exec, pactl set-sink-volume @DEFAULT_SINK@ -5%"
           "$mainMod, M, exec, pactl set-sink-volume @DEFAULT_SINK@ +5%"
+          "$mainMod, B, exec, hyprctl switchxkblayout rk-bluetooth-keyboard next"
+
           
           "$mainMod, h, movefocus, l"
           "$mainMod, l, movefocus, r"
