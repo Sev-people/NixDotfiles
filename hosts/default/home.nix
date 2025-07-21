@@ -52,8 +52,6 @@ in {
     gnome-sound-recorder
     gparted
     kdePackages.kdenlive
-    #music
-    rmpc
     #misc
     pulseaudio
     unzip
