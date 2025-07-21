@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Check if URL was provided
+if [ -z "$1" ]; then
+  echo "Usage: $0 <YouTube URL>"
+  exit 1
+fi
+
+URL="$1"
+
+yt-dlp -x --audio-format mp3 -o "$HOME/Music/%(title)s.%(ext)s" "$URL"
