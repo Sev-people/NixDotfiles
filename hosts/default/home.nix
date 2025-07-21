@@ -1,6 +1,13 @@
 { config, pkgs, inputs, ... }:
 
-{
+let
+  womicAppImage = builtins.fetchurl {
+    url = "https://wolicheng.com/womic/softwares/micclient-x86_64.AppImage";
+    sha256 = "1fqxgqjvwiqjzprfvrx9d88hrybrhgww353b4amcp7fn063ch3pa"; # insert the actual hash
+  };
+
+  someOtherVar = "example";
+in {
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -40,6 +47,7 @@
     pkgs.zotero_7
     ispell
     lilypond-with-fonts
+    wget
     #recording and editing
     gnome-sound-recorder
     gparted
@@ -52,6 +60,7 @@
     ffmpeg
     feh
     aria2
+    jmtpfs
     vlc
     mpv
     gtk3
@@ -93,4 +102,5 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
 }
