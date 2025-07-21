@@ -8,4 +8,11 @@ fi
 
 URL="$1"
 
-yt-dlp -x --audio-format mp3 -o "$HOME/Music/%(title)s.%(ext)s" "$URL"
+# Extract title, artist, etc., from YouTube metadata (if available)
+# Download, convert to mp3, embed metadata
+yt-dlp \
+  -x --audio-format mp3 \
+  --add-metadata \
+  --metadata-from-title "%(artist)s - %(title)s" \
+  -o "$HOME/Music/%(title)s.%(ext)s" \
+  "$URL"
