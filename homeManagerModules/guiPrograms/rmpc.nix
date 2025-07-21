@@ -2,7 +2,7 @@
 
 {
 
-  programs.mpd = {
+  services.mpd = {
     enable = true;
     musicDirectory = "~/Music";
     extraConfig = ''
