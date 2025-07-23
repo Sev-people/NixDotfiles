@@ -16,6 +16,7 @@
 
   home.packages = with pkgs; [
     rmpc
+    python313Packages.eyed3
   ];
 
 }
