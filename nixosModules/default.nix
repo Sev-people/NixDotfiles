@@ -4,6 +4,7 @@
 
   imports = [
     ./programs/zsh.nix
+    ./programs/ssh.nix
     ./services/bluetooth.nix
     ./services/maintenance.nix
     ./services/pipewire.nix
