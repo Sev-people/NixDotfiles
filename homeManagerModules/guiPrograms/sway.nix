@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  colors = config.my.colors;
+  style = config.my.style;
 in {
 
   # Enable Sway under Home Manager’s “Wayland” namespace
@@ -34,24 +34,25 @@ in {
         {
           position = "top";
           statusCommand = "~/.dotfiles/scripts/status.sh";
+          font = "${style.font.main} ${toString style.font.size}";
           colors = {
             focusedWorkspace = {
-              border = "#1a1919";
-              background = "#1a1919e6";
-              text = "#9c9c9c";
+              border = "#${style.colors.base00}";
+              background = "#${style.colors.base00}";
+              text = "#${style.colors.bright7}";
             };
             activeWorkspace = {
-              border = "#1a1919";
-              background = colors.base00;
-              text = "#FFFFFF";
+              border = "#${style.colors.base00}";
+              background = "#${style.colors.base00}";
+              text = "#${style.colors.bright7}";
             };
             inactiveWorkspace = {
-              border     = colors.base00;
-              background = colors.base00;
-              text       = "#9c9c9c";
+              border     = "#${style.colors.base00}";
+              background = "#${style.colors.base00}";
+              text       = "#${style.colors.regular7}";
             };
-            statusline = "#F5F5F5";
-            background = colors.base00;
+            statusline = "#${style.colors.bright7}";
+            background = "#${style.colors.base00}";
           }; 
         }
       ];
@@ -106,7 +107,7 @@ in {
     extraConfig = ''
       default_border pixel 1
       hide_edge_borders smart
-      client.focused #9c9c9c #9c9c9c #9c9c9c #9c9c9c #9c9c9c
+      client.focused #${style.colors.bright7} #${style.colors.bright7} #${style.colors.bright7} #${style.colors.bright7} #${style.colors.bright7}
     '';
   };
   

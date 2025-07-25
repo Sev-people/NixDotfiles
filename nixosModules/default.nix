@@ -3,9 +3,7 @@
 {
 
   imports = [
-    ./programs/hyprland.nix
     ./programs/zsh.nix
-    ./programs/fonts.nix
     ./services/bluetooth.nix
     ./services/maintenance.nix
     ./services/pipewire.nix

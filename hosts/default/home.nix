@@ -62,7 +62,6 @@ in {
     yt-dlp
     #utilities
     pastel
-    astroterm
     #unpack files
     unp
   ];
