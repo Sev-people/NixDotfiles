@@ -25,14 +25,24 @@ let
 
     font = {
       main = "JetBrainsMono Nerd Font";
+      style = "Regular";
       size = 10;
     };
   };
 in {
-  fonts.fontconfig.enable = true;
-  home.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-  ];
+  config = {
+    home.pointerCursor = {
+      gtk.enable = true;
+      package = pkgs.adwaita-icon-theme;
+      name = "Adwaita";
+      size = 24;
+    };
+
+    fonts.fontconfig.enable = true;
+    home.packages = with pkgs; [
+      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    ];
+  };
 
   options.my.style = lib.mkOption {
     type = lib.types.attrs;

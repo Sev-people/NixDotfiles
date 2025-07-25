@@ -34,7 +34,11 @@ in {
         {
           position = "top";
           statusCommand = "~/.dotfiles/scripts/status.sh";
-          font = "${style.font.main} ${toString style.font.size}";
+          fonts = {
+            names = [ style.font.main ];
+            style = style.font.style;
+            size = style.font.size + 0.0;
+          };
           colors = {
             focusedWorkspace = {
               border = "#${style.colors.base00}";

@@ -6,7 +6,7 @@ in {
 
   home.file.".config/foot/foot.ini" = {
     text = ''
-      font=${style.font.main}:size=${toString style.font.size}
+      font=${style.font.main}:size=${toString (style.font.size + 4)}
       pad=15x6
       [colors]
       background=${style.colors.base01}
