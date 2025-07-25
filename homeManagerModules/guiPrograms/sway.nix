@@ -1,6 +1,8 @@
 { config, pkgs, lib, ... }:
 
-{
+let
+  colors = config.my.colors;
+in {
 
   # Enable Sway under Home Manager’s “Wayland” namespace
   wayland.windowManager.sway = {
@@ -40,16 +42,16 @@
             };
             activeWorkspace = {
               border = "#1a1919";
-              background = "#1a1919e6";
-              text = "#9c9c9c";
+              background = colors.base00;
+              text = "#FFFFFF";
             };
             inactiveWorkspace = {
-              border     = "#000000e6";
-              background = "#000000e6";
+              border     = colors.base00;
+              background = colors.base00;
               text       = "#9c9c9c";
             };
             statusline = "#F5F5F5";
-            background = "#000000e6";
+            background = colors.base00;
           }; 
         }
       ];
