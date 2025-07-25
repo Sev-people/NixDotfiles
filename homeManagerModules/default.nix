@@ -11,6 +11,7 @@
     ./system/ssh.nix
     ./wm/sway.nix
     ./wm/style.nix
+    ./scripts/scripts.nix
   ];
 
 }
