@@ -7,7 +7,7 @@
     ./cliPrograms/vim.nix
     ./cliPrograms/git.nix
     ./guiPrograms/foot.nix
-    ./guiPrograms/hyprland.nix
+    ./guiPrograms/sway.nix
     ./guiPrograms/cursor.nix
     ./guiPrograms/rmpc.nix
     ./laptopPrograms/laptopHyprland.nix
