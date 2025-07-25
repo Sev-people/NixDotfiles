@@ -31,7 +31,7 @@ in
       bindkey -M viins 'kj' vi-cmd-mode
       
       if [ "$(tty)" = "/dev/tty1" ];then
-      	exec Hyprland
+      	exec sway
       fi
     '';
   };
