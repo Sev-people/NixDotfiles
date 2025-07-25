@@ -62,6 +62,7 @@ in {
     yt-dlp
     #utilities
     pastel
+    fzf
     #unpack files
     unp
   ];
