@@ -1,81 +1,58 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
-{
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
+let
+  womicAppImage = builtins.fetchurl {
+    url = "https://wolicheng.com/womic/softwares/micclient-x86_64.AppImage";
+    sha256 = "1fqxgqjvwiqjzprfvrx9d88hrybrhgww353b4amcp7fn063ch3pa";
+  };
+in {
+
+  # Path information
   home.username = "marc";
   home.homeDirectory = "/home/marc";
+
   nixpkgs.config.allowUnfree = true;
+  
+  home.stateVersion = "23.11"; # You should not change this value, even if you update Home Manager.
 
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
-  home.stateVersion = "23.11"; # Please read the comment before changing.
-
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
-
+  # Packages
   home.packages = with pkgs; [
-    #browser
+    # Web Browsers
     inputs.zen-browser.packages.${pkgs.system}.default
-    #terminal
+    chromium
+    
+    # Terminal and CLI Tools
     foot
     htop
-    brightnessctl
-    acpi
-    #editing and coding
+    fzf
+    rsync
+    wget
+    aria2
+    unp
+    
+    # Development Tools and Programming Environments
     emacs
+    
+    # PDF and Document Viewers
     zathura
-    nodejs_20
-    auctex
-    (texlive.combine { inherit (texlive) scheme-medium wrapfig marvosym wasysym capt-of titlesec titling braket pgfplots tikz-3dplot chemfig mhchem; })
-    pkgs.zotero_7
-    ispell
-    #misc
+    
+    # Multimedia and Media Editing
+    ffmpeg
+    vlc
+    mpv
+    
+    # System Utilities and Maintenance
+    gparted
     pulseaudio
     unzip
-    ffmpeg
+    jmtpfs
+    gtk3
     feh
-    aria2
-    vlc
-    cairo
-    pango
+    pastel
+    yt-dlp
   ];
-
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
-  };
-
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. If you don't want to manage your shell through Home
-  # Manager then you have to manually source 'hm-session-vars.sh' located at
-  # either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/marc/etc/profile.d/hm-session-vars.sh
-  #
-  home.sessionVariables = {
-    # EDITOR = "emacs";
-  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
 }

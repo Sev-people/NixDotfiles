@@ -3,14 +3,14 @@
 {
 
   imports = [
-    ./cliPrograms/sh.nix
-    ./cliPrograms/vim.nix
-    ./cliPrograms/git.nix
-    ./guiPrograms/foot.nix
-    ./guiPrograms/sway.nix
-    ./guiPrograms/style.nix
-    ./guiPrograms/rmpc.nix
-    ./laptopPrograms/laptopHyprland.nix
+    ./apps/foot.nix
+    ./apps/rmpc.nix
+    ./apps/vim.nix
+    ./dev/git.nix
+    ./dev/sh.nix
+    ./system/ssh.nix
+    ./wm/sway.nix
+    ./wm/style.nix
   ];
 
 }

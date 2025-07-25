@@ -11,6 +11,9 @@
     ./services/printing.nix
     ./services/locale.nix
     ./services/battery.nix
+    ./services/security.nix
+    ./modules/users.nix
+    ./modules/bootloader.nix
   ];
 
 }
