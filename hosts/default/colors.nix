@@ -1,22 +1,31 @@
-{ ... }:
-
 {
 
   colors = {
-    base00 = "#1e1e2e";
-    base01 = "#313244";
+    base00 = "#000000e6";
+    base01 = "#000000";
     base02 = "#45475a";
     base03 = "#585b70";
     base04 = "#6c7086";
     base05 = "#cdd6f4";
     base06 = "#f5e0dc";
     base07 = "#b4befe";
-    red     = "#f38ba8";
-    green   = "#a6e3a1";
-    yellow  = "#f9e2af";
-    blue    = "#89b4fa";
-    magenta = "#f5c2e7";
-    cyan    = "#94e2d5";
+    regular0 = "2b303b";  # black
+    regular1 = "bf616a";  # red
+    regular2 = "a3be8c";  # green
+    regular3 = "ebcb8b";  # yellow
+    regular4 = "8fa1b3";  # blue
+    regular5 = "b48ead";  # magenta
+    regular6 = "96b5b4";  # cyan
+    regular7 = "c0c5ce";  # white
+            
+    bright0 = "65737e";   # bright black
+    bright1 = "bf616a";   # bright red
+    bright2 = "a3be8c";   # bright green
+    bright3 = "ebcb8b";   # bright yellow
+    bright4 = "8fa1b3";   # bright blue
+    bright5 = "b48ead";   # bright magenta
+    bright6 = "96b5b4";   # bright cyan
+    bright7 = "eff1f5";   # bright white
   };
 
 }

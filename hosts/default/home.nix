@@ -5,7 +5,6 @@ let
     url = "https://wolicheng.com/womic/softwares/micclient-x86_64.AppImage";
     sha256 = "1fqxgqjvwiqjzprfvrx9d88hrybrhgww353b4amcp7fn063ch3pa"; # insert the actual hash
   };
-  myColors = import ./colors.nix;
 in {
 
   # Home Manager needs a bit of information about you and the paths it should
@@ -14,9 +13,6 @@ in {
   home.homeDirectory = "/home/marc";
 
   nixpkgs.config.allowUnfree = true;
-
-  # Colors
-  my.colors = myColors.colors;
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release

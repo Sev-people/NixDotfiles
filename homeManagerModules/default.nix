@@ -9,6 +9,7 @@
     ./guiPrograms/foot.nix
     ./guiPrograms/sway.nix
     ./guiPrograms/cursor.nix
+    ./guiPrograms/colors.nix
     ./guiPrograms/rmpc.nix
     ./laptopPrograms/laptopHyprland.nix
   ];
