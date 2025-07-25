@@ -5,49 +5,41 @@
 #+OPTIONS: toc:2
 
 * TABLE OF CONTENTS :toc:
-- [[#important-programs-to-load-first][IMPORTANT PROGRAMS TO LOAD FIRST]]
-  - [[#org-mode-setting][Org Mode Setting]]
-  - [[#elpaca-package-manager][Elpaca Package Manager]]
+- [[#load-first][LOAD FIRST]]
+- [[#elpaca][ELPACA]]
+- [[#keybindings][KEYBINDINGS]]
   - [[#evil-mode][Evil Mode]]
-- [[#general-keybindings][General Keybindings]]
-  - [[#editing-keybindings][Editing Keybindings]]
-- [[#all-the-icons][ALL THE ICONS]]
-- [[#correcting-code-and-text][CORRECTING CODE AND TEXT]]
-  - [[#flycheck][Flycheck]]
-  - [[#flyspell][Flyspell]]
-- [[#backups][BACKUPS]]
-- [[#company][COMPANY]]
+  - [[#keybindings-1][Keybindings]]
+- [[#code-and-text-correction][CODE AND TEXT CORRECTION]]
+  - [[#code][Code]]
+  - [[#text][Text]]
+- [[#code-completion][CODE COMPLETION]]
+- [[#file-browsing][FILE BROWSING]]
 - [[#fonts][FONTS]]
-  - [[#setting-the-font-face][Setting The Font Face]]
-  - [[#zooming-in-and-out][Zooming In And Out]]
-  - [[#frame-border][Frame Border]]
 - [[#gui-tweaks][GUI TWEAKS]]
-  - [[#disable-menubar-toolbars-and-scrollbars][Disable Menubar, Toolbars and Scrollbars]]
-  - [[#display-line-numbers-and-truncated-lines][Display Line Numbers And Truncated Lines]]
-  - [[#olivetti-mode][Olivetti Mode]]
+  - [[#general][General]]
+  - [[#margins][Margins]]
   - [[#startup-screen][Startup Screen]]
   - [[#diminish][Diminish]]
-  - [[#mode-line][Mode line]]
-- [[#ivy-counsel][IVY (COUNSEL)]]
+  - [[#zooming-in-and-out][Zooming In And Out]]
+- [[#keybinding-completion][KEYBINDING COMPLETION]]
 - [[#latex][LaTeX]]
-  - [[#pdf-tools][PDF Tools]]
   - [[#exporting][Exporting]]
   - [[#setup][Setup]]
-  - [[#latex-minor-modes][LaTeX Minor Modes]]
-  - [[#more][More]]
-- [[#minibuffer-escape][MINIBUFFER ESCAPE]]
+  - [[#latex-modes][LaTeX Modes]]
+  - [[#pdf-viewer][PDF Viewer]]
 - [[#org-mode][ORG-MODE]]
   - [[#appearance][Appearance]]
   - [[#agenda][Agenda]]
-  - [[#enabling-table-of-contents][Enabling Table Of Contents]]
+  - [[#table-of-contents][Table Of Contents]]
   - [[#source-code-block-expansion][Source Code Block Expansion]]
 - [[#programming-languages][PROGRAMMING LANGUAGES]]
 - [[#sane-defaults][SANE DEFAULTS]]
+  - [[#all-the-icons][All the Icons]]
+  - [[#general-1][General]]
 - [[#theme][THEME]]
-- [[#which-key][WHICH-KEY]]
 
-* IMPORTANT PROGRAMS TO LOAD FIRST
-** Org Mode Setting
+* LOAD FIRST
 #+begin_src emacs-lisp
 (setq org-emphasis-regexp-components
   '("-—[:space:]('\"{"
@@ -58,7 +50,8 @@
 
 (require 'org)
 #+end_src
-** Elpaca Package Manager
+
+* ELPACA
 #+begin_src emacs-lisp
 (defvar elpaca-installer-version 0.11)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
@@ -98,128 +91,139 @@
     (load "./elpaca-autoloads")))
 (add-hook 'after-init-hook #'elpaca-process-queues)
 (elpaca `(,@elpaca-order))
-#+end_src
 
-** Evil Mode
-#+begin_src emacs-lisp
+;; Startup
 (elpaca elpaca-use-package
  (elpaca-use-package-mode)
   (setq elpaca-use-package-by-default t))
 (elpaca-wait)
-
-(use-package evil
-    :ensure t
-    :init      ;; tweak evil's configuration before loading it
-    (setq evil-want-integration t  ;; This is optional since it's already set to t by default.
-          evil-want-keybinding nil
-	      evil-want-C-u-scroll t
-          evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
-    (evil-mode))
-
-(with-eval-after-load 'evil-maps
-  (define-key evil-motion-state-map (kbd "SPC") nil)
-  (define-key evil-motion-state-map (kbd "RET") nil)
-  (define-key evil-motion-state-map (kbd "TAB") nil))
-
-(setq org-return-follows-link  t)
+(use-package compat)
 #+end_src
 
-* General Keybindings
+* KEYBINDINGS
+** Evil Mode
+#+begin_src emacs-lisp
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-keybinding nil
+        evil-want-C-u-scroll t
+        evil-undo-system 'undo-redo)
+  :config
+  (evil-mode 1))
+
+;; Unbind motion-state keys that would interfere with custom keybindings (e.g., leader keys)
+(with-eval-after-load 'evil-maps
+  (define-key evil-motion-state-map (kbd "SPC") nil)  ;; Unbind spacebar
+  (define-key evil-motion-state-map (kbd "RET") nil)  ;; Unbind Return
+  (define-key evil-motion-state-map (kbd "TAB") nil)) ;; Unbind Tab
+
+;; EVIL COLLECTION — Vi keybindings across the Emacs ecosystem (Magit, Dired, Eshell, etc.)
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
+;; FINE-TUNING EVIL BEHAVIOR (These are global variables, best set early)
+(setq
+ ;; Use Evil's own search module (not Emacs isearch) — enables `/` to behave as in Vim
+ evil-search-module 'evil-search
+ ;; Use Vim-style regular expressions for `evil-ex-search`
+ evil-ex-search-vim-style-regexp t
+ ;; More granular undo points (e.g., inserting `foo` triggers 3 undos: `f`, `o`, `o`)
+ evil-want-fine-undo t
+ ;; Ensure Evil integrates fully with Emacs core behavior
+ evil-want-integration t)
+#+end_src
+** Keybindings
 #+begin_src emacs-lisp
 ;; Set super key to meta
 (setq x-super-keysym 'meta)
-(global-set-key (kbd "M-r") 'jump-to-register)
-(set-register ?c (cons 'file "~/.dotfiles/emacs/config.org"))
-(set-register ?a (cons 'file "~/Documents/Work/Agenda.org"))
-(global-set-key (kbd "M-l") 'org-do-demote)
-(define-key org-mode-map (kbd "M-h") nil)
-(global-set-key (kbd "M-h") 'org-do-promote)
-(global-set-key (kbd "M-k") 'org-move-subtree-up)
-(global-set-key (kbd "M-j") 'org-move-subtree-down)
-(global-set-key (kbd "M-j") 'org-move-subtree-down)
-#+end_src
 
-** Editing Keybindings
-#+begin_src emacs-lisp
-(use-package key-chord
+;; Proper org-mode-specific keybindings
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "M-h") nil)
+  (define-key org-mode-map (kbd "M-h") 'org-do-promote)
+  (define-key org-mode-map (kbd "M-j") 'org-move-subtree-down)
+  (define-key org-mode-map (kbd "M-k") 'org-move-subtree-up)
+  (define-key org-mode-map (kbd "M-l") 'org-do-demote))
+
+(use-package evil-escape
   :ensure t
-  :init
-  (key-chord-mode 1)
-  (key-chord-define evil-insert-state-map  "jk" 'evil-normal-state))
+  :after evil
+  :config
+  (evil-escape-mode 1)
+  (setq evil-escape-key-sequence "jk"))
 #+end_src
 
-* ALL THE ICONS
-#+begin_src emacs-lisp
-(use-package all-the-icons
-  :ensure t
-  :if (display-graphic-p))
-
-(use-package all-the-icons-dired
-  :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
-#+end_src
-
-* CORRECTING CODE AND TEXT
-** Flycheck
-For correcting code.
+* CODE AND TEXT CORRECTION
+** Code
 #+begin_src emacs-lisp
 (use-package flycheck
   :ensure t
-  :defer t
-  :init (global-flycheck-mode)
-  :diminish)
+  :defer nil
+  :hook (after-init . global-flycheck-mode))
 #+end_src
-** Flyspell
+** Text
 #+begin_src emacs-lisp
 (use-package flyspell
   :defer t
   :ensure nil
   :config
+  ;; Skip irrelevant regions
   (add-to-list 'ispell-skip-region-alist '("~" "~"))
   (add-to-list 'ispell-skip-region-alist '("=" "="))
   (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
   (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXPORT" . "^#\\+END_EXPORT"))
-  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXPORT" . "^#\\+END_EXPORT"))
   (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
 
+  ;; Enable only in selected modes
   (dolist (mode '(
-                  ;;org-mode-hook
                   mu4e-compose-mode-hook))
     (add-hook mode (lambda () (flyspell-mode 1))))
 
+  ;; Silence startup messages
   (setq flyspell-issue-welcome-flag nil
         flyspell-issue-message-flag nil))
 #+end_src
 
-* BACKUPS
-Moves automatic emacs backups to the =TRASH= directory.
-#+begin_src emacs-lisp
-(setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+* CODE COMPLETION
+ #+begin_src emacs-lisp
+   (use-package company
+    :defer 2
+    :custom
+    (company-begin-commands '(self-insert-command))
+    (company-idle-delay .1)
+    (company-minimum-prefix-length 2)
+    (company-show-numbers t)
+    (company-tooltip-align-annotations 't)
+    :config
+    (global-company-mode t)
+   :diminish)
+
+  (use-package company-box
+    :after company
+    :hook (company-mode . company-box-mode)
+    :diminish)
 #+end_src
 
-* COMPANY
- Code completion.
- #+begin_src emacs-lisp
- (use-package company
-  :ensure t
-  :defer 2
-  :custom
-  (company-begin-commands '(self-insert-command))
-  (company-idle-delay .1)
-  (company-minimum-prefix-length 2)
-  (company-show-numbers t)
-  (company-tooltip-align-annotations 't)
-  (global-company-mode t)
-  :diminish)
+* FILE BROWSING
+#+begin_src emacs-lisp
+(use-package vertico
+  :init (vertico-mode))
 
-(use-package company-box
-  :after company
+(use-package orderless
   :ensure t
-  :hook (company-mode . company-box-mode)
-  :diminish)
+  :custom
+  (completion-styles '(orderless))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+
+(use-package marginalia
+  :ensure t
+  :init (marginalia-mode))
 #+end_src
 
 * FONTS
-** Setting The Font Face
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil
   :height 110
@@ -240,30 +244,15 @@ Moves automatic emacs backups to the =TRASH= directory.
 (setq-default line-spacing 0.12)
 #+end_src
 
-** Zooming In And Out
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-(global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
-(global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
-#+end_src
-
-** Frame Border
-#+begin_src emacs-lisp
-(set-window-margins (selected-window) 1 1)
-#+end_src
-
 * GUI TWEAKS
-** Disable Menubar, Toolbars and Scrollbars
+** General
 #+begin_src emacs-lisp
+;; Disable Menubar, Toolbars and Scrollbars
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-#+end_src
 
-** Display Line Numbers And Truncated Lines
-#+begin_src emacs-lisp
-;;(global-display-line-numbers-mode 1)
+;; Display Line Numbers And Truncated Lines
 (require 'display-line-numbers)
 (defun display-line-numbers--turn-on ()
   "Turn on `display-line-numbers-mode'."
@@ -274,8 +263,7 @@ Moves automatic emacs backups to the =TRASH= directory.
 (global-display-line-numbers-mode 1)
 (global-visual-line-mode t)
 #+end_src
-
-** Olivetti Mode
+** Margins
 #+begin_src emacs-lisp
 (use-package olivetti
   :demand t
@@ -287,73 +275,50 @@ Moves automatic emacs backups to the =TRASH= directory.
   :config
   (setq-default olivetti-body-width 150)
   :diminish)
-#+end_src
 
+;; Set frame border
+(set-window-margins (selected-window) 1 1)
+#+end_src
 ** Startup Screen
 #+begin_src emacs-lisp
 (setq initial-scratch-message "")
 (setq inhibit-startup-screen t)
 #+end_src
-
 ** Diminish
 #+begin_src emacs-lisp
 (use-package diminish)
 #+end_src
-
-** Mode line
+** Zooming In And Out
 #+begin_src emacs-lisp
-(setq display-time-day-and-date t
-   display-time-24hr-format t)
-(display-time)
+(global-set-key (kbd "C-=") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
+(global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
 #+end_src
 
-* IVY (COUNSEL)
+* KEYBINDING COMPLETION
 #+begin_src emacs-lisp
-(use-package counsel
-  :after ivy
+(use-package which-key
+  :diminish
   :ensure t
-  :config (counsel-mode)
-  :diminish)
-
-(use-package ivy
-  :ensure t
-  :bind
-  ;; ivy-resume resumes the last Ivy-based completion.
-  (("C-c C-r" . ivy-resume)
-   ("C-x B" . ivy-switch-buffer-other-window))
-  :custom
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
-  (setq enable-recursive-minibuffers t)
+  :init
+  (which-key-mode 1)
   :config
-  (ivy-mode)
-  :diminish)
-
-(use-package all-the-icons-ivy-rich
-  :ensure t
-  :init (all-the-icons-ivy-rich-mode 1))
-
-(use-package ivy-rich
-  :after ivy
-  :ensure t
-  :init (ivy-rich-mode 1) ;; this gets us descriptions in M-x.
-  :custom
-  (ivy-virtual-abbreviate 'full
-   ivy-rich-switch-buffer-align-virtual-buffer t
-   ivy-rich-path-style 'abbrev)
-  :config
-  (ivy-set-display-transformer 'ivy-switch-buffer
-                               'ivy-rich-switch-buffer-transformer))
+  (setq which-key-inside-window-location 'bottom
+	which-key-sort-order #'which-key-key-order-alpha
+	which-key-sort-uppercase-first nil
+	which-key-add-column-padding 1
+	which-key-max-display-columns nil
+	which-key-min-display-lines 6
+        which-key-side-window-slot -10
+	which-key-side-window-max-height 0.25
+	which-key-idle-delay 0.8
+	which-key-max-description-length 25
+	which-key-allow-imprecise-window-fit nil
+	which-key-separator " → " ))
 #+end_src
 
 * LaTeX
-** PDF Tools
-#+begin_src emacs-lisp
-(use-package pdf-tools
-         :demand t
-         :init
-         (pdf-tools-install))
-#+end_src
 ** Exporting
 #+begin_src emacs-lisp
 (setq org-latex-to-pdf-process (list "latexmk %f"))
@@ -373,38 +338,39 @@ Moves automatic emacs backups to the =TRASH= directory.
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 #+end_src
-** LaTeX Minor Modes
+** LaTeX Modes
 #+begin_src emacs-lisp
-(global-set-key (kbd "<f4>") (lambda () (interactive) (org-cdlatex-mode)))
-#+end_src
-** More
-#+begin_src emacs-lisp
+(use-package cdlatex
+  :hook ((org-mode . org-cdlatex-mode)
+         (LaTeX-mode . cdlatex-mode)))
+
 (use-package auctex
   :defer t
-  :ensure t)
-(use-package cdlatex
   :ensure t)
 (global-auto-revert-mode 1)
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 #+end_src
-
-* MINIBUFFER ESCAPE
+** PDF Viewer
 #+begin_src emacs-lisp
-(global-set-key [escape] 'keyboard-escape-quit)
+(use-package pdf-tools
+         :demand t
+         :init
+         (pdf-tools-install))
 #+end_src
 
 * ORG-MODE
 ** Appearance
 #+begin_src emacs-lisp
 (setq org-startup-folded t
-      org-hide-emphasis-markers t)
- (use-package org-appear
-    :hook
-    (org-mode . org-appear-mode))
+      org-hide-emphasis-markers t
+      org-return-follows-link t)
+
+(use-package org-appear
+  :hook (org-mode . org-appear-mode))
 #+end_src
 ** Agenda
-*** General Settings
 #+begin_src emacs-lisp
+;; General Settings
 (setq org-agenda-span 1
 org-agenda-start-day "+0d"
 org-agenda-skip-timestamp-if-done t
@@ -424,34 +390,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 (setq org-agenda-current-time-string "")
 (setq org-agenda-time-grid '((daily) () "" ""))
 
-(defun org-summary-todo (n-done n-not-done)
-  "Switch entry to DONE when all subentries are done, to TODO otherwise."
-  (let (org-log-done org-todo-log-states)   ; turn off logging
-    (org-todo (cond 
-		  ((= n-not-done 0) "DONE")
-		  (t "TODO")
-		  ))))
-(add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
-#+end_src
-*** Super Agenda
-#+begin_src emacs-lisp
-(setq org-super-agenda-groups
-       '(
-        (:name "Learning" :tag "learning")
-        (:name "Academics" :tag "academics")
-        (:name "Business" :tag "business")
-        (:name "Practical" :tag "practical")
-        ))
-
-(use-package org-super-agenda
-  :ensure t
-  :after org
-  :defer t
-  :init
-(org-super-agenda-mode))
-#+end_src
-*** Tags And TODO Keywords
-#+begin_src emacs-lisp
+;; Tags And TODO Keywords
 (setq org-tag-persistent-alist '((:startgroup . nil)
                       ("learning" . ?l) ("academics" . ?a)
                       ("business" . ?b) ("practical" . ?p)
@@ -459,53 +398,85 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
                       ))
 (setq org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "EVNT(e)" "PEND(w)" "|" "DONE(d)")))
 #+end_src
-** Enabling Table Of Contents
+** Table Of Contents
 #+begin_src emacs-lisp
 (use-package toc-org
     :ensure t
     :commands toc-org-enable
     :init (add-hook 'org-mode-hook 'toc-org-enable))
 #+end_src
-
 ** Source Code Block Expansion
-| Typing the below + TAB | Expands to ...                          |
-|------------------------+-----------------------------------------|
-| <a                     | '#+BEGIN_EXPORT ascii' … '#+END_EXPORT  |
-| <c                     | '#+BEGIN_CENTER' … '#+END_CENTER'       |
-| <C                     | '#+BEGIN_COMMENT' … '#+END_COMMENT'     |
-| <e                     | '#+BEGIN_EXAMPLE' … '#+END_EXAMPLE'     |
-| <E                     | '#+BEGIN_EXPORT' … '#+END_EXPORT'       |
-| <h                     | '#+BEGIN_EXPORT html' … '#+END_EXPORT'  |
-| <l                     | '#+BEGIN_EXPORT latex' … '#+END_EXPORT' |
-| <q                     | '#+BEGIN_QUOTE' … '#+END_QUOTE'         |
-| <s                     | '#+BEGIN_SRC' … '#+END_SRC'             |
-| <v                     | '#+BEGIN_VERSE' … '#+END_VERSE'         |
-
 #+begin_src emacs-lisp
 (require 'org-tempo)
 #+end_src
 
 * PROGRAMMING LANGUAGES
 #+begin_src emacs-lisp
-(use-package web-mode)
+;; Emacs Lisp
+(use-package elisp-mode
+  :ensure nil)
+
+;; Shell
+(use-package sh-script
+  :ensure nil)
+
+;; Python
 (use-package python-mode)
+
+;; Nix
 (use-package nix-mode
-  :mode ("\\.nix\\'" "\\.nix.in\\'"))
-(use-package emmet-mode)
+  :mode "\\.nix\\'")
 
-(setq js-indent-level 2)
+;; YAML
+(use-package yaml-mode
+  :mode "\\.ya?ml\\'")
 
-(use-package org-babel
-  :no-require
-  :ensure nil
+;; JSON
+(use-package json-mode
+  :mode "\\.json\\'")
+
+;; TOML
+(use-package toml-mode
+  :mode "\\.toml\\'")
+
+;; Rust
+(use-package rust-mode
+  :mode "\\.rs\\'")
+
+;; C / C++
+(use-package cc-mode
+  :ensure nil)
+
+;; Web: HTML / CSS / JS / JSX / TSX
+(use-package web-mode
+  :mode ("\\.html\\'" "\\.css\\'" "\\.js\\'" "\\.jsx\\'" "\\.tsx\\'")
   :config
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((python . t))))
+  (setq web-mode-markup-indent-offset 2
+        web-mode-code-indent-offset 2
+        web-mode-css-indent-offset 2))
+
+;; Emmet – fast HTML/CSS typing
+(use-package emmet-mode
+  :hook (web-mode css-mode))
+
+;; SQL
+(use-package sql
+  :ensure nil)
 #+end_src
 
 * SANE DEFAULTS
+** All the Icons
 #+begin_src emacs-lisp
+(use-package all-the-icons
+  :if (display-graphic-p))
+
+(use-package all-the-icons-dired
+  :if (display-graphic-p)
+  :hook (dired-mode . all-the-icons-dired-mode))
+#+end_src
+** General
+#+begin_src emacs-lisp
+;; Indentation and pairing
 (electric-indent-mode -1)
 (setq org-edit-src-content-indentation 0)
 (electric-pair-mode 1)
@@ -515,8 +486,15 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
                   (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 (setq org-startup-indented t)
 
+;; Bell deactivation
 (setq visible-bell t)
 (setq ring-bell-function 'ignore)
+
+;; Backups
+(setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+
+;; Minibuffer escape
+(global-set-key [escape] 'keyboard-escape-quit)
 #+end_src
 
 * THEME
@@ -549,26 +527,4 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
           (bg-prose-block-delimiter "#3B4252") ;; Code start/end
        ))
 (load-theme 'modus-vivendi)
-#+end_src
-
-* WHICH-KEY
-#+begin_src emacs-lisp
-(use-package which-key
-  :diminish
-  :ensure t
-  :init
-  (which-key-mode 1)
-  :config
-  (setq which-key-inside-window-location 'bottom
-	which-key-sort-order #'which-key-key-order-alpha
-	which-key-sort-uppercase-first nil
-	which-key-add-column-padding 1
-	which-key-max-display-columns nil
-	which-key-min-display-lines 6
-        which-key-side-window-slot -10
-	which-key-side-window-max-height 0.25
-	which-key-idle-delay 0.8
-	which-key-max-description-length 25
-	which-key-allow-imprecise-window-fit nil
-	which-key-separator " → " ))
 #+end_src
