@@ -1,0 +1,9 @@
+# Ignore everything in emacs/
+emacs/*
+
+# Except these specific files
+!emacs/config.org
+!emacs/init.el
+!emacs/early-init.el
+!emacs/latex/
+!emacs/latex/**
