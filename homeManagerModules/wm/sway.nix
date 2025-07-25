@@ -33,7 +33,7 @@ in {
       bars = [
         {
           position = "top";
-          statusCommand = "~/.dotfiles/scripts/status.sh";
+          statusCommand = "bar-status";
           fonts = {
             names = [ style.font.main ];
             style = style.font.style;
