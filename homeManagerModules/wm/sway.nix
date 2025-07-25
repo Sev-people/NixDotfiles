@@ -18,7 +18,7 @@ in {
         { command = "swww-daemon --format xrgb"; }
         { command = "gammastep -O 2500"; }
         { command = "emacs --daemon --init-directory ~/.dotfiles/emacs"; }
-        { command = "bash ~/wallpaper.sh"; }
+        { command = "cycle-wallpapers"; }
       ];
 
       #–––––– Input
@@ -68,7 +68,7 @@ in {
         "Mod1+Shift+Q" = "exit";
 
         "Mod1+F"      = "exec zen";
-        "Mod1+E"      = "exec bash em";
+        "Mod1+E"      = "exec em";
         "Mod1+Y"      = "exec spotify-launcher";
         "Mod1+D"      = "exec discord";
         "Mod1+V"      = "floating toggle";
