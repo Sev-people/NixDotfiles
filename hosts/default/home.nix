@@ -74,8 +74,9 @@ in {
     pastel
     yt-dlp
 
-    # Password management
+    # Security and password management
     pass
+    gnupg
   ];
 
   # Let Home Manager install and manage itself.
