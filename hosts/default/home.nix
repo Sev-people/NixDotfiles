@@ -73,6 +73,9 @@ in {
     feh
     pastel
     yt-dlp
+
+    # Password management
+    pass
   ];
 
   # Let Home Manager install and manage itself.
