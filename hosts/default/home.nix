@@ -53,7 +53,6 @@ in {
     })
     ispell
     lilypond-with-fonts
-    pkgs.zotero_7
     
     # PDF and Document Viewers
     zathura
