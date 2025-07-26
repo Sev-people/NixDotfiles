@@ -2,7 +2,7 @@
 
 {
 
-  # For the Sway window manager
   security.polkit.enable = true;
+  hardware.opengl.enable = true;
 
 }
