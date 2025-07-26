@@ -76,7 +76,7 @@ in {
 
     # Security and password management
     pass
-    pinentry-tty
+    pinentry-curses
   ];
 
   # Let Home Manager install and manage itself.
