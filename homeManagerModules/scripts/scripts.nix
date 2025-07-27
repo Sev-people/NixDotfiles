@@ -5,14 +5,22 @@ let
     emacsclient -c -a 'emacs --init-directory ~/.dotfiles/emacs'
   '';
   new-project = pkgs.writeShellScriptBin "new-project" ''
-    set -e
-    cd ~/Projects
-    mkdir -p "$1"
-    cd "$1"
-    nix flake init --template github:nix-community/nix-direnv
-    echo "use flake" > .envrc
+    set -euo pipefail
+    
+    PROJECT_NAME="$1"
+    PROJECT_DIR="$HOME/Projects/$PROJECT_NAME"
+    TEMPLATE_FILE="$HOME/.dotfiles/flakes/project-template.nix"
+    
+    mkdir -p "$PROJECT_DIR"
+    
+    cp "$TEMPLATE_FILE" "$PROJECT_DIR/flake.nix"
+    
+    # Set up direnv
+    echo "use flake" > "$PROJECT_DIR/.envrc"
+    cd "$PROJECT_DIR"
     direnv allow
-    em ./"$1"/flake.nix
+    
+    em flake.nix
   '';
   flake-update = pkgs.writeShellScriptBin "flake-update" ''
     set -e
