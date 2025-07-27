@@ -12,7 +12,7 @@ let
     nix flake init --template github:nix-community/nix-direnv
     echo "use flake" > .envrc
     direnv allow
-    emacs .
+    em ./"$1"/flake.nix
   '';
   flake-update = pkgs.writeShellScriptBin "flake-update" ''
     set -e
