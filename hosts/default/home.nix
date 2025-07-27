@@ -19,16 +19,16 @@ in {
   home.packages = with pkgs; [
     # Web Browsers
     inputs.zen-browser.packages.${pkgs.system}.default
-    chromium
     
     # Terminal and CLI Tools
     foot
     htop
     ani-cli
-    fzf
-    rsync
+    fzf # Fuzzy search
+    ripgrep # Regexp search
+    rsync # SSH file transfer
     wget
-    aria2
+    aria2 # Torrents
     unp
     
     # Development Tools and Programming Environments

@@ -164,7 +164,7 @@
 ** Github integration
 #+begin_src emacs-lisp
 ;; Magit dependency
-(use-package transient
+ (use-package transient
   :ensure t)
 
 (use-package magit
@@ -199,26 +199,52 @@
 #+end_src
 ** Language Server Protocol
 #+begin_src emacs-lisp
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :hook ((python-mode . lsp-deferred)
-         (rust-mode . lsp-deferred)
-         (js-mode . lsp-deferred)
-         (typescript-mode . lsp-deferred)
-         ;; add your languages here
-         )
-  :custom
-  (lsp-completion-provider :none) ;; use Emacs-native completion (CAPF)
-  (lsp-headerline-breadcrumb-enable nil)
-  (lsp-enable-symbol-highlighting t)
-  (lsp-idle-delay 0.2)
-  (lsp-log-io nil)
-  :init
-  (setq lsp-keymap-prefix "C-c l"))
+;; Eglot dependency
+(use-package flymake :ensure t)
 
-;; Code formatting via LSP
-(setq lsp-enable-on-type-formatting nil)
-(setq lsp-enable-indentation nil)
+(use-package eglot
+  :ensure t
+  :hook ((python-mode      . eglot-ensure)
+         (rust-mode        . eglot-ensure)
+         (js-mode          . eglot-ensure)
+         (typescript-mode  . eglot-ensure)
+         (json-mode        . eglot-ensure)
+         (yaml-mode        . eglot-ensure)
+         (toml-mode        . eglot-ensure)
+         (sh-mode          . eglot-ensure)
+         (nix-mode         . eglot-ensure)
+         (c-mode           . eglot-ensure)
+         (c++-mode         . eglot-ensure)
+         (web-mode         . eglot-ensure))
+  :custom
+  (eglot-autoshutdown t)
+  (eglot-send-changes-idle-time 0.2)
+  :config
+  ;; LSP server program declarations
+  (add-to-list 'eglot-server-programs
+               '((c-mode c++-mode) . ("clangd")))
+  (add-to-list 'eglot-server-programs
+               '(web-mode . ("typescript-language-server" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '(nix-mode . ("nil")))
+  (add-to-list 'eglot-server-programs
+               '(yaml-mode . ("yaml-language-server" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '(json-mode . ("vscode-json-languageserver" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '(toml-mode . ("taplo" "lsp" "stdio")))
+  (add-to-list 'eglot-server-programs
+               '(sh-mode . ("bash-language-server" "start"))))
+
+(use-package corfu
+  :ensure t
+  :custom
+  (corfu-auto t)
+  (corfu-cycle t)
+  (corfu-auto-delay 0.2)
+  (corfu-preview-current nil)
+  :init
+  (global-corfu-mode))
 #+end_src
 
 * Code and text correction
