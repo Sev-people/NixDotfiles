@@ -25,11 +25,13 @@ in
       export KEYTIMEOUT=1
       
       # Bind jk and kj
-      
       export KEYTIMEOUT=20
       bindkey -M viins 'jk' vi-cmd-mode
       bindkey -M viins 'kj' vi-cmd-mode
-      
+
+      # Set up direnv
+      eval "$(direnv hook zsh)"
+
       if [ "$(tty)" = "/dev/tty1" ];then
       	exec sway
       fi

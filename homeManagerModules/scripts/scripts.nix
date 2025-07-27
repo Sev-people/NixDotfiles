@@ -82,7 +82,7 @@ let
         fi
     
         # Select a random wallpaper from the array
-        wallpapers_length= ''${#wallpapers[@]}
+        wallpapers_length=''${#wallpapers[@]}
         wallpaperIndex=$(( RANDOM % wallpapers_length ))
         selectedWallpaper="''${wallpapers[$wallpaperIndex]}"
     
