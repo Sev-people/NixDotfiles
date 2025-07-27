@@ -7,6 +7,7 @@
     ./apps/rmpc.nix
     ./apps/vim.nix
     ./dev/git.nix
+    ./dev/dev-shell.nix
     ./dev/sh.nix
     ./system/ssh.nix
     ./system/style.nix

@@ -9,7 +9,7 @@ let
     
     PROJECT_NAME="$1"
     PROJECT_DIR="$HOME/Projects/$PROJECT_NAME"
-    TEMPLATE_FILE="$HOME/.dotfiles/flakes/project-template.nix"
+    TEMPLATE_FILE="$HOME/.dotfiles/homeManagerModules/dev/flakes/project-template.nix"
     
     mkdir -p "$PROJECT_DIR"
     
@@ -76,15 +76,15 @@ let
     # Start an infinite loop
     while true; do
         # Check if the wallpapers array is empty
-        if [ "$${#wallpapers[@]}" -eq 0 ]; then
+        if [ "''${#wallpapers[@]}" -eq 0 ]; then
             # If the array is empty, refill it with the image files
             wallpapers=("$wallpapersDir"/*)
         fi
     
         # Select a random wallpaper from the array
-        wallpapers_length=$${#wallpapers[@]}
+        wallpapers_length= ''${#wallpapers[@]}
         wallpaperIndex=$(( RANDOM % wallpapers_length ))
-        selectedWallpaper="$${wallpapers[$wallpaperIndex]}"
+        selectedWallpaper="''${wallpapers[$wallpaperIndex]}"
     
         # Update the wallpaper using the swww img command
         swww img "$selectedWallpaper" -t right --transition-fps 60

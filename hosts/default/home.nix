@@ -52,8 +52,6 @@ in {
     })
     ispell
     lilypond-with-fonts
-    direnv
-    nix-direnv
     
     # PDF and Document Viewers
     zathura
