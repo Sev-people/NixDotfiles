@@ -33,7 +33,6 @@ in {
     
     # Development Tools and Programming Environments
     emacs
-    nodejs_20
     auctex
     (texlive.combine {
       inherit (texlive)
@@ -53,6 +52,8 @@ in {
     })
     ispell
     lilypond-with-fonts
+    direnv
+    nix-direnv
     
     # PDF and Document Viewers
     zathura

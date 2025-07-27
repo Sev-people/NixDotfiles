@@ -1,45 +1,50 @@
-#+Title: GNU Emacs Config
+#+TITLE: GNU Emacs Config
 #+AUTHOR: Marc Murray
 #+DESCRIPTION: Marc's Emacs config
 #+STARTUP: showeverything
 #+OPTIONS: toc:2
 
-* TABLE OF CONTENTS :toc:
-- [[#load-first][LOAD FIRST]]
-- [[#elpaca][ELPACA]]
-- [[#keybindings][KEYBINDINGS]]
-  - [[#evil-mode][Evil Mode]]
+* Table of contents :toc:
+- [[#load-first][Load first]]
+- [[#elpaca][Elpaca]]
+- [[#keybindings][Keybindings]]
+  - [[#evil-mode][Evil mode]]
   - [[#keybindings-1][Keybindings]]
-- [[#code-and-text-correction][CODE AND TEXT CORRECTION]]
+- [[#coding-environment][Coding environment]]
+  - [[#devshell-integration][devShell integration]]
+  - [[#github-integration][Github integration]]
+  - [[#project-management][Project management]]
+  - [[#project-navigation][Project navigation]]
+  - [[#language-server-protocol][Language Server Protocol]]
+- [[#code-and-text-correction][Code and text correction]]
   - [[#code][Code]]
   - [[#text][Text]]
-- [[#code-completion][CODE COMPLETION]]
-- [[#file-browsing][FILE BROWSING]]
-- [[#fonts][FONTS]]
-- [[#gui-tweaks][GUI TWEAKS]]
+- [[#denote][Denote]]
+- [[#file-browsing][File browsing]]
+- [[#fonts][Fonts]]
+- [[#gui-tweaks][GUI tweaks]]
   - [[#general][General]]
-  - [[#margins][Margins]]
-  - [[#startup-screen][Startup Screen]]
-  - [[#diminish][Diminish]]
-  - [[#zooming-in-and-out][Zooming In And Out]]
-- [[#keybinding-completion][KEYBINDING COMPLETION]]
+  - [[#startup-screen][Startup screen]]
+  - [[#zooming-in-and-out][Zooming in and out]]
+- [[#keybinding-completion][Keybinding completion]]
 - [[#latex][LaTeX]]
   - [[#exporting][Exporting]]
   - [[#setup][Setup]]
-  - [[#latex-modes][LaTeX Modes]]
-  - [[#pdf-viewer][PDF Viewer]]
-- [[#org-mode][ORG-MODE]]
+  - [[#latex-modes][LaTeX modes]]
+  - [[#pdf-viewer][PDF viewer]]
+- [[#mode-line][Mode line]]
+- [[#org-mode][Org mode]]
   - [[#appearance][Appearance]]
   - [[#agenda][Agenda]]
-  - [[#table-of-contents][Table Of Contents]]
-  - [[#source-code-block-expansion][Source Code Block Expansion]]
-- [[#programming-languages][PROGRAMMING LANGUAGES]]
-- [[#sane-defaults][SANE DEFAULTS]]
-  - [[#all-the-icons][All the Icons]]
+  - [[#table-of-contents][Table of contents]]
+  - [[#source-code-block-expansion][Source code block expansion]]
+- [[#programming-languages][Programming languages]]
+- [[#sane-defaults][Sane defaults]]
+  - [[#all-the-icons][All the icons]]
   - [[#general-1][General]]
-- [[#theme][THEME]]
+- [[#theme][Theme]]
 
-* LOAD FIRST
+* Load first
 #+begin_src emacs-lisp
 (setq org-emphasis-regexp-components
   '("-—[:space:]('\"{"
@@ -51,7 +56,7 @@
 (require 'org)
 #+end_src
 
-* ELPACA
+* Elpaca
 #+begin_src emacs-lisp
 (defvar elpaca-installer-version 0.11)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
@@ -100,8 +105,8 @@
 (use-package compat)
 #+end_src
 
-* KEYBINDINGS
-** Evil Mode
+* Keybindings
+** Evil mode
 #+begin_src emacs-lisp
 (use-package evil
   :ensure t
@@ -140,14 +145,6 @@
 ;; Set super key to meta
 (setq x-super-keysym 'meta)
 
-;; Proper org-mode-specific keybindings
-(with-eval-after-load 'org
-  (define-key org-mode-map (kbd "M-h") nil)
-  (define-key org-mode-map (kbd "M-h") 'org-do-promote)
-  (define-key org-mode-map (kbd "M-j") 'org-move-subtree-down)
-  (define-key org-mode-map (kbd "M-k") 'org-move-subtree-up)
-  (define-key org-mode-map (kbd "M-l") 'org-do-demote))
-
 (use-package evil-escape
   :ensure t
   :after evil
@@ -156,7 +153,75 @@
   (setq evil-escape-key-sequence "jk"))
 #+end_src
 
-* CODE AND TEXT CORRECTION
+* Coding environment
+** devShell integration
+#+begin_src emacs-lisp
+(use-package direnv
+  :ensure t
+  :config
+  (direnv-mode))
+#+end_src
+** Github integration
+#+begin_src emacs-lisp
+;; Magit dependency
+(use-package transient
+  :ensure t)
+
+(use-package magit
+  :defer t
+  :commands (magit-status magit-blame))
+#+end_src
+** Project management
+#+begin_src emacs-lisp
+(use-package consult
+  :ensure t
+  :bind
+  (("C-s" . consult-line)
+   ("C-c g" . consult-ripgrep)
+   ("C-x b" . consult-buffer)))
+
+;; Required for consult-ripgrep
+(setq consult-project-function
+      (lambda (_) (project-root (project-current t))))
+#+end_src
+** Project navigation
+#+begin_src emacs-lisp
+(use-package project
+  :ensure nil
+  :custom
+  (project-switch-commands
+   '((project-find-file "Find file")
+     (consult-ripgrep "Search")
+     (magit-status "Magit")
+     (project-eshell "Eshell")))
+  :config
+  (setq project-vc-merge-submodules nil))
+#+end_src
+** Language Server Protocol
+#+begin_src emacs-lisp
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook ((python-mode . lsp-deferred)
+         (rust-mode . lsp-deferred)
+         (js-mode . lsp-deferred)
+         (typescript-mode . lsp-deferred)
+         ;; add your languages here
+         )
+  :custom
+  (lsp-completion-provider :none) ;; use Emacs-native completion (CAPF)
+  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-enable-symbol-highlighting t)
+  (lsp-idle-delay 0.2)
+  (lsp-log-io nil)
+  :init
+  (setq lsp-keymap-prefix "C-c l"))
+
+;; Code formatting via LSP
+(setq lsp-enable-on-type-formatting nil)
+(setq lsp-enable-indentation nil)
+#+end_src
+
+* Code and text correction
 ** Code
 #+begin_src emacs-lisp
 (use-package flycheck
@@ -187,27 +252,28 @@
         flyspell-issue-message-flag nil))
 #+end_src
 
-* CODE COMPLETION
- #+begin_src emacs-lisp
-   (use-package company
-    :defer 2
-    :custom
-    (company-begin-commands '(self-insert-command))
-    (company-idle-delay .1)
-    (company-minimum-prefix-length 2)
-    (company-show-numbers t)
-    (company-tooltip-align-annotations 't)
-    :config
-    (global-company-mode t)
-   :diminish)
+* Denote
+#+begin_src emacs-lisp
+(use-package denote
+  :ensure t
+  :hook (dired-mode . denote-dired-mode)
+  :bind
+  (("C-c n n" . denote)
+   ("C-c n r" . denote-rename-file)
+   ("C-c n l" . denote-link)
+   ("C-c n b" . denote-backlinks)
+   ("C-c n d" . denote-dired)
+   ("C-c n g" . denote-grep))
+  :config
+  (setq denote-directory (expand-file-name "~/Documents/work/notes")
+	denote-known-keywords nil
+	denote-infer-keywords t)
 
-  (use-package company-box
-    :after company
-    :hook (company-mode . company-box-mode)
-    :diminish)
+  ;; Automatically rename Denote buffers when opening them
+  (denote-rename-buffer-mode 1))
 #+end_src
 
-* FILE BROWSING
+* File browsing
 #+begin_src emacs-lisp
 (use-package vertico
   :init (vertico-mode))
@@ -223,17 +289,10 @@
   :init (marginalia-mode))
 #+end_src
 
-* FONTS
+* Fonts
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil
-  :height 110
-  :weight 'medium)
-(set-face-attribute 'variable-pitch nil
-  :height 120
-  :weight 'medium)
-(set-face-attribute 'fixed-pitch nil
-  :height 110
-  :weight 'medium)
+(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 150 :width 'normal)
+
 ;; Makes commented text and keywords italics.
 (set-face-attribute 'font-lock-comment-face nil
   :slant 'italic)
@@ -244,51 +303,26 @@
 (setq-default line-spacing 0.12)
 #+end_src
 
-* GUI TWEAKS
+* GUI tweaks
 ** General
 #+begin_src emacs-lisp
-;; Disable Menubar, Toolbars and Scrollbars
+;; Disable menubar, toolbars, and scrollbars
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-;; Display Line Numbers And Truncated Lines
-(require 'display-line-numbers)
-(defun display-line-numbers--turn-on ()
-  "Turn on `display-line-numbers-mode'."
-  (unless (or (minibufferp) (eq major-mode 'pdf-view-mode))
-    (display-line-numbers-mode)))
-
-(setq display-line-numbers-type 'relative) 
-(global-display-line-numbers-mode 1)
-(global-visual-line-mode t)
-#+end_src
-** Margins
-#+begin_src emacs-lisp
-(use-package olivetti
-  :demand t
-  :diminish
-  :bind
-  (("<f9>" . olivetti-mode))
-  :init
-  (add-hook 'org-mode-hook (lambda () (olivetti-mode 1)))
-  :config
-  (setq-default olivetti-body-width 150)
-  :diminish)
-
 ;; Set frame border
 (set-window-margins (selected-window) 1 1)
+
+;; Truncate lines
+(global-visual-line-mode 1)
 #+end_src
-** Startup Screen
+** Startup screen
 #+begin_src emacs-lisp
 (setq initial-scratch-message "")
 (setq inhibit-startup-screen t)
 #+end_src
-** Diminish
-#+begin_src emacs-lisp
-(use-package diminish)
-#+end_src
-** Zooming In And Out
+** Zooming in and out
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
@@ -296,10 +330,9 @@
 (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
 #+end_src
 
-* KEYBINDING COMPLETION
+* Keybinding completion
 #+begin_src emacs-lisp
 (use-package which-key
-  :diminish
   :ensure t
   :init
   (which-key-mode 1)
@@ -338,7 +371,7 @@
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 #+end_src
-** LaTeX Modes
+** LaTeX modes
 #+begin_src emacs-lisp
 (use-package cdlatex
   :hook ((org-mode . org-cdlatex-mode)
@@ -350,7 +383,7 @@
 (global-auto-revert-mode 1)
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 #+end_src
-** PDF Viewer
+** PDF viewer
 #+begin_src emacs-lisp
 (use-package pdf-tools
          :demand t
@@ -358,7 +391,39 @@
          (pdf-tools-install))
 #+end_src
 
-* ORG-MODE
+* Mode line
+#+begin_src emacs-lisp
+(setq-default
+ mode-line-format
+ '("%e"
+   mode-line-front-space
+   ;; Buffer name
+   (:eval (propertize "%b" 'face 'mode-line-buffer-id))
+   " "
+   ;; Read-only or modified flags
+   (:eval (cond (buffer-read-only "RO")
+                ((buffer-modified-p) "✱")
+                (t " ")))
+   " "
+   ;; Line and column
+   "L%l:C%c "
+   ;; Percent of buffer
+   "[%p] "
+   ;; Major mode
+   (propertize "%m" 'face 'font-lock-type-face)
+   ;; Narrow indicator
+   (:eval (when (buffer-narrowed-p) " [Narrow]"))
+   ;; Git branch (VC)
+   (:eval
+    (when vc-mode
+      (let ((backend (vc-backend buffer-file-name)))
+        (when backend
+          (concat " ⎇"
+                  (substring vc-mode (+ (length backend) 2)))))))
+   mode-line-end-spaces))
+#+end_src
+
+* Org mode
 ** Appearance
 #+begin_src emacs-lisp
 (setq org-startup-folded t
@@ -398,19 +463,19 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
                       ))
 (setq org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "EVNT(e)" "PEND(w)" "|" "DONE(d)")))
 #+end_src
-** Table Of Contents
+** Table of contents
 #+begin_src emacs-lisp
 (use-package toc-org
     :ensure t
     :commands toc-org-enable
     :init (add-hook 'org-mode-hook 'toc-org-enable))
 #+end_src
-** Source Code Block Expansion
+** Source code block expansion
 #+begin_src emacs-lisp
 (require 'org-tempo)
 #+end_src
 
-* PROGRAMMING LANGUAGES
+* Programming languages
 #+begin_src emacs-lisp
 ;; Emacs Lisp
 (use-package elisp-mode
@@ -464,8 +529,8 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
   :ensure nil)
 #+end_src
 
-* SANE DEFAULTS
-** All the Icons
+* Sane defaults
+** All the icons
 #+begin_src emacs-lisp
 (use-package all-the-icons
   :if (display-graphic-p))
@@ -492,12 +557,9 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 ;; Backups
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
-
-;; Minibuffer escape
-(global-set-key [escape] 'keyboard-escape-quit)
 #+end_src
 
-* THEME
+* Theme
 #+begin_src emacs-lisp
 (require-theme 'modus-themes)
 (setq modus-themes-italic-constructs t
@@ -505,17 +567,12 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
       ;;modus-themes-syntax '(alt-syntax)
       modus-themes-hl-line '(intense)
       modus-themes-paren-match '(intense))
-(setq modus-themes-headings
-      (quote ((1 . (overline variable-pitch 1.3))
-              (2 . (variable-pitch 1.15))
-              (3 . (1.05))
-              (t . (monochrome)))))
 (setq modus-vivendi-palette-overrides
-      '((bg-main "#2e3440") ;; Background color
-          (bg-active "#616E87") ;; Mode line
-          (bg-mode-line-active "#616E87") ;; Mode line
-          (bg-mode-line-inactive "#616E87") ;; Mode line
-          (bg-dim "#2E3440") ;; Code blocks
+      '((bg-main "#1e1e1e") ;; Background color
+          (bg-active "#464646") ;; Mode line
+          (bg-mode-line-active "#464646") ;; Mode line
+          (bg-mode-line-inactive "#252526") ;; Mode line
+          (bg-dim "#1e1e1e") ;; Code blocks
         ))
 (setq modus-themes-common-palette-overrides
       `(
@@ -523,8 +580,8 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 	  (bg-line-number-active unspecified)
 	  (border-mode-line-active bg-mode-line-active) ;; Mode line border
           (border-mode-line-inactive bg-mode-line-inactive) ;; Mode line border
-	  (bg-prose-block-contents "#424C5E") ;; Code block contents
-          (bg-prose-block-delimiter "#3B4252") ;; Code start/end
+	  (bg-prose-block-contents "#252526") ;; Code block contents
+          (bg-prose-block-delimiter "#2d2d2d") ;; Code start/end
        ))
 (load-theme 'modus-vivendi)
 #+end_src

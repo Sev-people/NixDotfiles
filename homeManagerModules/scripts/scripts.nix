@@ -4,6 +4,16 @@ let
   em = pkgs.writeShellScriptBin "em" ''
     emacsclient -c -a 'emacs --init-directory ~/.dotfiles/emacs'
   '';
+  new-project = pkgs.writeShellScriptBin "new-project" ''
+    set -e
+    cd ~/Projects
+    mkdir -p "$1"
+    cd "$1"
+    nix flake init --template github:nix-community/nix-direnv
+    echo "use flake" > .envrc
+    direnv allow
+    emacs .
+  '';
   flake-update = pkgs.writeShellScriptBin "flake-update" ''
     set -e
     pushd ~/.dotfiles/
@@ -114,5 +124,5 @@ let
   '';
 in
 {
-  home.packages = [ em flake-update track-add cycle-wallpapers bar-status ];
+  home.packages = [ em new-project flake-update track-add cycle-wallpapers bar-status ];
 }

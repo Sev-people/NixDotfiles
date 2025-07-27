@@ -9,8 +9,8 @@
     ./dev/git.nix
     ./dev/sh.nix
     ./system/ssh.nix
+    ./system/style.nix
     ./wm/sway.nix
-    ./wm/style.nix
     ./scripts/scripts.nix
   ];
 
