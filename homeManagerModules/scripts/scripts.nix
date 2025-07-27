@@ -19,8 +19,6 @@ let
     echo "use flake" > "$PROJECT_DIR/.envrc"
     cd "$PROJECT_DIR"
     direnv allow
-    
-    em flake.nix
   '';
   flake-update = pkgs.writeShellScriptBin "flake-update" ''
     set -e
@@ -84,7 +82,8 @@ let
         fi
     
         # Select a random wallpaper from the array
-        wallpaperIndex=$(( RANDOM % "$${#wallpapers[@]}" ))
+        wallpapers_length=$${#wallpapers[@]}
+        wallpaperIndex=$(( RANDOM % wallpapers_length ))
         selectedWallpaper="$${wallpapers[$wallpaperIndex]}"
     
         # Update the wallpaper using the swww img command
