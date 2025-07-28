@@ -13,6 +13,7 @@
 - [[#coding-environment][Coding environment]]
   - [[#devshell-integration][devShell integration]]
   - [[#github-integration][Github integration]]
+  - [[#programming-languages][Programming languages]]
   - [[#project-management][Project management]]
   - [[#project-navigation][Project navigation]]
   - [[#language-server-protocol][Language Server Protocol]]
@@ -161,12 +162,57 @@
 ** Github integration
 #+begin_src emacs-lisp
 ;; Magit dependency
- (use-package transient
+(use-package transient
   :ensure t)
 
 (use-package magit
   :defer t
   :commands (magit-status magit-blame))
+#+end_src
+** Programming languages
+#+begin_src emacs-lisp
+(use-package python
+  :mode ("\\.py\\'" . python-mode)
+  :interpreter ("python3" . python-mode))
+
+(use-package rust-mode
+  :ensure t
+  :mode "\\.rs\\'")
+
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
+(with-eval-after-load 'js
+  (setq js-indent-level 2))
+
+(use-package typescript-mode
+  :ensure t
+  :mode ("\\.ts\\'" "\\.tsx\\'")
+  :config
+  (setq typescript-indent-level 2))
+
+(use-package json-mode
+  :ensure t
+  :mode "\\.json\\'")
+
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.ya?ml\\'")
+
+(use-package toml-mode
+  :ensure t
+  :mode "\\.toml\\'")
+
+(with-eval-after-load 'sh-script
+  (setq sh-basic-offset 2
+        sh-indentation 2))
+
+(use-package nix-mode
+  :ensure t
+  :mode "\\.nix\\'")
+
+(with-eval-after-load 'cc-mode
+  (setq c-basic-offset 4
+        tab-width 4
+        indent-tabs-mode nil))
 #+end_src
 ** Project management
 #+begin_src emacs-lisp
@@ -176,10 +222,6 @@
   (("C-s" . consult-line)
    ("C-c g" . consult-ripgrep)
    ("C-x b" . consult-buffer)))
-
-;; Required for consult-ripgrep
-(setq consult-project-function
-      (lambda (_) (project-root (project-current t))))
 #+end_src
 ** Project navigation
 #+begin_src emacs-lisp
@@ -211,8 +253,7 @@
          (sh-mode          . eglot-ensure)
          (nix-mode         . eglot-ensure)
          (c-mode           . eglot-ensure)
-         (c++-mode         . eglot-ensure)
-         (web-mode         . eglot-ensure))
+         (c++-mode         . eglot-ensure))
   :custom
   (eglot-autoshutdown t)
   (eglot-send-changes-idle-time 0.2)
