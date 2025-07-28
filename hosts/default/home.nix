@@ -55,7 +55,6 @@
     ffmpeg
     vlc
     mpv
-    easyeffects
     
     # System Utilities and Maintenance
     gparted

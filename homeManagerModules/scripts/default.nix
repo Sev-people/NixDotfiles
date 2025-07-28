@@ -14,6 +14,7 @@ let
     { name = "track-add"; path = ./track-add.sh; deps = [ pkgs.python313Packages.eyeD3 ]; }
     { name = "cycle-wallpapers"; path = ./cycle-wallpapers.sh; }
     { name = "bar-status"; path = ./bar-status.sh; deps = [ pkgs.iw pkgs.gnugrep ]; }
+    { name = "pitch-shift"; path = ./pitch-shift.sh; deps = [ pkgs.rubberband ]; }
   ];
 in {
   home.packages = map mkScript scripts;
