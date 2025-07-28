@@ -1,3 +1,6 @@
+.direnv/
+nixos-switch.log
+
 # Ignore everything in emacs/
 emacs/*
 

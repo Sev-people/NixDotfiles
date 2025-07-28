@@ -1,11 +1,6 @@
-{ config, pkgs, inputs, ... }:
+{ pkgs, inputs, ... }:
 
-let
-  womicAppImage = builtins.fetchurl {
-    url = "https://wolicheng.com/womic/softwares/micclient-x86_64.AppImage";
-    sha256 = "1fqxgqjvwiqjzprfvrx9d88hrybrhgww353b4amcp7fn063ch3pa";
-  };
-in {
+{
 
   # Path information
   home.username = "marc";

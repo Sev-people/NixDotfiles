@@ -127,9 +127,6 @@ in {
     slurp
     wl-clipboard
     swww
-    # For bar
-    gnugrep
-    iw
   ];
 
 }
