@@ -5,8 +5,13 @@
 #+OPTIONS: toc:2
 
 * Table of contents :toc:
-- [[#load-first][Load first]]
 - [[#elpaca][Elpaca]]
+- [[#org-mode][Org mode]]
+  - [[#setup][Setup]]
+  - [[#appearance][Appearance]]
+  - [[#agenda][Agenda]]
+  - [[#table-of-contents][Table of contents]]
+  - [[#source-code-block-expansion][Source code block expansion]]
 - [[#keybindings][Keybindings]]
   - [[#evil-mode][Evil mode]]
   - [[#keybindings-1][Keybindings]]
@@ -27,32 +32,15 @@
 - [[#keybinding-completion][Keybinding completion]]
 - [[#latex][LaTeX]]
   - [[#exporting][Exporting]]
-  - [[#setup][Setup]]
+  - [[#setup-1][Setup]]
   - [[#latex-modes][LaTeX modes]]
   - [[#pdf-viewer][PDF viewer]]
 - [[#mode-line][Mode line]]
-- [[#org-mode][Org mode]]
-  - [[#appearance][Appearance]]
-  - [[#agenda][Agenda]]
-  - [[#table-of-contents][Table of contents]]
-  - [[#source-code-block-expansion][Source code block expansion]]
 - [[#sane-defaults][Sane defaults]]
   - [[#all-the-icons][All the icons]]
   - [[#general-1][General]]
 - [[#text-correction][Text correction]]
 - [[#theme][Theme]]
-
-* Load first
-#+begin_src emacs-lisp
-(setq org-emphasis-regexp-components
-  '("-—[:space:]('\"{"
-    "-[:space:].,:!?;'\")}\\["
-    "[:space:]"
-    "."
-    1))
-
-(require 'org)
-#+end_src
 
 * Elpaca
 #+begin_src emacs-lisp
@@ -101,6 +89,69 @@
   (setq elpaca-use-package-by-default t))
 (elpaca-wait)
 (use-package compat)
+#+end_src
+
+* Org mode
+** Setup
+#+begin_src emacs-lisp
+(setq org-emphasis-regexp-components
+  '("-—[:space:]('\"{"
+    "-[:space:].,:!?;'\")}\\["
+    "[:space:]"
+    "."
+    1))
+
+(require 'org)
+#+end_src
+** Appearance
+#+begin_src emacs-lisp
+(setq org-startup-folded t
+      org-hide-emphasis-markers t
+      org-return-follows-link t)
+
+(use-package org-appear
+  :hook (org-mode . org-appear-mode))
+#+end_src
+** Agenda
+#+begin_src emacs-lisp
+;; General Settings
+(setq org-agenda-span 1
+org-agenda-start-day "+0d"
+org-agenda-skip-timestamp-if-done t
+org-agenda-skip-deadline-if-done t
+org-agenda-skip-scheduled-if-done t
+org-agenda-skip-scheduled-if-deadline-is-shown t
+org-agenda-skip-timestamp-if-deadline-is-shown t)
+
+(setq org-agenda-prefix-format '(
+(agenda . "  %?-2i %t ")
+ (todo . " %i %-12:c")
+ (tags . " %i %-12:c")
+ (search . " %i %-12:c")))
+
+(setq org-agenda-hide-tags-regexp ".*")
+
+(setq org-agenda-current-time-string "")
+(setq org-agenda-time-grid '((daily) () "" ""))
+
+;; Tags And TODO Keywords
+(setq org-tag-persistent-alist '((:startgroup . nil)
+                      ("learning" . ?l) ("academics" . ?a)
+                      ("business" . ?b) ("practical" . ?p)
+                      (:endgroup . nil)
+                      ))
+(setq org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "EVNT(e)" "PEND(w)" "|" "DONE(d)")))
+#+end_src
+** Table of contents
+#+begin_src emacs-lisp
+(use-package toc-org
+    :ensure t
+    :commands toc-org-enable
+    :init (add-hook 'org-mode-hook 'toc-org-enable))
+#+end_src
+** Source code block expansion
+#+begin_src emacs-lisp
+(require 'org-tempo)
 #+end_src
 
 * Keybindings
@@ -258,7 +309,7 @@
   (eglot-autoshutdown t)
   (eglot-send-changes-idle-time 0.2)
   :config
-  (setq eglot-server-programs
+  (setq-default eglot-server-programs
         '((python-mode     . ("pyright-langserver" "--stdio"))
           (rust-mode       . ("rust-analyzer"))
           (js-mode         . ("typescript-language-server" "--stdio"))
@@ -357,8 +408,6 @@
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
-(global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
-(global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
 #+end_src
 
 * Keybinding completion
@@ -452,58 +501,6 @@
           (concat " ⎇"
                   (substring vc-mode (+ (length backend) 2)))))))
    mode-line-end-spaces))
-#+end_src
-
-* Org mode
-** Appearance
-#+begin_src emacs-lisp
-(setq org-startup-folded t
-      org-hide-emphasis-markers t
-      org-return-follows-link t)
-
-(use-package org-appear
-  :hook (org-mode . org-appear-mode))
-#+end_src
-** Agenda
-#+begin_src emacs-lisp
-;; General Settings
-(setq org-agenda-span 1
-org-agenda-start-day "+0d"
-org-agenda-skip-timestamp-if-done t
-org-agenda-skip-deadline-if-done t
-org-agenda-skip-scheduled-if-done t
-org-agenda-skip-scheduled-if-deadline-is-shown t
-org-agenda-skip-timestamp-if-deadline-is-shown t)
-
-(setq org-agenda-prefix-format '(
-(agenda . "  %?-2i %t ")
- (todo . " %i %-12:c")
- (tags . " %i %-12:c")
- (search . " %i %-12:c")))
-
-(setq org-agenda-hide-tags-regexp ".*")
-
-(setq org-agenda-current-time-string "")
-(setq org-agenda-time-grid '((daily) () "" ""))
-
-;; Tags And TODO Keywords
-(setq org-tag-persistent-alist '((:startgroup . nil)
-                      ("learning" . ?l) ("academics" . ?a)
-                      ("business" . ?b) ("practical" . ?p)
-                      (:endgroup . nil)
-                      ))
-(setq org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "EVNT(e)" "PEND(w)" "|" "DONE(d)")))
-#+end_src
-** Table of contents
-#+begin_src emacs-lisp
-(use-package toc-org
-    :ensure t
-    :commands toc-org-enable
-    :init (add-hook 'org-mode-hook 'toc-org-enable))
-#+end_src
-** Source code block expansion
-#+begin_src emacs-lisp
-(require 'org-tempo)
 #+end_src
 
 * Sane defaults

@@ -49,6 +49,7 @@
         pkgs.statix
         pkgs.deadnix
         pkgs.nil
+        pkgs.bash-language-server
       ];
     };
   };
