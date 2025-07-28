@@ -1,5 +1,7 @@
 {
   description = "DevShell Template";
+
+  # Inputs
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   inputs.systems.url = "github:nix-systems/default";
   inputs.flake-utils = {
@@ -7,31 +9,35 @@
     inputs.systems.follows = "systems";
   };
 
-  outputs =
-    { nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (
-      system:
+  outputs = { nixpkgs, flake-utils, ... }:
+    flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-      /* PYTHON
-      python-with-tools = pkgs.python3.withPackages (ps: with ps; [
-        black
-        mypy
-        setuptools
-        pip
-        pylsp
-      ]);
-      */
+        
+        /* PYTHON
+        python-with-tools = pkgs.python3.withPackages (ps: with ps; [
+          black
+          mypy
+          setuptools
+          pip
+        ]);
+        */
+        
+        devShellPackages = [
+          pkgs.git
+          pkgs.ruff
+
+          /* PYTHON
+          python-with-tools
+          pkgs.pyright
+          */
+        ];
+
       in
       {
-        devShells.default = pkgs.mkShell { packages = [
-        pkgs.git
-        pkgs.ruff
-
-        /* PYTHON
-        # python-with-tools
-        */
-        ]; };
+        devShells.default = pkgs.mkShell {
+          packages = devShellPackages;
+        };
       }
     );
 }

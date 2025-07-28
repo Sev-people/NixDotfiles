@@ -16,9 +16,6 @@
   - [[#project-management][Project management]]
   - [[#project-navigation][Project navigation]]
   - [[#language-server-protocol][Language Server Protocol]]
-- [[#code-and-text-correction][Code and text correction]]
-  - [[#code][Code]]
-  - [[#text][Text]]
 - [[#denote][Denote]]
 - [[#file-browsing][File browsing]]
 - [[#fonts][Fonts]]
@@ -38,10 +35,10 @@
   - [[#agenda][Agenda]]
   - [[#table-of-contents][Table of contents]]
   - [[#source-code-block-expansion][Source code block expansion]]
-- [[#programming-languages][Programming languages]]
 - [[#sane-defaults][Sane defaults]]
   - [[#all-the-icons][All the icons]]
   - [[#general-1][General]]
+- [[#text-correction][Text correction]]
 - [[#theme][Theme]]
 
 * Load first
@@ -220,21 +217,19 @@
   (eglot-autoshutdown t)
   (eglot-send-changes-idle-time 0.2)
   :config
-  ;; LSP server program declarations
-  (add-to-list 'eglot-server-programs
-               '((c-mode c++-mode) . ("clangd")))
-  (add-to-list 'eglot-server-programs
-               '(web-mode . ("typescript-language-server" "--stdio")))
-  (add-to-list 'eglot-server-programs
-               '(nix-mode . ("nil")))
-  (add-to-list 'eglot-server-programs
-               '(yaml-mode . ("yaml-language-server" "--stdio")))
-  (add-to-list 'eglot-server-programs
-               '(json-mode . ("vscode-json-languageserver" "--stdio")))
-  (add-to-list 'eglot-server-programs
-               '(toml-mode . ("taplo" "lsp" "stdio")))
-  (add-to-list 'eglot-server-programs
-               '(sh-mode . ("bash-language-server" "start"))))
+  (setq eglot-server-programs
+        '((python-mode     . ("pyright-langserver" "--stdio"))
+          (rust-mode       . ("rust-analyzer"))
+          (js-mode         . ("typescript-language-server" "--stdio"))
+          (typescript-mode . ("typescript-language-server" "--stdio"))
+          (web-mode        . ("typescript-language-server" "--stdio"))
+          (json-mode       . ("vscode-json-languageserver" "--stdio"))
+          (yaml-mode       . ("yaml-language-server" "--stdio"))
+          (toml-mode       . ("taplo" "lsp" "stdio"))
+          (sh-mode         . ("bash-language-server" "start"))
+          (c-mode          . ("clangd"))
+          (c++-mode        . ("clangd"))
+          (nix-mode        . ("nil")))))
 
 (use-package corfu
   :ensure t
@@ -245,37 +240,6 @@
   (corfu-preview-current nil)
   :init
   (global-corfu-mode))
-#+end_src
-
-* Code and text correction
-** Code
-#+begin_src emacs-lisp
-(use-package flycheck
-  :ensure t
-  :defer nil
-  :hook (after-init . global-flycheck-mode))
-#+end_src
-** Text
-#+begin_src emacs-lisp
-(use-package flyspell
-  :defer t
-  :ensure nil
-  :config
-  ;; Skip irrelevant regions
-  (add-to-list 'ispell-skip-region-alist '("~" "~"))
-  (add-to-list 'ispell-skip-region-alist '("=" "="))
-  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
-  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXPORT" . "^#\\+END_EXPORT"))
-  (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
-
-  ;; Enable only in selected modes
-  (dolist (mode '(
-                  mu4e-compose-mode-hook))
-    (add-hook mode (lambda () (flyspell-mode 1))))
-
-  ;; Silence startup messages
-  (setq flyspell-issue-welcome-flag nil
-        flyspell-issue-message-flag nil))
 #+end_src
 
 * Denote
@@ -501,60 +465,6 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 (require 'org-tempo)
 #+end_src
 
-* Programming languages
-#+begin_src emacs-lisp
-;; Emacs Lisp
-(use-package elisp-mode
-  :ensure nil)
-
-;; Shell
-(use-package sh-script
-  :ensure nil)
-
-;; Python
-(use-package python-mode)
-
-;; Nix
-(use-package nix-mode
-  :mode "\\.nix\\'")
-
-;; YAML
-(use-package yaml-mode
-  :mode "\\.ya?ml\\'")
-
-;; JSON
-(use-package json-mode
-  :mode "\\.json\\'")
-
-;; TOML
-(use-package toml-mode
-  :mode "\\.toml\\'")
-
-;; Rust
-(use-package rust-mode
-  :mode "\\.rs\\'")
-
-;; C / C++
-(use-package cc-mode
-  :ensure nil)
-
-;; Web: HTML / CSS / JS / JSX / TSX
-(use-package web-mode
-  :mode ("\\.html\\'" "\\.css\\'" "\\.js\\'" "\\.jsx\\'" "\\.tsx\\'")
-  :config
-  (setq web-mode-markup-indent-offset 2
-        web-mode-code-indent-offset 2
-        web-mode-css-indent-offset 2))
-
-;; Emmet – fast HTML/CSS typing
-(use-package emmet-mode
-  :hook (web-mode css-mode))
-
-;; SQL
-(use-package sql
-  :ensure nil)
-#+end_src
-
 * Sane defaults
 ** All the icons
 #+begin_src emacs-lisp
@@ -583,6 +493,29 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 ;; Backups
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+#+end_src
+
+* Text correction
+#+begin_src emacs-lisp
+(use-package flyspell
+  :defer t
+  :ensure nil
+  :config
+  ;; Skip irrelevant regions
+  (add-to-list 'ispell-skip-region-alist '("~" "~"))
+  (add-to-list 'ispell-skip-region-alist '("=" "="))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXPORT" . "^#\\+END_EXPORT"))
+  (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+
+  ;; Enable only in selected modes
+  (dolist (mode '(
+                  mu4e-compose-mode-hook))
+    (add-hook mode (lambda () (flyspell-mode 1))))
+
+  ;; Silence startup messages
+  (setq flyspell-issue-welcome-flag nil
+        flyspell-issue-message-flag nil))
 #+end_src
 
 * Theme
