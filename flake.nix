@@ -43,8 +43,6 @@
     devShells.${system}.default = pkgs.mkShell {
       name = "dotfiles-dev-shell";
       packages = [
-        pkgs.git
-        pkgs.ripgrep
         pkgs.alejandra
         pkgs.statix
         pkgs.deadnix

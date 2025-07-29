@@ -13,25 +13,23 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        
-        /* PYTHON
-        python-with-tools = pkgs.python3.withPackages (ps: with ps; [
-          black
-          mypy
-          setuptools
-          pip
-        ]);
-        */
-        
-        devShellPackages = [
-          pkgs.git
-          pkgs.ruff
 
-          /* PYTHON
-          python-with-tools
-          pkgs.pyright
-          */
+        python-env = with pkgs; [
+          (python3.withPackages (ps: with ps; [
+            black
+            mypy
+            setuptools
+            pip
+          ]))
+          ruff
+          pyright
         ];
+
+        # ========== [ ENVIRONMENTS ] ==========
+        devShellPackages = [
+          # python-env
+        ];
+        # ========== [ ENVIRONMENTS ] ==========
 
       in
       {
