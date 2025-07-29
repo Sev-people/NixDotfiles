@@ -28,8 +28,7 @@
     
     # Development Tools and Programming Environments
     emacs
-    libvterm # Emacs terminal emulation
-    python313Packages.cmake
+    emacsPackages.vterm # Emacs terminal emulator
     auctex
     (texlive.combine {
       inherit (pkgs.texlive)

@@ -16,10 +16,10 @@ LOOP_PID=$!
 
 sleep 1  # Allow PipeWire to register nodes
 
-# Pitch shift pipeline
-pw-record --target "$TMP_CAPTURE" --channels 2 --rate 48000 --format f32le - \
+# Pitch shift pipeline (correct formats, silence banner)
+pw-record --target "$TMP_CAPTURE" --channels 2 --rate 48000 --format f32 - \
     | rubberband -R -p "$SEMITONES" -f -q --stdin --stdout 2>/dev/null \
-    | pw-play --target "$TMP_PLAYBACK" --channels 2 --rate 48000 --format f32le -
+    | pw-play --target "$TMP_PLAYBACK" --channels 2 --rate 48000 --format f32 -
 
 RB_PID=$!
 
