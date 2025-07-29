@@ -39,6 +39,7 @@
 - [[#sane-defaults][Sane defaults]]
   - [[#all-the-icons][All the icons]]
   - [[#general-1][General]]
+- [[#terminal][Terminal]]
 - [[#text-correction][Text correction]]
 - [[#theme][Theme]]
 
@@ -531,6 +532,16 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 ;; Backups
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+#+end_src
+
+* Terminal
+#+begin_src emacs-lisp
+(use-package vterm
+  :ensure t
+  :commands (vterm vterm-other-window)
+  :init)
+(global-set-key (kbd "C-c t") #'vterm)
+(global-set-key (kbd "C-c T") #'vterm-other-window)
 #+end_src
 
 * Text correction
