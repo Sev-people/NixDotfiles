@@ -28,22 +28,15 @@
     
     # Development Tools and Programming Environments
     emacs
+    libvterm # Emacs terminal emulation
     auctex
     (texlive.combine {
-      inherit (texlive)
+      inherit (pkgs.texlive)
+        scheme-basic
         booktabs
-        scheme-medium
         wrapfig
-        marvosym
-        wasysym
-        capt-of
-        titlesec
-        titling
         braket
-        pgfplots
-        tikz-3dplot
-        chemfig
-        mhchem;
+        pgfplots;
     })
     ispell
     lilypond-with-fonts
