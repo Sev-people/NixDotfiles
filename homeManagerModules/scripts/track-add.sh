@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -euo pipefail
 
 if [ -z "${1-}" ]; then
@@ -6,27 +7,41 @@ if [ -z "${1-}" ]; then
 fi
 
 URL="$1"
-OUTDIR="$HOME/Music"  # Change this if you want
+OUTDIR="$HOME/Music"  # Change this if desired
 TMPDIR="$(mktemp -d)"
 
-# 1. Download and convert to MP3
+# 1. Download best audio (Opus/WebM native from YouTube)
 yt-dlp --no-playlist \
-       -x --audio-format mp3 \
+       -f bestaudio \
        -o "$TMPDIR/%(title).200s.%(ext)s" \
        "$URL"
 
-# 2. Prompt for metadata
+# 2. Locate the downloaded file
+DL_FILE="$(find "$TMPDIR" -type f | head -n 1)"
+BASENAME="$(basename "${DL_FILE%.*}")"
+
+# 3. Re-containerize WebM → Opus (near-instant, no re-encode)
+OPUS_FILE="$TMPDIR/${BASENAME}.opus"
+ffmpeg -i "$DL_FILE" -c:a copy "$OPUS_FILE" -loglevel error
+rm "$DL_FILE"
+
+# 4. Prompt for metadata
 read -rp "Enter Artist: " ARTIST
 read -rp "Enter Title: " TITLE
+read -rp "Enter Album (optional): " ALBUM
 
-# 3. Tag with eyeD3
-MP3_FILE="$(find "$TMPDIR" -type f -name '*.mp3' | head -n 1)"
-eyeD3 --artist="$ARTIST" --title="$TITLE" "$MP3_FILE"
+# 5. Tag using opuscomment (instant)
+opuscomment -w \
+  --artist="$ARTIST" \
+  --title="$TITLE" \
+  ${ALBUM:+--album="$ALBUM"} \
+  "$OPUS_FILE"
 
-# 4. Move to final destination
-mv "$MP3_FILE" "$OUTDIR/"
+# 6. Move to final destination
+FINAL="$OUTDIR/${BASENAME}.opus"
+mv "$OPUS_FILE" "$FINAL"
 
-# 5. Cleanup
+# 7. Clean up
 rm -rf "$TMPDIR"
 
-echo "✔ Downloaded, tagged, and saved to $OUTDIR"
+echo "✔ Saved and tagged: $FINAL"
