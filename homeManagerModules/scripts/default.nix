@@ -11,10 +11,9 @@ let
     { name = "em"; path = ./em.sh; }
     { name = "new-project"; path = ./new-project.sh; }
     { name = "flake-update"; path = ./flake-update.sh; }
-    { name = "track-add"; path = ./track-add.sh; deps = [ pkgs.opusTools ]; }
+    { name = "track-add"; path = ./track-add.sh; }
     { name = "cycle-wallpapers"; path = ./cycle-wallpapers.sh; }
     { name = "bar-status"; path = ./bar-status.sh; deps = [ pkgs.iw pkgs.gnugrep ]; }
-    { name = "pitch-shift"; path = ./pitch-shift.sh; }
   ];
 in {
   home.packages = map mkScript scripts;
