@@ -9,12 +9,15 @@
   nixpkgs.config.allowUnfree = true;
   
   home.stateVersion = "23.11"; # You should not change this value, even if you update Home Manager.
+  
+  # Web Browser
+  imports = [
+    inputs.zen-browser.homeModules.twilight
+  ];
+  programs.zen-browser.enable = true;
 
   # Packages
   home.packages = with pkgs; [
-    # Web Browsers
-    inputs.zen-browser.packages.${pkgs.system}.default
-    
     # Terminal and CLI Tools
     foot
     htop

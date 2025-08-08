@@ -10,6 +10,7 @@
   - [[#setup][Setup]]
   - [[#appearance][Appearance]]
   - [[#agenda][Agenda]]
+  - [[#capture][Capture]]
   - [[#table-of-contents][Table of contents]]
   - [[#source-code-block-expansion][Source code block expansion]]
 - [[#keybindings][Keybindings]]
@@ -142,6 +143,36 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
                       (:endgroup . nil)
                       ))
 (setq org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "EVNT(e)" "PEND(w)" "|" "DONE(d)")))
+#+end_src
+** Capture
+#+begin_src emacs-lisp
+(setq org-default-notes-file "~/Documents/work/agenda.org")
+
+(setq denote-templates
+      '((booknote . "* Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Overview\n* Quotes\n* Vocabulary\n| Word | Definition |\n* Chapter Notes\n** Chapter 1:")))
+
+(setq denote-org-capture-specifiers "%i\n%?")
+
+(setq org-capture-templates
+      '(("n" "New note (with Denote)" plain
+         (file denote-last-path)
+         #'denote-org-capture
+         :no-save t
+         :immediate-finish nil
+         :kill-buffer t
+         :jump-to-captured t)
+        ("b" "New book note" plain
+         (file denote-last-path)
+	 (function
+          (lambda ()
+            (let ((denote-use-template 'booknote))
+              (denote-org-capture))))
+         :no-save t
+         :immediate-finish nil
+         :kill-buffer t
+         :jump-to-captured t)))
+
+(global-set-key (kbd "C-c c") 'org-capture)
 #+end_src
 ** Table of contents
 #+begin_src emacs-lisp
