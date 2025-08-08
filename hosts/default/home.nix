@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 {
 
@@ -10,12 +10,6 @@
   
   home.stateVersion = "23.11"; # You should not change this value, even if you update Home Manager.
   
-  # Web Browser
-  imports = [
-    inputs.zen-browser.homeModules.twilight
-  ];
-  programs.zen-browser.enable = true;
-
   # Packages
   home.packages = with pkgs; [
     # Terminal and CLI Tools
@@ -31,7 +25,6 @@
     
     # Development Tools and Programming Environments
     emacs
-    emacsPackages.vterm # Emacs terminal emulator
     auctex
     (texlive.combine {
       inherit (pkgs.texlive)
@@ -62,7 +55,7 @@
     pastel
     yt-dlp
 
-    # Security and password management
+    # Security and Password Management
     pass
     pinentry-curses
   ];

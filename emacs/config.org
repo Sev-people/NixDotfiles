@@ -1,6 +1,4 @@
 #+TITLE: GNU Emacs Config
-#+AUTHOR: Marc Murray
-#+DESCRIPTION: Marc's Emacs config
 #+STARTUP: showeverything
 #+OPTIONS: toc:2
 
@@ -567,12 +565,8 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 * Terminal
 #+begin_src emacs-lisp
-(use-package vterm
-  :ensure t
-  :commands (vterm vterm-other-window)
-  :init)
-(global-set-key (kbd "C-c t") #'vterm)
-(global-set-key (kbd "C-c T") #'vterm-other-window)
+(elpaca 'eat)
+(global-set-key (kbd "C-c t") 'eat)
 #+end_src
 
 * Text correction
