@@ -14,6 +14,7 @@ let
     { name = "track-add"; path = ./track-add.sh; }
     { name = "cycle-wallpapers"; path = ./cycle-wallpapers.sh; }
     { name = "bar-status"; path = ./bar-status.sh; deps = [ pkgs.iw pkgs.gnugrep ]; }
+    { name = "push-files"; path = ./push-files.sh; }
   ];
 in {
   home.packages = map mkScript scripts;

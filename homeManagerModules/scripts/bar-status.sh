@@ -19,7 +19,7 @@ while true; do
 
   # Volume
   volume=$(pactl get-sink-volume @DEFAULT_SINK@ 2>/dev/null | grep -o '[0-9]\+%' | head -1 || echo "Muted")
-  vol_status="$volume volume"
+  vol_status="Volume: $volume"
 
   # Combine
   output="$vol_status | $network"
