@@ -108,9 +108,6 @@
 (setq org-startup-folded t
       org-hide-emphasis-markers t
       org-return-follows-link t)
-
-(use-package org-appear
-  :hook (org-mode . org-appear-mode))
 #+end_src
 ** Agenda
 #+begin_src emacs-lisp
@@ -140,35 +137,19 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
                       ("business" . ?b) ("practical" . ?p)
                       (:endgroup . nil)
                       ))
-(setq org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "EVNT(e)" "PEND(w)" "|" "DONE(d)")))
+(setq org-todo-keywords '((sequence "TODO(t)" "FILE(f)" "PROJ(p)" "IDEA(e)" "WAIT(w)" "|" "DONE(d)")))
 #+end_src
 ** Capture
 #+begin_src emacs-lisp
-(setq org-default-notes-file "~/Documents/work/agenda.org")
-
-(setq denote-templates
-      '((booknote . "* Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Overview\n* Quotes\n* Vocabulary\n| Word | Definition |\n* Chapter Notes\n** Chapter 1:")))
+(setq my/gtd-root (expand-file-name "~/Documents/work/organization/"))
+(setq org-default-notes-file (expand-file-name "inbox.org" my/gtd-root))
 
 (setq denote-org-capture-specifiers "%i\n%?")
 
 (setq org-capture-templates
-      '(("n" "New note (with Denote)" plain
-         (file denote-last-path)
-         #'denote-org-capture
-         :no-save t
-         :immediate-finish nil
-         :kill-buffer t
-         :jump-to-captured t)
-        ("b" "New book note" plain
-         (file denote-last-path)
-	 (function
-          (lambda ()
-            (let ((denote-use-template 'booknote))
-              (denote-org-capture))))
-         :no-save t
-         :immediate-finish nil
-         :kill-buffer t
-         :jump-to-captured t)))
+      `(("i" "Inbox" entry
+         (file+headline ,(expand-file-name "inbox.org" my/gtd-root) "Inbox")
+         "* FILE %^{PROMPT|Entry} \n:PROPERTIES:\n:Captured: %U\n:End:\n%^{PROMPT}%i" :immediate-finish t)))
 
 (global-set-key (kbd "C-c c") 'org-capture)
 #+end_src
@@ -377,12 +358,21 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
    ("C-c n d" . denote-dired)
    ("C-c n g" . denote-grep))
   :config
-  (setq denote-directory (expand-file-name "~/Documents/work/notes")
+  (setq denote-directory (expand-file-name "~/Documents/work/knowledge")
 	denote-known-keywords nil
 	denote-infer-keywords t)
-
+  (add-to-list 'denote-prompts 'template)
+  
   ;; Automatically rename Denote buffers when opening them
   (denote-rename-buffer-mode 1))
+
+  ;; Templates
+  (setq denote-templates
+	'(
+	  (none . "") 
+	  (philosophy . "* Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Overview\n* Key Ideas\n| Term | Definition |\n* Quotes\n* Chapter Notes\n** Chapter 1:")
+	  (literature . "* Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Overview\n* Quotes\n* Chapter Notes\n** Chapter 1:")
+	  ))
 #+end_src
 
 * File browsing
@@ -428,6 +418,10 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 ;; Truncate lines
 (global-visual-line-mode 1)
+
+;; Relative line numbers
+(setq display-line-numbers-type 'relative) 
+(global-display-line-numbers-mode)
 #+end_src
 ** Startup screen
 #+begin_src emacs-lisp
