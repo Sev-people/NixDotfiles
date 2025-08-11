@@ -474,33 +474,25 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 #+begin_src emacs-lisp
 (setq inhibit-startup-screen t)
 (defun my/startup-dashboard ()
-    (let* ((buffer-deadlines (get-buffer-create "*deadlines*"))
-	   (buffer-calendar "*Calendar*")
-	   (buffer-agenda "*Org Agenda*")
-	   (buffer-next "next.org")
-	   (next-file (expand-file-name "next.org" my/gtd-root)))
-      
-      (calendar)
-      (org-agenda-list)
-      (find-file next-file)
-      
-      (switch-to-buffer buffer-deadlines)
-      (let ((org-agenda-entry-types '(:deadline)))
-	(org-agenda nil "a"))
-      (delete-other-windows)
-      
-      (split-window-vertically)
-      (other-window 1)
-      (switch-to-buffer (get-buffer buffer-agenda))
+    (let* ((buffer-name "*Startup Dashboard*")
+	   (next-file (expand-file-name "next.org" my/gtd-root))
+	   (header-name "Next")
+	   (inhibit-read-only t))
+      (with-current-buffer (get-buffer-create buffer-name)
+	(erase-buffer)
+	(org-mode)
+	(insert (format "#+TITLE: Startup Dashboard\n\n"))
 
-      (split-window-horizontally)
-      (other-window 1)
-      (switch-to-buffer (get-buffer buffer-next))
-      
-      (other-window -2)
-      (split-window-horizontally)
-      (switch-to-buffer (get-buffer buffer-calendar))
-      ))
+	(insert "* Today's Agenda\n")
+	(let ((org-agenda-custom-commands
+               `(("t" "Today's agenda"
+                  agenda ""
+                  ((org-agenda-span 1)
+                   (org-agenda-start-day "today")
+                   (org-agenda-show-all-dates nil)))))))
+              (org-agenda nil "t")
+	  (insert "\n\n"))
+))
 #+end_src
 ** Zooming in and out
 #+begin_src emacs-lisp
