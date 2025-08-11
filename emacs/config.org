@@ -113,6 +113,9 @@
 #+end_src
 ** Agenda
 #+begin_src emacs-lisp
+(setq org-agenda-files '(
+	"~/Documents/work/organization/calendar.org"
+	"~/Documents/work/organization/agenda.org"))
 ;; General Settings
 (setq org-agenda-span 1
 org-agenda-start-day "+0d"
@@ -154,6 +157,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
   (let* ((dest-map '(("projects.org"  . "PROJ")
                      ("waiting.org"   . "WAIT")
                      ("next.org"      . "TODO")
+                     ("calendar.org"  . "TODO")
                      ("reference.org" . nil)
                      ("someday.org"   . "IDEA")))
          (choice (completing-read "Move to: " (mapcar #'car dest-map)))
@@ -165,19 +169,21 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 		  (while (string-blank-p nextaction) (setq nextaction (read-string "Next Action (cannot be empty): ")))
 		  (org-set-property "NextAction" nextaction)
 		  (org-set-tags-command))
+    ;; Prompt for date
+    (when (member choice '("calendar.org")) (org-deadline nil))
     ;; Change TODO keyword
     (when keyword
       (org-todo keyword))
     (setq current-prefix-arg nil)
     ;; Refile header
     (let ((org-refile-targets `((,file . (:maxlevel . 1)))))
-      (org-refile)
+      (org-refile))
     ;; Save current buffer
     (save-buffer)
     ;; Save buffer header is being moved to
     (setq target-buf (find-buffer-visiting file))
     (with-current-buffer target-buf
-    (save-buffer)))))
+    (save-buffer))))
 
 ;; GTD tags And TODO Keywords
 (setq org-tag-persistent-alist '((:startgroup . nil)

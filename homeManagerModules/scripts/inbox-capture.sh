@@ -5,7 +5,7 @@ fi
 
 MARK="emacs-capture-$(date +%s%N)"
 
-emacsclient -c --eval "(org-capture nil \"i\")" --frame-parameters="((name . \"$MARK\"))" &
+emacsclient -c --eval "(progn (org-capture nil \"i\") (delete-frame))" --frame-parameters="((name . \"$MARK\"))" &
 
 # Check for existence of window
 for i in $(seq 1 10); do
