@@ -8,7 +8,7 @@ in {
   wayland.windowManager.sway = {
     enable = true;
 
-    config = rec {
+    config = {
       #–––––– Core
       modifier    = "Mod1";                     # ALT
       terminal    = "foot";
@@ -19,7 +19,6 @@ in {
         { command = "gammastep -O 2500"; }
         { command = "emacs --daemon --init-directory ~/.dotfiles/emacs"; }
         { command = "cycle-wallpapers"; }
-        { command = "swaymsg \"workspace 1; exec emacsclient -c --eval \"(my/startup-dashboard)\" -a 'emacs --init-directory ~/.dotfiles/emacs'\";"; }
       ];
 
       #–––––– Input

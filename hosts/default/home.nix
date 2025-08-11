@@ -26,17 +26,9 @@
     # Development Tools and Programming Environments
     emacs
     auctex
-    (texlive.combine {
-      inherit (pkgs.texlive)
-        scheme-basic
-        booktabs
-        wrapfig
-        braket
-        pgfplots;
-    })
     ispell
     lilypond-with-fonts
-    jq # Termina JSON utility
+    jq # Terminal JSON utility
     
     # PDF and Document Viewers
     zathura
