@@ -69,8 +69,7 @@ in {
 
         "Mod1+F"      = "exec zen";
         "Mod1+E"      = "exec em";
-        "Mod1+Y"      = "exec spotify-launcher";
-        "Mod1+D"      = "exec discord";
+        "Mod1+R"      = "exec inbox-capture";
         "Mod1+V"      = "floating toggle";
         "Mod1+Shift+U" = "gaps inner current toggle 15";
         "Mod1+U" = "splith";
