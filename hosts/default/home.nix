@@ -36,6 +36,7 @@
     })
     ispell
     lilypond-with-fonts
+    jq # Termina JSON utility
     
     # PDF and Document Viewers
     zathura

@@ -147,8 +147,6 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
          (file+headline ,(expand-file-name "inbox.org" my/gtd-root) "Inbox")
          "* FILE %^{Header|Entry} \n:PROPERTIES:\n:Captured: %u\n:End:\n%^{Description}%i" :immediate-finish t)))
 
-(global-set-key (kbd "C-c c") 'org-capture)
-
 ;; Refile GTD entries
 (defun gtd-refile-with-keyword ()
   "Refile current heading to a GTD target file and update its TODO keyword."
@@ -165,7 +163,8 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
     ;; Prompt for the next action to be taken
     (when (member choice '("projects.org" "next.org"))
 		  (while (string-blank-p nextaction) (setq nextaction (read-string "Next Action (cannot be empty): ")))
-		  (org-set-property "NextAction" nextaction))
+		  (org-set-property "NextAction" nextaction)
+		  (org-set-tags-command))
     ;; Change TODO keyword
     (when keyword
       (org-todo keyword))
@@ -179,7 +178,6 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
     (setq target-buf (find-buffer-visiting file))
     (with-current-buffer target-buf
     (save-buffer)))))
-(global-set-key (kbd "C-c m") 'gtd-refile-with-keyword)
 
 ;; GTD tags And TODO Keywords
 (setq org-tag-persistent-alist '((:startgroup . nil)
@@ -188,6 +186,14 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
                       (:endgroup . nil)
                       ))
 (setq org-todo-keywords '((sequence "TODO(t)" "FILE(f)" "PROJ(p)" "IDEA(i)" "WAIT(w)" "|" "DONE(d)")))
+
+;; GTD keybindings
+(defvar-keymap gtd-prefix-map
+  :doc "GTD prefix key map."
+  "c" 'org-capture
+  "m" 'gtd-refile-with-keyword)
+
+(keymap-set global-map "C-c d" gtd-prefix-map)
 #+end_src
 ** Table of contents
 #+begin_src emacs-lisp
