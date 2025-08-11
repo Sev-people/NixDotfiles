@@ -8,7 +8,7 @@
   - [[#setup][Setup]]
   - [[#appearance][Appearance]]
   - [[#agenda][Agenda]]
-  - [[#capture][Capture]]
+  - [[#getting-things-done][Getting Things Done]]
   - [[#table-of-contents][Table of contents]]
   - [[#source-code-block-expansion][Source code block expansion]]
 - [[#keybindings][Keybindings]]
@@ -95,13 +95,15 @@
 ** Setup
 #+begin_src emacs-lisp
 (setq org-emphasis-regexp-components
-  '("-—[:space:]('\"{"
-    "-[:space:].,:!?;'\")}\\["
-    "[:space:]"
-    "."
-    1))
+      '("-—[:space:]('\"{"
+	"-—[:space:].,:!?;'\")}\\["
+	"[:space:]"
+	"."
+	1))
 
 (require 'org)
+
+(org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 #+end_src
 ** Appearance
 #+begin_src emacs-lisp
@@ -131,16 +133,10 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 (setq org-agenda-current-time-string "")
 (setq org-agenda-time-grid '((daily) () "" ""))
 
-;; Tags And TODO Keywords
-(setq org-tag-persistent-alist '((:startgroup . nil)
-                      ("learning" . ?l) ("academics" . ?a)
-                      ("business" . ?b) ("practical" . ?p)
-                      (:endgroup . nil)
-                      ))
-(setq org-todo-keywords '((sequence "TODO(t)" "FILE(f)" "PROJ(p)" "IDEA(e)" "WAIT(w)" "|" "DONE(d)")))
 #+end_src
-** Capture
+** Getting Things Done
 #+begin_src emacs-lisp
+;; Capture templates
 (setq my/gtd-root (expand-file-name "~/Documents/work/organization/"))
 (setq org-default-notes-file (expand-file-name "inbox.org" my/gtd-root))
 
@@ -149,9 +145,49 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 (setq org-capture-templates
       `(("i" "Inbox" entry
          (file+headline ,(expand-file-name "inbox.org" my/gtd-root) "Inbox")
-         "* FILE %^{PROMPT|Entry} \n:PROPERTIES:\n:Captured: %U\n:End:\n%^{PROMPT}%i" :immediate-finish t)))
+         "* FILE %^{Header|Entry} \n:PROPERTIES:\n:Captured: %u\n:End:\n%^{Description}%i" :immediate-finish t)))
 
 (global-set-key (kbd "C-c c") 'org-capture)
+
+;; Refile GTD entries
+(defun gtd-refile-with-keyword ()
+  "Refile current heading to a GTD target file and update its TODO keyword."
+  (interactive)
+  (let* ((dest-map '(("projects.org"  . "PROJ")
+                     ("waiting.org"   . "WAIT")
+                     ("next.org"      . "TODO")
+                     ("reference.org" . nil)
+                     ("someday.org"   . "IDEA")))
+         (choice (completing-read "Move to: " (mapcar #'car dest-map)))
+         (keyword (cdr (assoc choice dest-map)))
+         (file (expand-file-name choice my/gtd-root))
+	 (nextaction ""))
+    ;; Prompt for the next action to be taken
+    (when (member choice '("projects.org" "next.org"))
+		  (while (string-blank-p nextaction) (setq nextaction (read-string "Next Action (cannot be empty): ")))
+		  (org-set-property "NextAction" nextaction))
+    ;; Change TODO keyword
+    (when keyword
+      (org-todo keyword))
+    (setq current-prefix-arg nil)
+    ;; Refile header
+    (let ((org-refile-targets `((,file . (:maxlevel . 1)))))
+      (org-refile)
+    ;; Save current buffer
+    (save-buffer)
+    ;; Save buffer header is being moved to
+    (setq target-buf (find-buffer-visiting file))
+    (with-current-buffer target-buf
+    (save-buffer)))))
+(global-set-key (kbd "C-c m") 'gtd-refile-with-keyword)
+
+;; GTD tags And TODO Keywords
+(setq org-tag-persistent-alist '((:startgroup . nil)
+                      ("@work" . ?w) ("@knowledge" . ?k)
+                      ("@misc" . ?m) ("@academic" . ?a)
+                      (:endgroup . nil)
+                      ))
+(setq org-todo-keywords '((sequence "TODO(t)" "FILE(f)" "PROJ(p)" "IDEA(i)" "WAIT(w)" "|" "DONE(d)")))
 #+end_src
 ** Table of contents
 #+begin_src emacs-lisp
@@ -478,8 +514,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 ** LaTeX modes
 #+begin_src emacs-lisp
 (use-package cdlatex
-  :hook ((org-mode . org-cdlatex-mode)
-         (LaTeX-mode . cdlatex-mode)))
+  :hook ((LaTeX-mode . cdlatex-mode)))
 
 (use-package auctex
   :defer t
