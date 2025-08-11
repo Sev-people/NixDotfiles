@@ -3,15 +3,10 @@
 
   # Inputs
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-  inputs.systems.url = "github:nix-systems/default";
-  inputs.flake-utils = {
-    url = "github:numtide/flake-utils";
-    inputs.systems.follows = "systems";
-  };
 
   outputs = { nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
       let
+        system = "x86_64-linux";
         pkgs = nixpkgs.legacyPackages.${system};
 
         python-env = with pkgs; [
@@ -33,7 +28,7 @@
 
       in
       {
-        devShells.default = pkgs.mkShell {
+        devShells.${system}.default = pkgs.mkShell {
           packages = devShellPackages;
         };
       }
