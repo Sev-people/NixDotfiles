@@ -155,7 +155,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
   (interactive)
   (let* ((dest-map '(("projects.org"  . "PROJ")
                      ("waiting.org"   . "WAIT")
-                     ("next.org"      . "TODO")
+                     ("next.org"      . "NEXT")
                      ("calendar.org"  . "TODO")
                      ("reference/reference.org" . nil)
                      ("someday.org"   . "IDEA")))
@@ -190,7 +190,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
                       ("@misc" . ?m) ("@academic" . ?a)
                       (:endgroup . nil)
                       ))
-(setq org-todo-keywords '((sequence "TODO(t)" "FILE(f)" "PROJ(p)" "IDEA(i)" "WAIT(w)" "|" "DONE(d)")))
+(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n!)" "FILE(f)" "PROJ(p@)" "IDEA(i)" "WAIT(w)" "|" "DONE(d)")))
 
 ;; GTD keybindings
 (defvar-keymap gtd-prefix-map
