@@ -191,6 +191,11 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
                       (:endgroup . nil)
                       ))
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n!)" "FILE(f)" "PROJ(p@)" "IDEA(i)" "WAIT(w)" "|" "DONE(d)")))
+(add-hook 'org-todo-repeat-hook #'org-reset-checkbox-state-subtree) ;; To unmark checkboxes
+(setq org-log-into-drawer t) ;; For timestamp logs
+;; Remove timestamp logging when tasks are completed
+(setq org-log-done nil)
+(setq org-log-repeat nil)
 
 ;; GTD keybindings
 (defvar-keymap gtd-prefix-map
@@ -563,6 +568,9 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
    (propertize "%m" 'face 'font-lock-type-face)
    ;; Narrow indicator
    (:eval (when (buffer-narrowed-p) " [Narrow]"))
+   ;; Org clock
+   (:eval (when (bound-and-true-p org-mode-line-string)
+            (concat " " org-mode-line-string)))
    ;; Git branch (VC)
    (:eval
     (when vc-mode
