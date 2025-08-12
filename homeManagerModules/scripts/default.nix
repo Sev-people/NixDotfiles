@@ -15,6 +15,7 @@ let
     { name = "cycle-wallpapers"; path = ./cycle-wallpapers.sh; }
     { name = "bar-status"; path = ./bar-status.sh; deps = [ pkgs.iw pkgs.gnugrep ]; }
     { name = "push-files"; path = ./push-files.sh; }
+    { name = "pull-files"; path = ./pull-files.sh; }
     { name = "inbox-capture"; path = ./inbox-capture.sh; }
   ];
 in {

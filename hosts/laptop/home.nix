@@ -22,6 +22,7 @@
     wget
     aria2 # Torrents
     unp
+    acpi # Battery monitoring (laptop only)
     
     # Development Tools and Programming Environments
     emacs

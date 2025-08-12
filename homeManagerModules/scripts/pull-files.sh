@@ -17,7 +17,12 @@ for repo in "${REPOS[@]}"; do
   echo ">>> Processing repository: $repo"
   cd "$repo" || { echo "$repo not found"; continue; }
   
-  git add .
-  git commit -m "$(commit_message)" || echo "No changes to commit in $repo"
-  git push
+  git fetch origin main
+  
+  if git merge-base --is-ancestor HEAD origin/main; then
+    git reset --hard origin/main
+  else
+    echo "[$repo] Not strictly behind. No reset."
+    continue
+  fi
 done
