@@ -116,6 +116,7 @@
 (setq org-agenda-files '(
 	"~/Documents/work/organization/calendar.org"
 	"~/Documents/work/organization/agenda.org"))
+
 ;; General Settings
 (setq org-agenda-span 1
 org-agenda-start-day "+0d"
@@ -133,8 +134,33 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 (setq org-agenda-hide-tags-regexp ".*")
 
+;; Important settings for agenda views
 (setq org-agenda-current-time-string "")
 (setq org-agenda-time-grid '((daily) () "" ""))
+
+;; Custom agenda view
+(setq org-agenda-custom-commands
+      '(("x" "Custom Agenda"
+         ;; Routine today
+         ((agenda ""
+                  ((org-agenda-span 1)
+                   (org-agenda-entry-types '(:timestamp))
+                   (org-agenda-overriding-header "Routine")))
+
+          ;; TODOs scheduled today
+          (agenda ""
+                  ((org-agenda-span 1)
+                   (org-agenda-entry-types '(:scheduled))
+		   (org-agenda-show-current-time-in-grid nil)
+                   (org-agenda-skip-function
+                    '(org-agenda-skip-entry-if 'nottodo 'any))
+                   (org-agenda-overriding-header "TODO Today")))
+
+          ;; Deadlines in the next 7 days
+          (agenda ""
+                  ((org-agenda-span 7)
+                   (org-agenda-entry-types '(:deadline))
+                   (org-agenda-overriding-header "Upcoming Deadlines")))))))
 #+end_src
 ** Getting Things Done
 #+begin_src emacs-lisp
@@ -204,6 +230,9 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
   "m" 'gtd-refile-with-keyword)
 
 (keymap-set global-map "C-c d" gtd-prefix-map)
+
+;; Org clock
+
 #+end_src
 ** Table of contents
 #+begin_src emacs-lisp
@@ -571,13 +600,6 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
    ;; Org clock
    (:eval (when (bound-and-true-p org-mode-line-string)
             (concat " " org-mode-line-string)))
-   ;; Git branch (VC)
-   (:eval
-    (when vc-mode
-      (let ((backend (vc-backend buffer-file-name)))
-        (when backend
-          (concat " ⎇"
-                  (substring vc-mode (+ (length backend) 2)))))))
    mode-line-end-spaces))
 #+end_src
 
