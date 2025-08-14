@@ -135,8 +135,10 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 (setq org-agenda-hide-tags-regexp ".*")
 
 ;; Important settings for agenda views
+(setq org-deadline-warning-days 0)
 (setq org-agenda-current-time-string "")
 (setq org-agenda-time-grid '((daily) () "" ""))
+(setq org-agenda-start-on-weekday nil)
 
 ;; Custom agenda view
 (setq org-agenda-custom-commands
@@ -154,13 +156,16 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 		   (org-agenda-show-current-time-in-grid nil)
                    (org-agenda-skip-function
                     '(org-agenda-skip-entry-if 'nottodo 'any))
-                   (org-agenda-overriding-header "TODO Today")))
+                   (org-agenda-overriding-header "Work Today")))
 
           ;; Deadlines in the next 7 days
           (agenda ""
                   ((org-agenda-span 7)
-                   (org-agenda-entry-types '(:deadline))
-                   (org-agenda-overriding-header "Upcoming Deadlines")))))))
+		   (org-agenda-files '("~/Documents/work/organization/calendar.org"))
+		   (org-agenda-prefix-format '((agenda . "  %?-2i %t %s")))
+		   (org-agenda-show-current-time-in-grid nil)
+                   (org-agenda-entry-types '(:deadline :scheduled))
+                   (org-agenda-overriding-header "Calendar - Deadline & Scheduled")))))))
 #+end_src
 ** Getting Things Done
 #+begin_src emacs-lisp
@@ -189,17 +194,27 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
          (keyword (cdr (assoc choice dest-map)))
          (file (expand-file-name choice my/gtd-root))
 	 (nextaction ""))
-    ;; Prompt for the next action to be taken
-    (when (member choice '("projects.org" "next.org"))
-		  (while (string-blank-p nextaction) (setq nextaction (read-string "Next Action (cannot be empty): ")))
-		  (org-set-property "NextAction" nextaction)
-		  (org-set-tags-command))
-    ;; Prompt for date
-    (when (member choice '("calendar.org")) (org-deadline nil))
     ;; Change TODO keyword
     (when keyword
       (org-todo keyword))
     (setq current-prefix-arg nil)
+    ;; Project template
+    (when (member choice '("projects.org"))
+      (let ((date (read-string "Deadline (empty to skip): ")))
+	(unless (string-empty-p date)
+	  (org-deadline nil date)
+	  (let ((org-refile-targets `((,(expand-file-name "calendar.org" my/gtd-root) . (:maxlevel . 1)))))
+	    (org-refile-copy))
+	  (with-current-buffer (find-buffer-visiting (expand-file-name "calendar.org" my/gtd-root))
+	    (save-buffer)))))
+    ;; Prompt for the next action to be taken
+    (when (member choice '("projects.org" "next.org"))
+		  (while (string-blank-p nextaction) (setq nextaction (read-string "Next Action (cannot be empty): ")))
+		  (org-set-property "NextAction" nextaction)
+		  (org-priority nil)
+		  (org-set-tags-command))
+    ;; Prompt for date
+    (when (member choice '("calendar.org")) (org-schedule nil))
     ;; Refile header
     (let ((org-refile-targets `((,file . (:maxlevel . 1)))))
       (org-refile))
@@ -216,7 +231,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
                       ("@misc" . ?m) ("@academic" . ?a)
                       (:endgroup . nil)
                       ))
-(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n!)" "FILE(f)" "PROJ(p@)" "IDEA(i)" "WAIT(w)" "|" "DONE(d)")))
+(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "FILE(f)" "PROJ(p)" "IDEA(i)" "WAIT(w)" "|" "DONE(d)")))
 (add-hook 'org-todo-repeat-hook #'org-reset-checkbox-state-subtree) ;; To unmark checkboxes
 (setq org-log-into-drawer t) ;; For timestamp logs
 ;; Remove timestamp logging when tasks are completed
@@ -224,9 +239,21 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 (setq org-log-repeat nil)
 
 ;; GTD keybindings
+(defun gtd-agenda ()
+  "Open custom agenda view."
+  (interactive)
+  (org-agenda nil "x"))
+
+(defun gtd-dir ()
+  "Open GTD directory."
+  (interactive)
+  (find-file "~/Documents/work/organization"))
+
 (defvar-keymap gtd-prefix-map
   :doc "GTD prefix key map."
-  "c" 'org-capture
+  "c" #'org-capture
+  "a" #'gtd-agenda
+  "d" #'gtd-dir
   "m" 'gtd-refile-with-keyword)
 
 (keymap-set global-map "C-c d" gtd-prefix-map)
