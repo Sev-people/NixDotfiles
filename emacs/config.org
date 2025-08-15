@@ -5,8 +5,8 @@
 * Table of contents :toc:
 - [[#elpaca][Elpaca]]
 - [[#org-mode][Org mode]]
-  - [[#setup][Setup]]
-  - [[#appearance][Appearance]]
+  - [[#setup-and-appearance][Setup and appearance]]
+  - [[#variables][Variables]]
   - [[#agenda][Agenda]]
   - [[#getting-things-done][Getting Things Done]]
   - [[#table-of-contents][Table of contents]]
@@ -31,7 +31,7 @@
 - [[#keybinding-completion][Keybinding completion]]
 - [[#latex][LaTeX]]
   - [[#exporting][Exporting]]
-  - [[#setup-1][Setup]]
+  - [[#setup][Setup]]
   - [[#latex-modes][LaTeX modes]]
   - [[#pdf-viewer][PDF viewer]]
 - [[#mode-line][Mode line]]
@@ -92,7 +92,7 @@
 #+end_src
 
 * Org mode
-** Setup
+** Setup and appearance
 #+begin_src emacs-lisp
 (setq org-emphasis-regexp-components
       '("-—[:space:]('\"{"
@@ -104,19 +104,42 @@
 (require 'org)
 
 (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
-#+end_src
-** Appearance
-#+begin_src emacs-lisp
+
 (setq org-startup-folded t
       org-hide-emphasis-markers t
       org-return-follows-link t)
 #+end_src
+** Variables
+#+begin_src emacs-lisp
+;; GTD keywords
+(defconst my/gtd-dest-map
+  '(("projects.org"  . "PROJ")
+    ("waiting.org"   . "WAIT")
+    ("next.org"      . "NEXT")
+    ("calendar.org"  . "TODO")
+    ("reference/reference.org" . nil)
+    ("someday.org"   . "IDEA"))
+  "GTD file structure & keyword correspondance.")
+
+;; GTD tags And TODO Keywords
+(setq org-tag-persistent-alist '((:startgroup . nil)
+                      ("@work" . ?w) ("@knowledge" . ?k)
+                      ("@misc" . ?m) ("@academic" . ?a)
+                      (:endgroup . nil)
+                      ))
+(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "FILE(f)" "PROJ(p)" "IDEA(i)" "WAIT(w)" "|" "DONE(d)")))
+
+;;; GTD root and default notes file
+(setq my/gtd-root (expand-file-name "~/Documents/work/organization/"))
+(setq org-default-notes-file (expand-file-name "inbox.org" my/gtd-root))
+
+;; Files used in agenda
+(setq org-agenda-files '(
+	(expand-file-name "calendar.org" my/gtd-root)
+	(expand-file-name "agenda.org" my/gtd-root)))
+#+end_src
 ** Agenda
 #+begin_src emacs-lisp
-(setq org-agenda-files '(
-	"~/Documents/work/organization/calendar.org"
-	"~/Documents/work/organization/agenda.org"))
-
 ;; General Settings
 (setq org-agenda-span 1
 org-agenda-start-day "+0d"
@@ -126,6 +149,7 @@ org-agenda-skip-scheduled-if-done t
 org-agenda-skip-scheduled-if-deadline-is-shown t
 org-agenda-skip-timestamp-if-deadline-is-shown t)
 
+;; Agenda views format
 (setq org-agenda-prefix-format '(
 (agenda . "  %?-2i %t ")
  (todo . " %i %-12:c")
@@ -134,7 +158,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 (setq org-agenda-hide-tags-regexp ".*")
 
-;; Important settings for agenda views
+;; Settings for agenda views
 (setq org-deadline-warning-days 0)
 (setq org-agenda-current-time-string "")
 (setq org-agenda-time-grid '((daily) () "" ""))
@@ -165,14 +189,11 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 		   (org-agenda-prefix-format '((agenda . "  %?-2i %t %s")))
 		   (org-agenda-show-current-time-in-grid nil)
                    (org-agenda-entry-types '(:deadline :scheduled))
-                   (org-agenda-overriding-header "Calendar - Deadline & Scheduled")))))))
+                   (org-agenda-overriding-header "Calendar")))))))
 #+end_src
 ** Getting Things Done
 #+begin_src emacs-lisp
 ;; Capture templates
-(setq my/gtd-root (expand-file-name "~/Documents/work/organization/"))
-(setq org-default-notes-file (expand-file-name "inbox.org" my/gtd-root))
-
 (setq denote-org-capture-specifiers "%i\n%?")
 
 (setq org-capture-templates
@@ -184,15 +205,10 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 (defun gtd-refile-with-keyword ()
   "Refile current heading to a GTD target file and update its TODO keyword."
   (interactive)
-  (let* ((dest-map '(("projects.org"  . "PROJ")
-                     ("waiting.org"   . "WAIT")
-                     ("next.org"      . "NEXT")
-                     ("calendar.org"  . "TODO")
-                     ("reference/reference.org" . nil)
-                     ("someday.org"   . "IDEA")))
-         (choice (completing-read "Move to: " (mapcar #'car dest-map)))
-         (keyword (cdr (assoc choice dest-map)))
-         (file (expand-file-name choice my/gtd-root))
+  (let* ((choice (completing-read "Move to: " (mapcar #'car my/gtd-dest-map))) ;; Prompt to choose GTD file
+         (keyword (cdr (assoc choice my/gtd-dest-map))) ;; TODO keyword associated to chosen GTD file
+	 (header (capitalize (string-remove-suffix ".org" choice))) ;; Maps filename.org to Filename
+         (file (expand-file-name choice my/gtd-root)) ;; Chosen GTD file path
 	 (nextaction ""))
     ;; Change TODO keyword
     (when keyword
@@ -200,15 +216,21 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
     (setq current-prefix-arg nil)
     ;; Project template
     (when (member choice '("projects.org"))
+      (org-priority nil)
       (let ((date (read-string "Deadline (empty to skip): ")))
 	(unless (string-empty-p date)
 	  (org-deadline nil date)
-	  (let ((org-refile-targets `((,(expand-file-name "calendar.org" my/gtd-root) . (:maxlevel . 1)))))
-	    (org-refile-copy))
-	  (with-current-buffer (find-buffer-visiting (expand-file-name "calendar.org" my/gtd-root))
-	    (save-buffer)))))
-    ;; Prompt for the next action to be taken
-    (when (member choice '("projects.org" "next.org"))
+	  (let* ((calendarfile (expand-file-name "calendar.org" my/gtd-root))
+		 (calendarheader "Calendar")
+		 (pos (with-current-buffer (find-file-noselect calendarfile t)
+			(widen)
+			(or (org-find-exact-headline-in-buffer calendarheader)
+			    (user-error "No headline in %s" calendarfile)))))
+	    (org-refile 3 nil (list calendarheader calendarfile nil pos))
+	  (with-current-buffer (find-buffer-visiting calendarfile)
+	    (save-buffer))))))
+    ;; Prompt for the next action
+    (when (member choice '("next.org"))
 		  (while (string-blank-p nextaction) (setq nextaction (read-string "Next Action (cannot be empty): ")))
 		  (org-set-property "NextAction" nextaction)
 		  (org-priority nil)
@@ -216,8 +238,11 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
     ;; Prompt for date
     (when (member choice '("calendar.org")) (org-schedule nil))
     ;; Refile header
-    (let ((org-refile-targets `((,file . (:maxlevel . 1)))))
-      (org-refile))
+    (let* ((pos (with-current-buffer (find-file-noselect file t)
+		 (widen)
+		 (or (org-find-exact-headline-in-buffer header)
+                     (user-error "No headline in %s" file)))))
+      (org-refile nil nil (list header file nil pos)))
     ;; Save current buffer
     (save-buffer)
     ;; Save buffer header is being moved to
@@ -225,13 +250,47 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
     (with-current-buffer target-buf
     (save-buffer))))
 
-;; GTD tags And TODO Keywords
-(setq org-tag-persistent-alist '((:startgroup . nil)
-                      ("@work" . ?w) ("@knowledge" . ?k)
-                      ("@misc" . ?m) ("@academic" . ?a)
-                      (:endgroup . nil)
-                      ))
-(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "FILE(f)" "PROJ(p)" "IDEA(i)" "WAIT(w)" "|" "DONE(d)")))
+;; Project management
+(defun gtd-manage-project ()
+  "Manage current GTD project."
+  (interactive)
+  (let* ((nextaction ""))
+    ;; Project template
+    (when (member choice '("projects.org"))
+      (let ((date (read-string "Deadline (empty to skip): ")))
+	(unless (string-empty-p date)
+	  (org-deadline nil date)
+	  (let* ((calendarfile (expand-file-name "calendar.org" my/gtd-root))
+		 (calendarheader (capitalize (string-remove-suffix ".org" calendarfile)))
+		 (pos (with-current-buffer (find-file-noselect calendarfile t)
+			(widen)
+			(or (org-find-exact-headline-in-buffer calendarheader)
+			    (user-error "No headline in %s" calendarfile)))))
+	    (org-refile 3 nil (list calendarheader calendarfile nil pos))
+	  (with-current-buffer (find-buffer-visiting calendarfile)
+	    (save-buffer))))))
+    ;; Prompt for the next action
+    (when (member choice '("next.org"))
+		  (while (string-blank-p nextaction) (setq nextaction (read-string "Next Action (cannot be empty): ")))
+		  (org-set-property "NextAction" nextaction)
+		  (org-priority nil)
+		  (org-set-tags-command))
+    ;; Prompt for date
+    (when (member choice '("calendar.org")) (org-schedule nil))
+    ;; Refile header
+    (let* ((pos (with-current-buffer (find-file-noselect file t)
+		 (widen)
+		 (or (org-find-exact-headline-in-buffer header)
+                     (user-error "No headline in %s" file)))))
+      (org-refile nil nil (list header file nil pos)))
+    ;; Save current buffer
+    (save-buffer)
+    ;; Save buffer header is being moved to
+    (setq target-buf (find-buffer-visiting file))
+    (with-current-buffer target-buf
+    (save-buffer))))
+
+;; Misc. settings
 (add-hook 'org-todo-repeat-hook #'org-reset-checkbox-state-subtree) ;; To unmark checkboxes
 (setq org-log-into-drawer t) ;; For timestamp logs
 ;; Remove timestamp logging when tasks are completed
@@ -257,9 +316,6 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
   "m" 'gtd-refile-with-keyword)
 
 (keymap-set global-map "C-c d" gtd-prefix-map)
-
-;; Org clock
-
 #+end_src
 ** Table of contents
 #+begin_src emacs-lisp
@@ -313,6 +369,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 ;; Set super key to meta
 (setq x-super-keysym 'meta)
 
+;; Evil mode escape sequence
 (use-package evil-escape
   :ensure t
   :after evil

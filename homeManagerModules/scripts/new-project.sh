@@ -9,6 +9,5 @@ mkdir -p "$PROJECT_DIR"
 cp "$TEMPLATE_FILE" "$PROJECT_DIR/flake.nix"
 
 # Set up direnv
-echo "use nix-direnv" > "$PROJECT_DIR/.envrc"
+echo "use flake" > "$PROJECT_DIR/.envrc"
 cd "$PROJECT_DIR"
-direnv allow

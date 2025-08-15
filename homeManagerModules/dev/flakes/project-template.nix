@@ -19,10 +19,17 @@
           ruff
           pyright
         ];
+        
+        rust-env = with pkgs; [
+          cargo # Package manager
+          rust-analyzer # Lsp
+          crate2nix # Managing dependencies with nix
+        ];
 
         # ========== [ ENVIRONMENTS ] ==========
         devShellPackages = [
           # python-env
+          # rust-env
         ];
         # ========== [ ENVIRONMENTS ] ==========
 
@@ -31,6 +38,5 @@
         devShells.${system}.default = pkgs.mkShell {
           packages = devShellPackages;
         };
-      }
-    );
+      };
 }
