@@ -134,9 +134,9 @@
 (setq org-default-notes-file (expand-file-name "inbox.org" my/gtd-root))
 
 ;; Files used in agenda
-(setq org-agenda-files '(
-	(expand-file-name "calendar.org" my/gtd-root)
-	(expand-file-name "agenda.org" my/gtd-root)))
+(setq org-agenda-files `(
+	,(expand-file-name "calendar.org" my/gtd-root)
+	,(expand-file-name "agenda.org" my/gtd-root)))
 #+end_src
 ** Agenda
 #+begin_src emacs-lisp
@@ -201,10 +201,28 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
          (file+headline ,(expand-file-name "inbox.org" my/gtd-root) "Inbox")
          "* FILE %^{Header|Entry} \n:PROPERTIES:\n:Captured: %u\n:End:\n%^{Description}%i" :immediate-finish t)))
 
+;; Set deadline for GTD entries
+(defun gtd-set-deadline ()
+  "Set a deadline for a GTD project/task."
+  (interactive)
+  (org-up-heading-all 0)
+  (let ((date (read-string "Deadline (empty to skip): ")))
+    (unless (string-empty-p date)
+      (org-deadline nil date)
+      (let* ((calendarfile (expand-file-name "calendar.org" my/gtd-root))
+	     (calendarheader "Calendar")
+	     (pos (with-current-buffer (find-file-noselect calendarfile t)
+		    (widen)
+		    (or (org-find-exact-headline-in-buffer calendarheader)
+			(user-error "No headline in %s" calendarfile)))))
+	(org-refile 3 nil (list calendarheader calendarfile nil pos))
+	(with-current-buffer (find-buffer-visiting calendarfile)
+	  (save-buffer))))))
 ;; Refile GTD entries
 (defun gtd-refile-with-keyword ()
   "Refile current heading to a GTD target file and update its TODO keyword."
   (interactive)
+  (org-up-heading-all 0)
   (let* ((choice (completing-read "Move to: " (mapcar #'car my/gtd-dest-map))) ;; Prompt to choose GTD file
          (keyword (cdr (assoc choice my/gtd-dest-map))) ;; TODO keyword associated to chosen GTD file
 	 (header (capitalize (string-remove-suffix ".org" choice))) ;; Maps filename.org to Filename
@@ -217,78 +235,64 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
     ;; Project template
     (when (member choice '("projects.org"))
       (org-priority nil)
-      (let ((date (read-string "Deadline (empty to skip): ")))
-	(unless (string-empty-p date)
-	  (org-deadline nil date)
-	  (let* ((calendarfile (expand-file-name "calendar.org" my/gtd-root))
-		 (calendarheader "Calendar")
-		 (pos (with-current-buffer (find-file-noselect calendarfile t)
-			(widen)
-			(or (org-find-exact-headline-in-buffer calendarheader)
-			    (user-error "No headline in %s" calendarfile)))))
-	    (org-refile 3 nil (list calendarheader calendarfile nil pos))
-	  (with-current-buffer (find-buffer-visiting calendarfile)
-	    (save-buffer))))))
+      (org-set-tags-command)
+      (gtd-set-deadline))
     ;; Prompt for the next action
     (when (member choice '("next.org"))
-		  (while (string-blank-p nextaction) (setq nextaction (read-string "Next Action (cannot be empty): ")))
-		  (org-set-property "NextAction" nextaction)
-		  (org-priority nil)
-		  (org-set-tags-command))
+      (while (string-blank-p nextaction) (setq nextaction (read-string "Next Action (cannot be empty): ")))
+      (org-set-property "NextAction" nextaction)
+      (org-priority nil)
+      (org-set-tags-command))
     ;; Prompt for date
     (when (member choice '("calendar.org")) (org-schedule nil))
     ;; Refile header
     (let* ((pos (with-current-buffer (find-file-noselect file t)
-		 (widen)
-		 (or (org-find-exact-headline-in-buffer header)
-                     (user-error "No headline in %s" file)))))
+		  (widen)
+		  (or (org-find-exact-headline-in-buffer header)
+                      (user-error "No headline in %s" file)))))
       (org-refile nil nil (list header file nil pos)))
     ;; Save current buffer
     (save-buffer)
     ;; Save buffer header is being moved to
     (setq target-buf (find-buffer-visiting file))
     (with-current-buffer target-buf
-    (save-buffer))))
+      (save-buffer))))
 
 ;; Project management
+(require 'org-mouse)
+
+(setq org-after-note-stored-hook
+      (list
+       (lambda ()
+	 (org-up-heading-all 0)
+	 (org-store-link t)
+	 ;; Set NextAction
+	 (let ((nextaction "") (priority (string-to-char (org-mouse-get-priority))) (tags (org-get-tags)) (link (substring-no-properties (org-store-link t))))
+	   (while (string-blank-p nextaction) (setq nextaction (read-string "Next Action: ")))
+	   (org-set-property "NextAction" nextaction)
+	   ;; Add next.org entry
+	   (let ((org-capture-templates
+		  `(("x" "Project action" entry
+		    (file+headline ,(expand-file-name "next.org" my/gtd-root) "Next")
+		    "* NEXT %(identity nextaction) for: %(identity link)\n:PROPERTIES:\n:Captured: %u\n:End:\n%i" :immediate-finish t :before-finalize (lambda () (org-priority priority) (org-set-tags tags))))))
+	   (org-capture nil "x"))))
+       (save-buffer)))
+
 (defun gtd-manage-project ()
   "Manage current GTD project."
   (interactive)
-  (let* ((nextaction ""))
-    ;; Project template
-    (when (member choice '("projects.org"))
-      (let ((date (read-string "Deadline (empty to skip): ")))
-	(unless (string-empty-p date)
-	  (org-deadline nil date)
-	  (let* ((calendarfile (expand-file-name "calendar.org" my/gtd-root))
-		 (calendarheader (capitalize (string-remove-suffix ".org" calendarfile)))
-		 (pos (with-current-buffer (find-file-noselect calendarfile t)
-			(widen)
-			(or (org-find-exact-headline-in-buffer calendarheader)
-			    (user-error "No headline in %s" calendarfile)))))
-	    (org-refile 3 nil (list calendarheader calendarfile nil pos))
-	  (with-current-buffer (find-buffer-visiting calendarfile)
-	    (save-buffer))))))
-    ;; Prompt for the next action
-    (when (member choice '("next.org"))
-		  (while (string-blank-p nextaction) (setq nextaction (read-string "Next Action (cannot be empty): ")))
-		  (org-set-property "NextAction" nextaction)
-		  (org-priority nil)
-		  (org-set-tags-command))
-    ;; Prompt for date
-    (when (member choice '("calendar.org")) (org-schedule nil))
-    ;; Refile header
-    (let* ((pos (with-current-buffer (find-file-noselect file t)
-		 (widen)
-		 (or (org-find-exact-headline-in-buffer header)
-                     (user-error "No headline in %s" file)))))
-      (org-refile nil nil (list header file nil pos)))
-    ;; Save current buffer
-    (save-buffer)
-    ;; Save buffer header is being moved to
-    (setq target-buf (find-buffer-visiting file))
-    (with-current-buffer target-buf
-    (save-buffer))))
+  (org-up-heading-all 0)
+  ;; Add purpose and vision
+  (unless (org-entry-get (point) "Purpose")
+    (let ((purpose ""))
+      (while (string-blank-p purpose) (setq purpose (read-string "Purpose: ")))
+      (org-set-property "Purpose" purpose)))
+  (unless (org-entry-get (point) "SuccessCriteria")
+    (let ((criteria ""))
+      (while (string-blank-p criteria) (setq criteria (read-string "Success Criteria: ")))
+      (org-set-property "SuccessCriteria" criteria)))
+  ;; Brainstorm
+  (org-add-note))
 
 ;; Misc. settings
 (add-hook 'org-todo-repeat-hook #'org-reset-checkbox-state-subtree) ;; To unmark checkboxes
@@ -313,6 +317,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
   "c" #'org-capture
   "a" #'gtd-agenda
   "d" #'gtd-dir
+  "p" #'gtd-manage-project
   "m" 'gtd-refile-with-keyword)
 
 (keymap-set global-map "C-c d" gtd-prefix-map)
