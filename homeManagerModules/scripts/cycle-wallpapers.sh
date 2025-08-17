@@ -1,4 +1,4 @@
-wallpapersDir="$HOME/.dotfiles/wallpapers"
+wallpapersDir="$HOME/Pictures/wallpapers"
 
 # Get a list of all image files in the wallpapers directory
 wallpapers=("$wallpapersDir"/*)
