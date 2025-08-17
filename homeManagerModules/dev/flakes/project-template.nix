@@ -4,7 +4,7 @@
   # Inputs
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-  outputs = { nixpkgs, flake-utils, ... }:
+  outputs = { nixpkgs, ... }:
       let
         system = "x86_64-linux";
         pkgs = nixpkgs.legacyPackages.${system};
@@ -38,5 +38,7 @@
         devShells.${system}.default = pkgs.mkShell {
           packages = devShellPackages;
         };
+        # For Rust LSP
+        # env.RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
       };
 }
