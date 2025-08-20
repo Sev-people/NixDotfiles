@@ -542,6 +542,9 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 	  (none . "") 
 	  (philosophy . "* Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Overview\n* Key Ideas\n| Term | Definition |\n* Quotes\n* Chapter Notes\n** Chapter 1:")
 	  (literature . "* Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Overview\n* Quotes\n* Chapter Notes\n** Chapter 1:")
+	  (physics . "#+SETUPFILE: ~/.dotfiles/emacs/latex/export.org\n#+LATEX_HEADER: \\usepackage{amsmath, amssymb, mathtools, cancel, physics, siunitx, mhchem, tikz, bm}\n\n*Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Notes")
+	  (mathematics . "#+SETUPFILE: ~/.dotfiles/emacs/latex/export.org\n#+LATEX_HEADER: \\usepackage{amsmath, amssymb, mathtools, cancel, tikz, bm}\n\n*Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Notes")
+	  (programming . "#+SETUPFILE: ~/.dotfiles/emacs/latex/export.org\n#+LATEX_HEADER: \\usepackage{amsmath, amssymb, mathtools, cancel, tikz, bm, listings, xcolor, courier, tcolorbox}\n\n* Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Notes")
 	  ))
 #+end_src
 
@@ -760,11 +763,11 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
       modus-themes-hl-line '(intense)
       modus-themes-paren-match '(intense))
 (setq modus-vivendi-palette-overrides
-      '((bg-main "#1e1e1e") ;; Background color
-          (bg-active "#464646") ;; Mode line
-          (bg-mode-line-active "#464646") ;; Mode line
-          (bg-mode-line-inactive "#252526") ;; Mode line
-          (bg-dim "#1e1e1e") ;; Code blocks
+      '((bg-main "#1a1b26") ;; Background color
+          (bg-active "#16161f") ;; Mode line
+          (bg-mode-line-active "#16161f") ;; Mode line
+          (bg-mode-line-inactive "#171722") ;; Mode line
+          (bg-dim "#1a1b26") ;; Same as bg-main
         ))
 (setq modus-themes-common-palette-overrides
       `(
@@ -772,8 +775,8 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 	  (bg-line-number-active unspecified)
 	  (border-mode-line-active bg-mode-line-active) ;; Mode line border
           (border-mode-line-inactive bg-mode-line-inactive) ;; Mode line border
-	  (bg-prose-block-contents "#252526") ;; Code block contents
-          (bg-prose-block-delimiter "#2d2d2d") ;; Code start/end
+	  (bg-prose-block-contents "#212330") ;; Code block contents
+          (bg-prose-block-delimiter "#212330") ;; Code start/end
        ))
 (load-theme 'modus-vivendi)
 #+end_src

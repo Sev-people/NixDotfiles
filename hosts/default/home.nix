@@ -22,6 +22,7 @@
     wget
     aria2 # Torrents
     unp
+    signal-cli # Messaging app
     
     # Development Tools and Programming Environments
     emacs
