@@ -542,9 +542,9 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 	  (none . "") 
 	  (philosophy . "* Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Overview\n* Key Ideas\n| Term | Definition |\n* Quotes\n* Chapter Notes\n** Chapter 1:")
 	  (literature . "* Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Overview\n* Quotes\n* Chapter Notes\n** Chapter 1:")
-	  (physics . "#+SETUPFILE: ~/.dotfiles/emacs/latex/export.org\n#+LATEX_HEADER: \\usepackage{amsmath, amssymb, mathtools, cancel, physics, siunitx, mhchem, tikz, bm}\n\n*Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Notes")
-	  (mathematics . "#+SETUPFILE: ~/.dotfiles/emacs/latex/export.org\n#+LATEX_HEADER: \\usepackage{amsmath, amssymb, mathtools, cancel, tikz, bm}\n\n*Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Notes")
-	  (programming . "#+SETUPFILE: ~/.dotfiles/emacs/latex/export.org\n#+LATEX_HEADER: \\usepackage{amsmath, amssymb, mathtools, cancel, tikz, bm, listings, xcolor, courier, tcolorbox}\n\n* Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Notes")
+	  (physics . "#+SETUPFILE: ~/.dotfiles/emacs/latex/export.org\n#+LATEX_HEADER: \\usepackage{mathtools, cancel, physics, siunitx, mhchem, tikz, bm}\n\n*Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Notes")
+	  (mathematics . "#+SETUPFILE: ~/.dotfiles/emacs/latex/export.org\n#+LATEX_HEADER: \\usepackage{mathtools, cancel, tikz, bm}\n\n*Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Notes")
+	  (programming . "#+SETUPFILE: ~/.dotfiles/emacs/latex/export.org\n#+LATEX_HEADER: \\usepackage{mathtools, cancel, tikz, bm, listings, courier, tcolorbox}\n\n* Metadata\n:PROPERTIES:\n:Author:\n:Title:\n:End:\n* Notes")
 	  ))
 #+end_src
 
@@ -566,7 +566,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 * Fonts
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 150 :width 'normal)
+(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 150 :width 'normal :weight 'extra-light)
 
 ;; Makes commented text and keywords italics.
 (set-face-attribute 'font-lock-comment-face nil
@@ -651,7 +651,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 ** LaTeX modes
 #+begin_src emacs-lisp
 (use-package cdlatex
-  :hook ((LaTeX-mode . cdlatex-mode)))
+  :hook ((LaTeX-mode . org-cdlatex-mode)))
 
 (use-package auctex
   :defer t
@@ -665,6 +665,12 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
          :demand t
          :init
          (pdf-tools-install))
+
+(add-hook 'pdf-view-mode-hook
+	  (lambda () 
+	    (display-line-numbers-mode -1) ;; Remove line numbers
+	    (blink-cursor-mode -1) ;; Remove cursor blinking
+	    (pdf-view-midnight-minor-mode 1))) ;; Dark mode
 #+end_src
 
 * Mode line
@@ -763,11 +769,11 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
       modus-themes-hl-line '(intense)
       modus-themes-paren-match '(intense))
 (setq modus-vivendi-palette-overrides
-      '((bg-main "#1a1b26") ;; Background color
-          (bg-active "#16161f") ;; Mode line
-          (bg-mode-line-active "#16161f") ;; Mode line
-          (bg-mode-line-inactive "#171722") ;; Mode line
-          (bg-dim "#1a1b26") ;; Same as bg-main
+      '((bg-main "#0C121D") ;; Background color
+          (bg-active "#1E2B40") ;; Mode line
+          (bg-mode-line-active "#293952") ;; Mode line
+          (bg-mode-line-inactive "#1E2B40") ;; Mode line
+          (bg-dim "#0C121D") ;; Same as bg-main
         ))
 (setq modus-themes-common-palette-overrides
       `(
@@ -775,8 +781,13 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 	  (bg-line-number-active unspecified)
 	  (border-mode-line-active bg-mode-line-active) ;; Mode line border
           (border-mode-line-inactive bg-mode-line-inactive) ;; Mode line border
-	  (bg-prose-block-contents "#212330") ;; Code block contents
-          (bg-prose-block-delimiter "#212330") ;; Code start/end
+	  (bg-prose-block-contents "#090E16") ;; Code block contents
+          (bg-prose-block-delimiter "#090E16") ;; Code start/end
+          (date-common "#b4f9f8") ;; Timestamps
        ))
+(custom-set-faces
+ '(org-level-1 ((t (:foreground "#A3C5F1"))))
+ '(org-level-2 ((t (:foreground "#6582AA"))))
+ '(org-level-3 ((t (:foreground "#b898f4")))))
 (load-theme 'modus-vivendi)
 #+end_src
