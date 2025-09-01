@@ -7,6 +7,7 @@
     ./foot.nix
     ./rmpc.nix
     ./zen.nix
+    ./obs.nix
   ];
 
 }

@@ -52,6 +52,9 @@
     # Security and Password Management
     pass
     pinentry-curses
+
+    # ROBLOX
+    flatpak
   ];
 
   # Let Home Manager install and manage itself.
