@@ -12,6 +12,9 @@
   
   # Packages
   home.packages = with pkgs; [
+    # Browsers
+    vivaldi
+
     # Terminal and CLI Tools
     foot
     htop
@@ -22,7 +25,6 @@
     wget
     aria2 # Torrents
     unp
-    signal-cli # Messaging app
     
     # Development Tools and Programming Environments
     emacs
