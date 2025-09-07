@@ -52,6 +52,7 @@
     # Security and Password Management
     pass
     pinentry-curses
+    keepassxc
   ];
 
   # Let Home Manager install and manage itself.
