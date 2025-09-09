@@ -136,7 +136,11 @@
 ;; Files used in agenda
 (setq org-agenda-files `(
 	,(expand-file-name "calendar.org" my/gtd-root)
-	,(expand-file-name "agenda.org" my/gtd-root)))
+	,(expand-file-name "agenda.org" my/gtd-root)
+	"~/Documents/work/files/academics/25-26Q1/physics.org"
+	"~/Documents/work/files/academics/25-26Q1/computation.org"
+	"~/Documents/work/files/academics/25-26Q1/programming.org"
+	"~/Documents/work/files/academics/25-26Q1/mathematics.org"))
 #+end_src
 ** Agenda
 #+begin_src emacs-lisp
@@ -273,9 +277,9 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 	   ;; Add next.org entry
 	   (let ((org-capture-templates
 		  `(("x" "Project action" entry
-		    (file+headline ,(expand-file-name "next.org" my/gtd-root) "Next")
-		    "* NEXT %(identity nextaction) for: %(identity link)\n:PROPERTIES:\n:Captured: %u\n:End:\n%i" :immediate-finish t :before-finalize (lambda () (org-priority priority) (org-set-tags tags))))))
-	   (org-capture nil "x"))))
+		     (file+headline ,(expand-file-name "next.org" my/gtd-root) "Next")
+		     "* NEXT %(identity nextaction) for: %(identity link)\n:PROPERTIES:\n:Captured: %u\n:End:\n%i" :immediate-finish t :before-finalize (lambda () (org-priority priority) (org-set-tags tags))))))
+	     (org-capture nil "x"))))
        (save-buffer)))
 
 (defun gtd-manage-project ()
@@ -318,6 +322,12 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
   "a" #'gtd-agenda
   "d" #'gtd-dir
   "p" #'gtd-manage-project
+  "s" #'(let ((org-agenda-files 
+	       '("~/Documents/work/files/academics/25-26Q1/physics.org"
+		 "~/Documents/work/files/academics/25-26Q1/computation.org"
+		 "~/Documents/work/files/academics/25-26Q1/programming.org"
+		 "~/Documents/work/files/academics/25-26Q1/mathematics.org")))
+	  (org-agenda nil "t"))
   "m" 'gtd-refile-with-keyword)
 
 (keymap-set global-map "C-c d" gtd-prefix-map)
