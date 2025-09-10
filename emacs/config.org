@@ -136,11 +136,7 @@
 ;; Files used in agenda
 (setq org-agenda-files `(
 	,(expand-file-name "calendar.org" my/gtd-root)
-	,(expand-file-name "agenda.org" my/gtd-root)
-	"~/Documents/work/files/academics/25-26Q1/physics.org"
-	"~/Documents/work/files/academics/25-26Q1/computation.org"
-	"~/Documents/work/files/academics/25-26Q1/programming.org"
-	"~/Documents/work/files/academics/25-26Q1/mathematics.org"))
+	,(expand-file-name "agenda.org" my/gtd-root)))
 #+end_src
 ** Agenda
 #+begin_src emacs-lisp
@@ -193,7 +189,18 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 		   (org-agenda-prefix-format '((agenda . "  %?-2i %t %s")))
 		   (org-agenda-show-current-time-in-grid nil)
                    (org-agenda-entry-types '(:deadline :scheduled))
-                   (org-agenda-overriding-header "Calendar")))))))
+                   (org-agenda-overriding-header "Calendar")))))
+
+	("j" "School Agenda"
+	   ((agenda ""
+                    ((org-agenda-files '("~/Documents/work/files/academics/25-26Q1/physics.org"
+					 "~/Documents/work/files/academics/25-26Q1/computation.org"
+					 "~/Documents/work/files/academics/25-26Q1/programming.org"
+					 "~/Documents/work/files/academics/25-26Q1/mathematics.org"))
+                     (org-agenda-span 90)
+		     (org-agenda-show-current-time-in-grid nil)
+                     (org-agenda-entry-types '(:deadline :scheduled :timestamp))
+                     (org-agenda-prefix-format '((agenda . " %i %-12:c %t")))))))))
 #+end_src
 ** Getting Things Done
 #+begin_src emacs-lisp
@@ -322,12 +329,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
   "a" #'gtd-agenda
   "d" #'gtd-dir
   "p" #'gtd-manage-project
-  "s" #'(let ((org-agenda-files 
-	       '("~/Documents/work/files/academics/25-26Q1/physics.org"
-		 "~/Documents/work/files/academics/25-26Q1/computation.org"
-		 "~/Documents/work/files/academics/25-26Q1/programming.org"
-		 "~/Documents/work/files/academics/25-26Q1/mathematics.org")))
-	  (org-agenda nil "t"))
+  "s" #'(lambda () (interactive) (org-agenda nil "j"))
   "m" 'gtd-refile-with-keyword)
 
 (keymap-set global-map "C-c d" gtd-prefix-map)
