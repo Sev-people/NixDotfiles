@@ -51,6 +51,7 @@
     pastel
     yt-dlp
     easyeffects
+    dconf
 
     # Security and Password Management
     pass
