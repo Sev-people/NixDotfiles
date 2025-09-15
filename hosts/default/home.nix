@@ -50,6 +50,7 @@
     feh
     pastel
     yt-dlp
+    easyeffects
 
     # Security and Password Management
     pass
