@@ -35,6 +35,7 @@
     
     # PDF and Document Viewers
     zathura
+    foliate
     
     # Multimedia and Media Editing
     ffmpeg
