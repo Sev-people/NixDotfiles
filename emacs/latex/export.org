@@ -11,5 +11,3 @@
 #+LATEX_HEADER: \usepackage[margin=1in]{geometry}
 
 #+LATEX_HEADER: \usepackage[final]{microtype}
-#+LATEX_HEADER: \usepackage{fontspec}
-#+LATEX_HEADER: \setmainfont[Numbers={OldStyle, Proportional}, Ligatures=TeX {Brill}]
