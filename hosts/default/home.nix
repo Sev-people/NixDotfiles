@@ -12,9 +12,6 @@
   
   # Packages
   home.packages = with pkgs; [
-    # Browsers
-    vivaldi
-
     # Terminal and CLI Tools
     foot
     htop
