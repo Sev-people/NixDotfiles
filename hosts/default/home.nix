@@ -55,6 +55,9 @@
     pass
     pinentry-curses
     keepassxc
+
+    # Temp
+    wineWowPackages.stable
   ];
 
   # Let Home Manager install and manage itself.
