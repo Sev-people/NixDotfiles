@@ -57,7 +57,7 @@
     keepassxc
 
     # Temp
-    wineWowPackages.stable
+    prismlauncher
   ];
 
   # Let Home Manager install and manage itself.
