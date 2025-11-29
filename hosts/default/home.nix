@@ -55,9 +55,6 @@
     pass
     pinentry-curses
     keepassxc
-
-    # Temp
-    prismlauncher
   ];
 
   # Let Home Manager install and manage itself.

@@ -171,12 +171,13 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
          ((agenda ""
                   ((org-agenda-span 1)
                    (org-agenda-entry-types '(:timestamp))
+                   (org-agenda-skip-function
+                    '(org-agenda-skip-entry-if 'todo 'any))
                    (org-agenda-overriding-header "Routine")))
 
           ;; TODOs scheduled today
           (agenda ""
                   ((org-agenda-span 1)
-                   (org-agenda-entry-types '(:scheduled))
 		   (org-agenda-show-current-time-in-grid nil)
                    (org-agenda-skip-function
                     '(org-agenda-skip-entry-if 'nottodo 'any))
