@@ -55,6 +55,7 @@
     pass
     pinentry-curses
     keepassxc
+    mullvad-vpn # VPN
   ];
 
   # Let Home Manager install and manage itself.
