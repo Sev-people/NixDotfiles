@@ -38,6 +38,7 @@
     ffmpeg
     vlc
     mpv
+    darktable # Photo editor
     
     # System Utilities and Maintenance
     gparted
