@@ -10,7 +10,7 @@ in {
 
     config = {
       #–––––– Core
-      modifier    = "Mod1";                     # ALT
+      modifier    = "Mod4";                     # SUPER
       terminal    = "foot";
       
       #–––––– Autostart
