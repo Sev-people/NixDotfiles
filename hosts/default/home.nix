@@ -13,50 +13,36 @@
   # Packages
   home.packages = with pkgs; [
     # Terminal and CLI Tools
-    foot
-    htop
-    ani-cli
-    fzf # Fuzzy search
-    ripgrep # Regexp search
-    rsync # SSH file transfer
+    foot # Terminal
+    htop # PC status
+    ani-cli # Anime
     wget
     aria2 # Torrents
-    unp
     
-    # Development Tools and Programming Environments
+    # Development
     emacs
-    auctex
-    ispell
-    lilypond-with-fonts
-    jq # Terminal JSON utility
+    ispell # Spelling in Emacs
+    auctex # LaTeX in Emacs
     
-    # PDF and Document Viewers
-    zathura
-    foliate
-    
-    # Multimedia and Media Editing
+    # Multimedia
+    zathura # PDF viewer
     ffmpeg
     vlc
-    mpv
+    mpv # Music player
     darktable # Photo editor
     
-    # System Utilities and Maintenance
-    gparted
+    # System Utilities
+    gparted # Disk partitioning
     pulseaudio
     unzip
-    jmtpfs
     gtk3
-    feh
-    pastel
     yt-dlp
     easyeffects
     dconf
 
     # Security and Password Management
-    pass
-    pinentry-curses
-    keepassxc
-    mullvad-vpn # VPN
+    pass # Password manager
+    pinentry-curses # Password input (necessary for pass)
   ];
 
   # Let Home Manager install and manage itself.
