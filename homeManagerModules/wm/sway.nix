@@ -63,47 +63,47 @@ in {
 
       #–––––– Keybindings
       keybindings = {
-        "Mod1+Shift+I" = "exec foot";
-        "Mod1+Shift+C" = "kill";
-        "Mod1+Shift+Q" = "exit";
+        "Mod4+Shift+I" = "exec foot";
+        "Mod4+Shift+C" = "kill";
+        "Mod4+Shift+Q" = "exit";
 
-        "Mod1+F"      = "exec zen";
-        "Mod1+E"      = "exec em";
-        "Mod1+R"      = "exec inbox-capture";
-        "Mod1+V"      = "floating toggle";
-        "Mod1+Shift+U" = "gaps inner current toggle 15";
-        "Mod1+U" = "splith";
-        "Mod1+I" = "splitv";
-        "Mod1+Shift+X" = "exec grim -g \"$(slurp)\" - | wl-copy && wl-paste > ~/Pictures/Screenshots/Screenshot-$(date +%F_%T).png";
-        "Mod1+N"      = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%";
-        "Mod1+M"      = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";
+        "Mod4+F"      = "exec zen";
+        "Mod4+E"      = "exec em";
+        "Mod4+R"      = "exec inbox-capture";
+        "Mod4+V"      = "floating toggle";
+        "Mod4+Shift+U" = "gaps inner current toggle 15";
+        "Mod4+U" = "splith";
+        "Mod4+I" = "splitv";
+        "Mod4+Shift+X" = "exec grim -g \"$(slurp)\" - | wl-copy && wl-paste > ~/Pictures/Screenshots/Screenshot-$(date +%F_%T).png";
+        "Mod4+N"      = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%";
+        "Mod4+M"      = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";
 
         # focus
-        "Mod1+h"      = "focus left";
-        "Mod1+l"      = "focus right";
-        "Mod1+k"      = "focus up";
-        "Mod1+j"      = "focus down";
+        "Mod4+h"      = "focus left";
+        "Mod4+l"      = "focus right";
+        "Mod4+k"      = "focus up";
+        "Mod4+j"      = "focus down";
 
         # move
-        "Mod1+Shift+h" = "move left";
-        "Mod1+Shift+l" = "move right";
-        "Mod1+Shift+k" = "move up";
-        "Mod1+Shift+j" = "move down";
+        "Mod4+Shift+h" = "move left";
+        "Mod4+Shift+l" = "move right";
+        "Mod4+Shift+k" = "move up";
+        "Mod4+Shift+j" = "move down";
 
         # workspaces
-        "Mod1+1"      = "workspace 1";    "Mod1+Shift+1" = "move container to workspace 1";
-        "Mod1+2"      = "workspace 2";    "Mod1+Shift+2" = "move container to workspace 2";
-        "Mod1+3"      = "workspace 3";    "Mod1+Shift+3" = "move container to workspace 3";
-        "Mod1+4"      = "workspace 4";    "Mod1+Shift+4" = "move container to workspace 4";
-        "Mod1+5"      = "workspace 5";    "Mod1+Shift+5" = "move container to workspace 5";
-        "Mod1+6"      = "workspace 6";    "Mod1+Shift+6" = "move container to workspace 6";
-        "Mod1+7"      = "workspace 7";    "Mod1+Shift+7" = "move container to workspace 7";
-        "Mod1+8"      = "workspace 8";    "Mod1+Shift+8" = "move container to workspace 8";
-        "Mod1+9"      = "workspace 9";    "Mod1+Shift+9" = "move container to workspace 9";
+        "Mod4+1"      = "workspace 1";    "Mod4+Shift+1" = "move container to workspace 1";
+        "Mod4+2"      = "workspace 2";    "Mod4+Shift+2" = "move container to workspace 2";
+        "Mod4+3"      = "workspace 3";    "Mod4+Shift+3" = "move container to workspace 3";
+        "Mod4+4"      = "workspace 4";    "Mod4+Shift+4" = "move container to workspace 4";
+        "Mod4+5"      = "workspace 5";    "Mod4+Shift+5" = "move container to workspace 5";
+        "Mod4+6"      = "workspace 6";    "Mod4+Shift+6" = "move container to workspace 6";
+        "Mod4+7"      = "workspace 7";    "Mod4+Shift+7" = "move container to workspace 7";
+        "Mod4+8"      = "workspace 8";    "Mod4+Shift+8" = "move container to workspace 8";
+        "Mod4+9"      = "workspace 9";    "Mod4+Shift+9" = "move container to workspace 9";
 
         # special
-        "Mod1+S"      = "workspace magic";
-        "Mod1+Shift+S" = "move container to workspace magic";
+        "Mod4+S"      = "workspace magic";
+        "Mod4+Shift+S" = "move container to workspace magic";
       };
     };
     
