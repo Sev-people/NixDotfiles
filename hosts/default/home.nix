@@ -25,7 +25,7 @@
     auctex # LaTeX in Emacs
     
     # Multimedia
-    zathura # PDF viewer
+    mupdf # PDF viewer
     ffmpeg
     vlc
     mpv # Music player
