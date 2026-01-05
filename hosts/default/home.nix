@@ -25,7 +25,7 @@
     # LaTeX
     (pkgs.texlive.combine {
       inherit (pkgs.texlive) scheme-small
-      dvisvgm; # for preview and export as html
+      dvisvgm mylatexformat preview; # for preview and export as html
     })
     
     # Multimedia

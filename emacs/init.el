@@ -1,8 +1,3 @@
-;; Temp
-(require 'package)
-(package-initialize)
-(add-to-list 'package-archives '("gnu-devel" . "elpa.gnu.org"))
-
 ;; --- Sane defaults -------------------------------------------------------
 (menu-bar-mode -1) (tool-bar-mode -1) (scroll-bar-mode -1) (blink-cursor-mode -1) (electric-indent-mode -1) (electric-pair-mode 1)
 (setq org-startup-indented t org-edit-src-content-indentation 0) ; Indentation
@@ -19,6 +14,7 @@
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
 ;; --- Org mode -------------------------------------------------------
+(use-package org :load-path "~/.dotfiles/emacs/elpa/org-mode/lisp/")
 (require 'org)
 
 ; Allows multi-line emphasis markers
