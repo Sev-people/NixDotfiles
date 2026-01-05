@@ -39,7 +39,7 @@
 ;; --- Theme -------------------------------------------------------
 (modify-all-frames-parameters '((internal-border-width . 16))) ; Window margins/padding
 
-(set-face-attribute 'default nil :family "Latin Modern Roman" :height 140) ; Font
+(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 140 :weight 'light) ; Font
 
 ; Defining colors
 (defconst theme-colors
@@ -166,7 +166,7 @@
 (set-face-attribute 'org-verbatim nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-verse nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-warning nil :foreground (alist-get 'crucial theme-colors))
-		      
+
 ;; --- Mode line -------------------------------------------------------
 (setq-default
  mode-line-format
@@ -177,8 +177,8 @@
    " "
    ; Read-only or modified flags
    (:eval (cond (buffer-read-only "RO")
-                ((buffer-modified-p) "✱")
-                (t " ")))
+		((buffer-modified-p) "✱")
+		(t " ")))
    " "
    ; Line and column
    "L%l:C%c "
@@ -190,7 +190,7 @@
    (:eval (when (buffer-narrowed-p) " [Narrow]"))
    ; Org clock
    (:eval (when (bound-and-true-p org-mode-line-string)
-            (concat " " org-mode-line-string)))
+	    (concat " " org-mode-line-string)))
    mode-line-end-spaces))
 
 ;; --- GTD system -------------------------------------------------------
@@ -206,10 +206,10 @@
 
 ; GTD tags And TODO Keywords
 (setq org-tag-persistent-alist '((:startgroup . nil)
-                      ("@work" . ?w) ("@knowledge" . ?k)
-                      ("@misc" . ?m) ("@academic" . ?a)
-                      (:endgroup . nil)
-                      ))
+		      ("@work" . ?w) ("@knowledge" . ?k)
+		      ("@misc" . ?m) ("@academic" . ?a)
+		      (:endgroup . nil)
+		      ))
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "FILE(f)" "PROJ(p)" "IDEA(i)" "WAIT(w)" "|" "DONE(d)")))
 
 ; GTD root and default notes file
@@ -248,38 +248,36 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 ; Custom agenda view
 (setq org-agenda-custom-commands
       '(("x" "Custom Agenda"
-         ; Routine today
-         ((agenda ""
-                  ((org-agenda-span 1)
-                   (org-agenda-entry-types '(:timestamp))
-                   (org-agenda-skip-function
-                    '(org-agenda-skip-entry-if 'todo 'any))
-                   (org-agenda-overriding-header "Routine")))
+	 ; Routine today
+	 ((agenda ""
+		  ((org-agenda-span 1)
+		   (org-agenda-entry-types '(:timestamp))
+		   (org-agenda-skip-function
+		    '(org-agenda-skip-entry-if 'todo 'any))
+		   (org-agenda-overriding-header "Routine")))
 
-          ; TODOs scheduled today
-          (agenda ""
-                  ((org-agenda-span 1)
+	  ; TODOs scheduled today
+	  (agenda ""
+		  ((org-agenda-span 1)
 		   (org-agenda-show-current-time-in-grid nil)
-                   (org-agenda-skip-function
-                    '(org-agenda-skip-entry-if 'nottodo 'any))
-                   (org-agenda-overriding-header "Work Today")))
+		   (org-agenda-skip-function
+		    '(org-agenda-skip-entry-if 'nottodo 'any))
+		   (org-agenda-overriding-header "Work Today")))
 
-          ; Deadlines in the next 7 days
-          (agenda ""
-                  ((org-agenda-span 7)
+	  ; Deadlines in the next 7 days
+	  (agenda ""
+		  ((org-agenda-span 7)
 		   (org-agenda-files '("~/Documents/work/organization/calendar.org"))
 		   (org-agenda-prefix-format '((agenda . "  %?-2i %t %s")))
 		   (org-agenda-show-current-time-in-grid nil)
-                   (org-agenda-entry-types '(:deadline :scheduled))
-                   (org-agenda-overriding-header "Calendar")))))))
+		   (org-agenda-entry-types '(:deadline :scheduled))
+		   (org-agenda-overriding-header "Calendar")))))))
 
 ; Capture templates
-(setq denote-org-capture-specifiers "%i\n%?")
-
 (setq org-capture-templates
       `(("i" "Inbox" entry
-         (file+headline ,(expand-file-name "inbox.org" my/gtd-root) "Inbox")
-         "* FILE %^{Header|Entry} \n:PROPERTIES:\n:Captured: %u\n:End:\n%^{Description}%i" :immediate-finish t)))
+	 (file+headline ,(expand-file-name "inbox.org" my/gtd-root) "Inbox")
+	 "* FILE %^{Header|Entry} \n:PROPERTIES:\n:Captured: %u\n:End:\n%^{Description}%i" :immediate-finish t)))
 
 ; Set deadline for GTD entries
 (defun gtd-set-deadline ()
@@ -305,9 +303,9 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
   (interactive)
   (org-up-heading-all 0)
   (let* ((choice (completing-read "Move to: " (mapcar #'car my/gtd-dest-map))) ; Prompt to choose GTD file
-         (keyword (cdr (assoc choice my/gtd-dest-map))) ; TODO keyword associated to chosen GTD file
+	 (keyword (cdr (assoc choice my/gtd-dest-map))) ; TODO keyword associated to chosen GTD file
 	 (header (capitalize (string-remove-suffix ".org" choice))) ; Maps filename.org to Filename
-         (file (expand-file-name choice my/gtd-root)) ; Chosen GTD file path
+	 (file (expand-file-name choice my/gtd-root)) ; Chosen GTD file path
 	 (nextaction ""))
     ; Change TODO keyword
     (when keyword
@@ -330,7 +328,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
     (let* ((pos (with-current-buffer (find-file-noselect file t)
 		  (widen)
 		  (or (org-find-exact-headline-in-buffer header)
-                      (user-error "No headline in %s" file)))))
+		      (user-error "No headline in %s" file)))))
       (org-refile nil nil (list header file nil pos)))
     ; Save current buffer
     (save-buffer)
@@ -403,7 +401,43 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 (keymap-set global-map "C-c d" gtd-prefix-map)
 
-;; --- Coding -------------------------------------------------------
+;; --- Note-taking -------------------------------------------------------
+(defvar notes-directory "~/Documents/work/notes/"
+  "Directory where all notes are stored.")
+
+(defvar note-categories '("readings" "lectures")
+  "Categories for note creation.")
+
+(defvar note-templates
+  '(("readings" . "#+author: "))
+  "Templates for categories.")
+
+(defun sanitize-filename (name)
+  "Replace spaces and special chars with -."
+  (let ((sanitized (downcase (replace-regexp-in-string "[^a-zA-Z0-9_-]" "-" name))))
+    (replace-regexp-in-string "-+" "-" sanitized)))
+
+(defun create-note ()
+  "Create a new note in CATEGORY."
+  (interactive)
+  (let* ((tag-choice (completing-read
+		  "Choose a tag: "
+		  note-categories
+		  nil t)))
+  (let* ((title (read-string "Title: "))
+	 (date (format-time-string "%Y%m%dT%H%M%S"))
+	 (safe-title (sanitize-filename title))
+	 (filename (expand-file-name
+		    (format "%s--%s__%s.org" date safe-title tag-choice)
+		    notes-directory))
+	 (template (or (cdr (assoc tag-choice note-templates)) "")))
+    (find-file filename)
+    ; Insert template or minimal header
+    (insert (format "#+title: %s\n#+tag: %s\n#+date: [%s]\n%s\n" title tag-choice (format-time-string "%Y-%m-%d") template))
+    (save-buffer)
+    (org-mode))))
+
+(global-set-key (kbd "C-c n") #'create-note)
 
 ;; --- Navigation -------------------------------------------------------
 ; Which key
@@ -412,3 +446,8 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 ; Completion
 (icomplete-vertical-mode 1)
 (setq tab-always-indent 'complete)  ; Starts completion with TAB
+
+; Avy
+(use-package avy
+  :ensure t
+  :bind ("C-;" . avy-goto-char-timer))
