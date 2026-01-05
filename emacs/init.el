@@ -439,26 +439,40 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 (global-set-key (kbd "C-c n") #'create-note)
 ;; --- Coding -------------------------------------------------------
-; LaTeX
-(use-package cdlatex
-  :ensure t)
-(add-hook 'org-mode-hook #'turn-on-org-cdlatex) ; Org mode LaTeX completion
 ; LaTeX packages
 (setq org-latex-default-packages-alist
       '(("" "amsmath" t)
-        ("" "amssymb" t)
-        ("" "mathtools" t)
-        ("" "graphicx" t)
-        ("" "hyperref" t)))
+	("" "amssymb" t)
+	("" "mathtools" t)
+	("" "graphicx" t)
+	("" "hyperref" t)))
 
 ;; --- Navigation -------------------------------------------------------
 ; Which key
 (which-key-mode 1)
 
 ; Completion
-(fido-vertical-mode 1) ; Fuzzy matches
-(with-eval-after-load 'icomplete
-  (keymap-set icomplete-minibuffer-map "TAB" #'icomplete-force-complete)) ; TAB will complete first selection
+(use-package icomplete
+  :ensure nil
+  :hook (after-init . fido-vertical-mode)
+  :bind (:map icomplete-minibuffer-map
+         ("TAB" . icomplete-force-complete)
+         ("C-n" . icomplete-forward-completions)
+         ("C-p" . icomplete-backward-completions))
+:config
+(setq tab-always-indent 'complete)  ;; Starts completion with TAB
+(setq icomplete-delay-completions-threshold 0)
+(setq icomplete-compute-delay 0)
+(setq icomplete-show-matches-on-no-input t)
+(setq icomplete-hide-common-prefix nil)
+(setq icomplete-prospects-height 10)
+(setq icomplete-separator " . ")
+(setq icomplete-with-completion-tables t)
+(setq icomplete-in-buffer t)
+(setq icomplete-max-delay-chars 0)
+(setq icomplete-scroll t)
+(advice-add 'completion-at-point
+	    :after #'minibuffer-hide-completions))
 
 ; Avy
 (use-package avy

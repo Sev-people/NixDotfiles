@@ -22,7 +22,14 @@
     # Development
     emacs
     ispell # Spelling in Emacs
-    texlive.combined.scheme-small # LaTeX
+    # LaTeX
+    (pkgs.texlive.combine {
+      inherit (pkgs.texlive) scheme-basic
+      dvisvgm dvipng # for preview and export as html
+      wrapfig amsmath ulem hyperref capt-of;
+      #(setq org-latex-compiler "lualatex")
+      #(setq org-preview-latex-default-process 'dvisvgm)
+    })
     
     # Multimedia
     mupdf # PDF viewer
