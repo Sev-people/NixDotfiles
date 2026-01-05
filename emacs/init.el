@@ -1,3 +1,8 @@
+;; Temp
+(require 'package)
+(package-initialize)
+(add-to-list 'package-archives '("gnu-devel" . "elpa.gnu.org"))
+
 ;; --- Sane defaults -------------------------------------------------------
 (menu-bar-mode -1) (tool-bar-mode -1) (scroll-bar-mode -1) (blink-cursor-mode -1) (electric-indent-mode -1) (electric-pair-mode 1)
 (setq org-startup-indented t org-edit-src-content-indentation 0) ; Indentation
@@ -440,7 +445,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 (global-set-key (kbd "C-c n") #'create-note)
 ;; --- Coding -------------------------------------------------------
 ; LaTeX
-(setq org-latex-compiler "lualatex")
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 (setq org-preview-latex-default-process 'dvisvgm)
 (setq org-latex-default-packages-alist
       '(("" "amsmath" t)
