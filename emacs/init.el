@@ -168,32 +168,6 @@
 (set-face-attribute 'org-verse nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-warning nil :foreground (alist-get 'crucial theme-colors))
 
-;; --- Mode line -------------------------------------------------------
-(setq-default
- mode-line-format
- '("%e"
-   mode-line-front-space
-   ; Buffer name
-   (:eval (propertize "%b" 'face 'mode-line-buffer-id))
-   " "
-   ; Read-only or modified flags
-   (:eval (cond (buffer-read-only "RO")
-		((buffer-modified-p) "✱")
-		(t " ")))
-   " "
-   ; Line and column
-   "L%l:C%c "
-   ; Percent of buffer
-   "[%p] "
-   ; Major mode
-   (propertize "%m" 'face 'font-lock-type-face)
-   ; Narrow indicator
-   (:eval (when (buffer-narrowed-p) " [Narrow]"))
-   ; Org clock
-   (:eval (when (bound-and-true-p org-mode-line-string)
-	    (concat " " org-mode-line-string)))
-   mode-line-end-spaces))
-
 ;; --- GTD system -------------------------------------------------------
 ; Keywords
 (defconst my/gtd-dest-map
@@ -447,8 +421,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
       '(("" "amsmath" t)
 	("" "amssymb" t)
 	("" "mathtools" t)
-	("" "graphics" t)
-	("" "hyperref" t)))
+	("" "graphics" t)))
 
 ;; --- Navigation -------------------------------------------------------
 ; Which key
