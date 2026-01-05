@@ -39,7 +39,7 @@
 ;; --- Theme -------------------------------------------------------
 (modify-all-frames-parameters '((internal-border-width . 16))) ; Window margins/padding
 
-(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 140 :width 'normal :weight 'extra-light) ; Font
+(set-face-attribute 'default nil :family "Latin Modern Roman" :height 140) ; Font
 
 ; Defining colors
 (defconst theme-colors

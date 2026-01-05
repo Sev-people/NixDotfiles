@@ -43,6 +43,9 @@
     # Security and Password Management
     pass # Password manager
     pinentry-curses # Password input (necessary for pass)
+
+    # Fonts
+    lmodern
   ];
 
   # Let Home Manager install and manage itself.
