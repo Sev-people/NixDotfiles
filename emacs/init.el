@@ -439,12 +439,14 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 (global-set-key (kbd "C-c n") #'create-note)
 ;; --- Coding -------------------------------------------------------
-; LaTeX packages
+; LaTeX
+(setq org-latex-compiler "lualatex")
+(setq org-preview-latex-default-process 'dvisvgm)
 (setq org-latex-default-packages-alist
       '(("" "amsmath" t)
 	("" "amssymb" t)
 	("" "mathtools" t)
-	("" "graphicx" t)
+	("" "graphics" t)
 	("" "hyperref" t)))
 
 ;; --- Navigation -------------------------------------------------------

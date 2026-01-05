@@ -24,11 +24,8 @@
     ispell # Spelling in Emacs
     # LaTeX
     (pkgs.texlive.combine {
-      inherit (pkgs.texlive) scheme-basic
-      dvisvgm dvipng # for preview and export as html
-      wrapfig amsmath ulem hyperref capt-of;
-      #(setq org-latex-compiler "lualatex")
-      #(setq org-preview-latex-default-process 'dvisvgm)
+      inherit (pkgs.texlive) scheme-small
+      dvisvgm; # for preview and export as html
     })
     
     # Multimedia
@@ -50,9 +47,6 @@
     # Security and Password Management
     pass # Password manager
     pinentry-curses # Password input (necessary for pass)
-
-    # Fonts
-    lmodern
   ];
 
   # Let Home Manager install and manage itself.
