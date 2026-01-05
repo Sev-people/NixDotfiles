@@ -401,7 +401,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 (keymap-set global-map "C-c d" gtd-prefix-map)
 
-;; --- Note-taking -------------------------------------------------------
+;; --- Note taking -------------------------------------------------------
 (defvar notes-directory "~/Documents/work/notes/"
   "Directory where all notes are stored.")
 
@@ -438,14 +438,27 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
     (org-mode))))
 
 (global-set-key (kbd "C-c n") #'create-note)
+;; --- Coding -------------------------------------------------------
+; LaTeX
+(use-package cdlatex
+  :ensure t)
+(add-hook 'org-mode-hook #'turn-on-org-cdlatex) ; Org mode LaTeX completion
+; LaTeX packages
+(setq org-latex-default-packages-alist
+      '(("" "amsmath" t)
+        ("" "amssymb" t)
+        ("" "mathtools" t)
+        ("" "graphicx" t)
+        ("" "hyperref" t)))
 
 ;; --- Navigation -------------------------------------------------------
 ; Which key
 (which-key-mode 1)
 
 ; Completion
-(icomplete-vertical-mode 1)
-(setq tab-always-indent 'complete)  ; Starts completion with TAB
+(fido-vertical-mode 1) ; Fuzzy matches
+(with-eval-after-load 'icomplete
+  (keymap-set icomplete-minibuffer-map "TAB" #'icomplete-force-complete)) ; TAB will complete first selection
 
 ; Avy
 (use-package avy

@@ -22,7 +22,7 @@
     # Development
     emacs
     ispell # Spelling in Emacs
-    auctex # LaTeX in Emacs
+    texlive.combined.scheme-small # LaTeX
     
     # Multimedia
     mupdf # PDF viewer
