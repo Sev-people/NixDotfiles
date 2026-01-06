@@ -8,11 +8,6 @@
 (transient-mark-mode -1) ; Removes mark higlighting
 (repeat-mode) ; Useful mode for repeated commands
 
-;; --- Keybindings -------------------------------------------------------
-; Zooming in and out
-(global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-
 ;; --- Org mode -------------------------------------------------------
 (use-package org :load-path "~/.dotfiles/emacs/elpa/org-mode/lisp/")
 (require 'org)
@@ -161,16 +156,13 @@
 (set-face-attribute 'org-warning nil :foreground (alist-get 'crucial theme-colors))
 (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
 
+; Turning off splash screen
+(setq inhibit-splash-screen t)
+
 ;; --- GTD system -------------------------------------------------------
-; Keywords
-(defconst my/gtd-dest-map
-  '(("projects.org"  . "PROJ")
-    ("waiting.org"   . "WAIT")
-    ("next.org"      . "NEXT")
-    ("calendar.org"  . "TODO")
-    ("reference/reference.org" . nil)
-    ("someday.org"   . "IDEA"))
-  "GTD file structure & keyword correspondance.")
+; Work directory
+(defvar my/work-dir (expand-file-name "~/Documents/work"))
+(defvar my/notes-directory (expand-file-name "~/Documents/work/notes"))
 
 ; GTD tags And TODO Keywords
 (setq org-tag-persistent-alist '((:startgroup . nil)
@@ -178,16 +170,14 @@
 		      ("@misc" . ?m) ("@academic" . ?a)
 		      (:endgroup . nil)
 		      ))
-(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "FILE(f)" "PROJ(p)" "IDEA(i)" "WAIT(w)" "|" "DONE(d)")))
+(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "WAIT(w)" "IDEA(i)" "EVNT(e)" "|" "DONE(d)")))
 
 ; GTD root and default notes file
 (setq my/gtd-root (expand-file-name "~/Documents/work/organization/"))
 (setq org-default-notes-file (expand-file-name "inbox.org" my/gtd-root))
 
 ; Files used in agenda
-(setq org-agenda-files `(
-	,(expand-file-name "calendar.org" my/gtd-root)
-	,(expand-file-name "agenda.org" my/gtd-root)))
+(setq org-agenda-files (expand-file-name "agenda.org" my/work-dir))
 
 ; General agenda Settings
 (setq org-agenda-span 1
@@ -234,176 +224,79 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 	  ; Deadlines in the next 7 days
 	  (agenda ""
-		  ((org-agenda-span 7)
-		   (org-agenda-files '("~/Documents/work/organization/calendar.org"))
+		  ((org-agenda-span 7) 
 		   (org-agenda-prefix-format '((agenda . "  %?-2i %t %s")))
 		   (org-agenda-show-current-time-in-grid nil)
 		   (org-agenda-entry-types '(:deadline :scheduled))
 		   (org-agenda-overriding-header "Calendar")))))))
 
 ; Capture templates
-(setq org-capture-templates
-      `(("i" "Inbox" entry
-	 (file+headline ,(expand-file-name "inbox.org" my/gtd-root) "Inbox")
-	 "* FILE %^{Header|Entry} \n:PROPERTIES:\n:Captured: %u\n:End:\n%^{Description}%i" :immediate-finish t)))
-
-; Set deadline for GTD entries
-(defun gtd-set-deadline ()
-  "Set a deadline for a GTD project/task."
-  (interactive)
-  (org-up-heading-all 0)
-  (let ((date (read-string "Deadline (empty to skip): ")))
-    (unless (string-empty-p date)
-      (org-deadline nil date)
-      (let* ((calendarfile (expand-file-name "calendar.org" my/gtd-root))
-	     (calendarheader "Calendar")
-	     (pos (with-current-buffer (find-file-noselect calendarfile t)
-		    (widen)
-		    (or (org-find-exact-headline-in-buffer calendarheader)
-			(user-error "No headline in %s" calendarfile)))))
-	(org-refile 3 nil (list calendarheader calendarfile nil pos))
-	(with-current-buffer (find-buffer-visiting calendarfile)
-	  (save-buffer))))))
-
-; Refile GTD entries
-(defun gtd-refile-with-keyword ()
-  "Refile current heading to a GTD target file and update its TODO keyword."
-  (interactive)
-  (org-up-heading-all 0)
-  (let* ((choice (completing-read "Move to: " (mapcar #'car my/gtd-dest-map))) ; Prompt to choose GTD file
-	 (keyword (cdr (assoc choice my/gtd-dest-map))) ; TODO keyword associated to chosen GTD file
-	 (header (capitalize (string-remove-suffix ".org" choice))) ; Maps filename.org to Filename
-	 (file (expand-file-name choice my/gtd-root)) ; Chosen GTD file path
-	 (nextaction ""))
-    ; Change TODO keyword
-    (when keyword
-      (org-todo keyword))
-    (setq current-prefix-arg nil)
-    ; Project template
-    (when (member choice '("projects.org"))
-      (org-priority nil)
-      (org-set-tags-command)
-      (gtd-set-deadline))
-    ; Prompt for the next action
-    (when (member choice '("next.org"))
-      (while (string-blank-p nextaction) (setq nextaction (read-string "Next Action (cannot be empty): ")))
-      (org-set-property "NextAction" nextaction)
-      (org-priority nil)
-      (org-set-tags-command))
-    ; Prompt for date
-    (when (member choice '("calendar.org")) (org-schedule nil))
-    ; Refile header
-    (let* ((pos (with-current-buffer (find-file-noselect file t)
-		  (widen)
-		  (or (org-find-exact-headline-in-buffer header)
-		      (user-error "No headline in %s" file)))))
-      (org-refile nil nil (list header file nil pos)))
-    ; Save current buffer
-    (save-buffer)
-    ; Save buffer header is being moved to
-    (setq target-buf (find-buffer-visiting file))
-    (with-current-buffer target-buf
-      (save-buffer))))
-
-; Project management
-(require 'org-mouse)
-
-(setq org-after-note-stored-hook
-      (list
-       (lambda ()
-	 (org-up-heading-all 0)
-	 (org-store-link t)
-	 ; Set NextAction
-	 (let ((nextaction "") (priority (string-to-char (org-mouse-get-priority))) (tags (org-get-tags)) (link (substring-no-properties (org-store-link t))))
-	   (while (string-blank-p nextaction) (setq nextaction (read-string "Next Action: ")))
-	   (org-set-property "NextAction" nextaction)
-	   ; Add next.org entry
-	   (let ((org-capture-templates
-		  `(("x" "Project action" entry
-		     (file+headline ,(expand-file-name "next.org" my/gtd-root) "Next")
-		     "* NEXT %(identity nextaction) for: %(identity link)\n:PROPERTIES:\n:Captured: %u\n:End:\n%i" :immediate-finish t :before-finalize (lambda () (org-priority priority) (org-set-tags tags))))))
-	     (org-capture nil "x"))))
-       (save-buffer)))
-
-(defun gtd-manage-project ()
-  "Manage current GTD project."
-  (interactive)
-  (org-up-heading-all 0)
-  ; Add purpose and vision
-  (unless (org-entry-get (point) "Purpose")
-    (let ((purpose ""))
-      (while (string-blank-p purpose) (setq purpose (read-string "Purpose: ")))
-      (org-set-property "Purpose" purpose)))
-  (unless (org-entry-get (point) "SuccessCriteria")
-    (let ((criteria ""))
-      (while (string-blank-p criteria) (setq criteria (read-string "Success Criteria: ")))
-      (org-set-property "SuccessCriteria" criteria)))
-  ; Brainstorm
-  (org-add-note))
-
-; Misc. settings
-(add-hook 'org-todo-repeat-hook #'org-reset-checkbox-state-subtree) ;; To unmark checkboxes
-(setq org-log-into-drawer t) ;; For timestamp logs
-; Remove timestamp logging when tasks are completed
-(setq org-log-done nil)
-(setq org-log-repeat nil)
-
-; GTD keybindings
-(defun gtd-agenda ()
-  "Open custom agenda view."
-  (interactive)
-  (org-agenda nil "x"))
-
-(defun gtd-dir ()
-  "Open GTD directory."
-  (interactive)
-  (find-file "~/Documents/work/organization"))
-
-(defvar-keymap gtd-prefix-map
-  :doc "GTD prefix key map."
-  "c" #'org-capture
-  "a" #'gtd-agenda
-  "d" #'gtd-dir
-  "p" #'gtd-manage-project
-  "m" 'gtd-refile-with-keyword)
-
-(keymap-set global-map "C-c d" gtd-prefix-map)
-
-;; --- Note taking -------------------------------------------------------
-(defvar notes-directory "~/Documents/work/notes/"
-  "Directory where all notes are stored.")
-
-(defvar note-categories '("readings" "lectures")
+(defvar my/note-categories '("readings" "lectures" "projects")
   "Categories for note creation.")
 
-(defvar note-templates
-  '(("readings" . "#+author:\n#+startup: latexpreview"))
+(defvar my/note-templates
+  '(("readings" . "#+author:") ("lectures" . "#+startup: latexpreview\n") ("projects" . "#+projectlink:\n"))
   "Templates for categories.")
 
-(defun sanitize-filename (name)
+(defun my/sanitize-filename (name)
   "Replace spaces and special chars with -."
   (let ((sanitized (downcase (replace-regexp-in-string "[^a-zA-Z0-9_-]" "-" name))))
     (replace-regexp-in-string "-+" "-" sanitized)))
 
-(defun create-note ()
-  "Create a new note in CATEGORY."
-  (interactive)
-  (let* ((tag-choice (completing-read
+(defun my/generate-org-note-name ()
+  (setq my-org-note--tag-choice (completing-read
 		  "Choose a tag: "
-		  note-categories
-		  nil t)))
-  (let* ((title (read-string "Title: "))
-	 (date (format-time-string "%Y%m%dT%H%M%S"))
-	 (safe-title (sanitize-filename title))
-	 (filename (expand-file-name
-		    (format "%s--%s__%s.org" date safe-title tag-choice)
-		    notes-directory))
-	 (template (or (cdr (assoc tag-choice note-templates)) "")))
-    (find-file filename)
-    ; Insert template or minimal header
-    (insert (format "#+title: %s\n#+tag: %s\n#+date: [%s]\n%s\n" title tag-choice (format-time-string "%Y-%m-%d") template))
-    (save-buffer)
-    (org-mode))))
+		  my/note-categories
+		  nil t))
+  (setq my-org-note--title (my/sanitize-filename (read-string "Title: ")))
+  (setq my-org-note--date (format-time-string "%Y%m%dT%H%M%S"))
+  (setq my-org-note--template (or (cdr (assoc my-org-note--tag-choice my/note-templates)) ""))
+  (expand-file-name (format "%s--%s__%s.org" my-org-note--date my-org-note--title my-org-note--tag-choice) my/notes-directory))
+   
+(setq org-capture-templates
+      `(("i" "Inbox" entry
+	 (file+headline ,(expand-file-name "agenda.org" my/work-dir) "Inbox")
+	 "* %^{Header|Entry} \n:Captured: %u\n%^{Description}%i" :immediate-finish t)
+        ("n" "Note" plain
+         (file my/generate-org-note-name)
+         "%(format \"#+title: %s\n#+tag: %s\n#+date: [%s]\n#+id: %s\n%s\n\" my-org-note--title my-org-note--tag-choice (format-time-string \"%Y-%m-%d\") (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")))
+
+; Refiling inbox entries
+(defun org-handle-project-state ()
+  "Refile inbox entries."
+  (when (member org-state '("PROJ" "TODO"))
+    ; Set priority
+    (org-priority nil)
+    ; Set tags
+    (org-set-tags-command))
+  ; Archive if state is IDEA
+  (when (string= org-state "IDEA")
+    (let ((target-path (expand-file-name "archived/reference.org" my/work-dir)))
+      (org-refile nil nil (list nil target-path nil nil))))
+  ; Set deadline if appropriate
+  (when (not (member org-state '("NEXT" "WAIT" "IDEA" "DONE")))
+    (let ((date (read-string "Deadline (empty to skip): ")))
+      (unless (string-empty-p date)
+	(org-deadline nil date))))
+  (when (and (stringp org-state) (not (member org-state '("IDEA" "DONE"))))
+    (let* ((pos (with-current-buffer (find-file-noselect buffer-file-name t)
+		  (widen)
+		  (or (org-find-exact-headline-in-buffer "To-do")
+		      (user-error "No To-do headline")))))
+      (org-refile nil nil (list "To-do" buffer-file-name nil pos)))))
+     
+(add-hook 'org-after-todo-state-change-hook #'org-handle-project-state)
+
+; Misc. settings
+(add-hook 'org-todo-repeat-hook #'org-reset-checkbox-state-subtree) ; To unmark checkboxes
+(setq org-log-into-drawer t) ; For timestamp logs
+; Remove timestamp logging when tasks are completed
+(setq org-log-done nil)
+(setq org-log-repeat nil)
+
+;; --- Note taking -------------------------------------------------------
+
+
 
 (global-set-key (kbd "C-c n") #'create-note)
 ;; --- Coding -------------------------------------------------------
@@ -415,6 +308,11 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 	("" "amssymb" t)
 	("" "mathtools" t)
 	("" "graphics" t)))
+(defun my-org-toggle-latex-editing ()
+  "Toggle org-cdlatex-mode and org-latex-preview-mode."
+  (interactive)
+  (org-latex-preview-mode 'toggle))
+(define-key org-mode-map (kbd "C-c l") #'my-org-toggle-latex-editing)
 
 ;; --- Navigation -------------------------------------------------------
 ; Which key
