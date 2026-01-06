@@ -49,7 +49,7 @@
     pinentry-curses # Password input (necessary for pass)
 
     # Fonts
-    dejavu_fonts
+    libertine
   ];
 
   # Let Home Manager install and manage itself.
