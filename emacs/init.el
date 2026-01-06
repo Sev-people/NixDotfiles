@@ -31,7 +31,7 @@
 
 (setq org-startup-folded t
       org-return-follows-link t)
-; (add-hook 'org-mode-hook #'variable-pitch-mode)
+(add-hook 'org-mode-hook #'variable-pitch-mode)
 
 ; Table of contents
 (use-package toc-org
@@ -43,8 +43,8 @@
 (modify-all-frames-parameters '((internal-border-width . 16))) ; Window margins/padding
 
 (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 140 :weight 'light) ; Font
-(set-face-attribute 'fixed-pitch nil :family "JetBrainsMono Nerd Font" :height 1.0 :weight 'light) ; Font
-(set-face-attribute 'variable-pitch nil :family "Latin Modern Mono" :height 1.0 :weight 'normal) ; Variable pitch font
+(set-face-attribute 'fixed-pitch nil :family "JetBrainsMono Nerd Font" :height 0.8 :weight 'light) ; Font
+(set-face-attribute 'variable-pitch nil :family "DejaVu Serif" :height 1.2 :weight 'normal) ; Variable pitch font
 
 ; Defining colors
 (defconst theme-colors
@@ -129,9 +129,7 @@
 (set-face-attribute 'org-default nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-document-info nil :foreground (alist-get 'meek theme-colors) :weight 'light)
 (set-face-attribute 'org-document-info-keyword nil :foreground (alist-get 'meek theme-colors) :weight 'light)
-(set-face-attribute 'org-document-title nil :font "Latin Modern Mono" :foreground (alist-get 'fg theme-colors) :weight 'normal)
 (set-face-attribute 'org-done nil :foreground (alist-get 'meek theme-colors) :strike-through t)
-(set-face-attribute 'org-drawer nil :foreground (alist-get 'meek theme-colors) :weight 'light)
 (set-face-attribute 'org-ellipsis nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-footnote nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-formula nil :foreground (alist-get 'meek theme-colors))
@@ -141,7 +139,6 @@
 (set-face-attribute 'org-link nil :foreground (alist-get 'focus theme-colors))
 (set-face-attribute 'org-list-dt nil :foreground (alist-get 'strong theme-colors) :weight 'semi-bold)
 (set-face-attribute 'org-macro nil :foreground (alist-get 'meek theme-colors))
-(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch) :foreground (alist-get 'meek theme-colors) :weight 'light)
 (set-face-attribute 'org-mode-line-clock nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-mode-line-clock-overrun nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-priority nil :foreground (alist-get 'meek theme-colors))
@@ -151,7 +148,6 @@
 (set-face-attribute 'org-scheduled-previously nil :foreground (alist-get 'strong theme-colors) :weight 'light)
 (set-face-attribute 'org-scheduled-today nil :foreground (alist-get 'focus theme-colors))
 (set-face-attribute 'org-sexp-date nil :foreground (alist-get 'meek theme-colors))
-(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch) :foreground (alist-get 'meek theme-colors) :weight 'light)
 (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
 (set-face-attribute 'org-tag nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-tag-group nil :foreground (alist-get 'meek theme-colors))
@@ -164,8 +160,6 @@
 (set-face-attribute 'org-verse nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-warning nil :foreground (alist-get 'crucial theme-colors))
 (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
-(dolist (face '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5 org-level-6 org-level-7 org-level-8))
-  (set-face-attribute face nil :font "Latin Modern Mono" :weight 'normal :height 1.0))
 
 ;; --- GTD system -------------------------------------------------------
 ; Keywords
