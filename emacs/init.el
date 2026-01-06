@@ -43,8 +43,8 @@
 (modify-all-frames-parameters '((internal-border-width . 16))) ; Window margins/padding
 
 (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 140 :weight 'light) ; Font
-(set-face-attribute 'fixed-pitch nil :family "JetBrainsMono Nerd Font" :weight 'light) ; Font
-(set-face-attribute 'variable-pitch nil :family "DejaVu Serif" :weight 'normal) ; Variable pitch font
+(set-face-attribute 'fixed-pitch nil :family "JetBrainsMono Nerd Font" :height 0.8 :weight 'light) ; Font
+(set-face-attribute 'variable-pitch nil :family "Linux Libertine o" :height 1.2 :weight 'normal) ; Variable pitch font
 
 ; Defining colors
 (defconst theme-colors
