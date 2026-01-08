@@ -13,6 +13,9 @@
 (require 'org)
 (require 'org-indent)
 
+; Org protocol
+(require 'org-protocol)
+
 ; Allows multi-line emphasis markers
 (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
@@ -172,12 +175,8 @@
 		      ))
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "WAIT(w)" "IDEA(i)" "EVNT(e)" "|" "DONE(d)")))
 
-; GTD root and default notes file
-(setq my/gtd-root (expand-file-name "~/Documents/work/organization/"))
-(setq org-default-notes-file (expand-file-name "inbox.org" my/gtd-root))
-
 ; Files used in agenda
-(setq org-agenda-files (expand-file-name "agenda.org" my/work-dir))
+(setq org-agenda-files (list (expand-file-name "agenda.org" my/work-dir)))
 
 ; General agenda Settings
 (setq org-agenda-span 1
@@ -224,7 +223,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 
 	  ; Deadlines in the next 7 days
 	  (agenda ""
-		  ((org-agenda-span 7) 
+		  ((org-agenda-span 7)
 		   (org-agenda-prefix-format '((agenda . "  %?-2i %t %s")))
 		   (org-agenda-show-current-time-in-grid nil)
 		   (org-agenda-entry-types '(:deadline :scheduled))
@@ -259,7 +258,10 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 	 "* %^{Header|Entry} \n:Captured: %u\n%^{Description}%i" :immediate-finish t)
         ("n" "Note" plain
          (file my/generate-org-note-name)
-         "%(format \"#+title: %s\n#+tag: %s\n#+date: [%s]\n#+id: %s\n%s\n\" my-org-note--title my-org-note--tag-choice (format-time-string \"%Y-%m-%d\") (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")))
+         "%(format \"#+title: %s\n#+tag: %s\n#+date: [%s]\n#+id: %s\n%s\n\" my-org-note--title my-org-note--tag-choice (format-time-string \"%Y-%m-%d\") (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")
+	("reference" "Reference (Org Protocol)" entry
+	 (file (expand-file-name "archived/reference.org" my/work-dir))
+	 "* %:description %:link\n:Captured: %u\n%:annotation\n%i" :immediate-finish t)))
 
 ; Refiling inbox entries
 (defun org-handle-project-state ()
@@ -274,11 +276,12 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
     (let ((target-path (expand-file-name "archived/reference.org" my/work-dir)))
       (org-refile nil nil (list nil target-path nil nil))))
   ; Set deadline if appropriate
-  (when (not (member org-state '("NEXT" "WAIT" "IDEA" "DONE")))
+  (when (and (stringp org-state) (not (member org-state '("NEXT" "WAIT" "IDEA" "DONE"))))
     (let ((date (read-string "Deadline (empty to skip): ")))
       (unless (string-empty-p date)
 	(org-deadline nil date))))
-  (when (and (stringp org-state) (not (member org-state '("IDEA" "DONE"))))
+  (when (null org-state) (org-back-to-heading) (end-of-line) (org-timestamp nil))
+  (when (not (member org-state '("IDEA" "DONE")))
     (let* ((pos (with-current-buffer (find-file-noselect buffer-file-name t)
 		  (widen)
 		  (or (org-find-exact-headline-in-buffer "To-do")
@@ -294,15 +297,14 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 (setq org-log-done nil)
 (setq org-log-repeat nil)
 
-;; --- Note taking -------------------------------------------------------
+; Keybindings
+(global-set-key (kbd "C-c a") (lambda () (interactive) (org-agenda nil "x")))
+(global-set-key (kbd "C-c c") #'org-capture)
 
-
-
-(global-set-key (kbd "C-c n") #'create-note)
 ;; --- Coding -------------------------------------------------------
 ; LaTeX
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
-(setq org-preview-latex-default-process 'dvisvgm)
+(setq org-preview-latex-process 'dvisvgm)
 (setq org-latex-default-packages-alist
       '(("" "amsmath" t)
 	("" "amssymb" t)
@@ -312,7 +314,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
   "Toggle org-cdlatex-mode and org-latex-preview-mode."
   (interactive)
   (org-latex-preview-mode 'toggle))
-(define-key org-mode-map (kbd "C-c l") #'my-org-toggle-latex-editing)
+(define-key org-mode-map (kbd "C-c C-l") #'my-org-toggle-latex-editing)
 
 ;; --- Navigation -------------------------------------------------------
 ; Which key
