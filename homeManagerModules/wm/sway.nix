@@ -69,7 +69,7 @@ in {
 
         "Mod4+F"      = "exec zen";
         "Mod4+E"      = "exec em";
-        "Mod4+R"      = "exec inbox-capture";
+        "Mod4+R"      = "exec emacsclient -c \"org-protocol://capture?template=i\"";
         "Mod4+V"      = "floating toggle";
         "Mod4+Shift+U" = "gaps inner current toggle 15";
         "Mod4+U" = "splith";

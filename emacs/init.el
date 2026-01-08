@@ -260,7 +260,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
          (file my/generate-org-note-name)
          "%(format \"#+title: %s\n#+tag: %s\n#+date: [%s]\n#+id: %s\n%s\n\" my-org-note--title my-org-note--tag-choice (format-time-string \"%Y-%m-%d\") (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")
 	("reference" "Reference (Org Protocol)" entry
-	 (file (expand-file-name "archived/reference.org" my/work-dir))
+	 (file ,(expand-file-name "archived/reference.org" my/work-dir))
 	 "* %:description %:link\n:Captured: %u\n%:annotation\n%i" :immediate-finish t)))
 
 ; Refiling inbox entries
