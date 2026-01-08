@@ -43,7 +43,6 @@
     yt-dlp
     easyeffects
     dconf
-    glib
 
     # Security and Password Management
     pass # Password manager
