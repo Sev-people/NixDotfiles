@@ -1,12 +1,15 @@
 ;; --- Sane defaults -------------------------------------------------------
 (menu-bar-mode -1) (tool-bar-mode -1) (scroll-bar-mode -1) (blink-cursor-mode -1) (electric-indent-mode -1) (electric-pair-mode 1)
-(setq org-startup-indented t org-edit-src-content-indentation 0) ; Indentation
+(setq org-edit-src-content-indentation 0) ; Indentation
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files"))) ; Trash collection
 (setq ring-bell-function 'ignore) ; Stop bell sounds
 (global-visual-line-mode 1) ; Truncate lines
 (setq custom-file null-device) ; Prevent custom-set-variables from editing this file
-(transient-mark-mode -1) ; Removes mark higlighting
 (repeat-mode) ; Useful mode for repeated commands
+
+; Melpa - for direnv
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
 
 ;; --- Org mode -------------------------------------------------------
 (use-package org :load-path "~/.dotfiles/emacs/elpa/org-mode/lisp/")
@@ -27,22 +30,13 @@
 	"."
 	1))
 
-(setq org-startup-folded t
-      org-return-follows-link t)
-(add-hook 'org-mode-hook #'variable-pitch-mode)
-
-; Table of contents
-(use-package toc-org
-    :ensure t
-    :commands toc-org-enable
-    :init (add-hook 'org-mode-hook 'toc-org-enable))
+(setq org-return-follows-link t)
+(add-hook 'org-mode-hook 'org-indent-mode)
 
 ;; --- Theme -------------------------------------------------------
 (modify-all-frames-parameters '((internal-border-width . 16))) ; Window margins/padding
 
 (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 140 :weight 'light) ; Font
-(set-face-attribute 'fixed-pitch nil :family "JetBrainsMono Nerd Font" :height 0.8 :weight 'light) ; Font
-(set-face-attribute 'variable-pitch nil :family "Linux Libertine o" :height 1.2 :weight 'normal) ; Variable pitch font
 
 ; Defining colors
 (defconst theme-colors
@@ -110,16 +104,17 @@
 (set-face-attribute 'font-lock-preprocessor-face nil :foreground (alist-get 'aqua theme-colors) :weight 'medium)
 
 ; Org mode
-(set-face-attribute 'org-block nil :inherit 'fixed-pitch :foreground (alist-get 'meek theme-colors) :background (alist-get 'lowlight theme-colors))
+(set-face-attribute 'org-level-2 nil :foreground (alist-get 'orange theme-colors))
+(set-face-attribute 'org-block nil  :foreground (alist-get 'meek theme-colors) :background (alist-get 'lowlight theme-colors))
 (set-face-attribute 'org-block-begin-line nil :foreground (alist-get 'meek theme-colors) :background (alist-get 'lowlight theme-colors))
 (set-face-attribute 'org-block-end-line nil :foreground (alist-get 'meek theme-colors))
-(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch :foreground (alist-get 'meek theme-colors))
+(set-face-attribute 'org-checkbox nil  :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-checkbox-statistics-done nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-checkbox-statistics-todo nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-cite nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-cite-key nil :foreground (alist-get 'crucial theme-colors))
 (set-face-attribute 'org-clock-overlay nil :foreground (alist-get 'meek theme-colors))
-(set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch) :foreground (alist-get 'meek theme-colors))
+(set-face-attribute 'org-code nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-column nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-column-title nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-date nil :foreground (alist-get 'meek theme-colors))
@@ -146,7 +141,6 @@
 (set-face-attribute 'org-scheduled-previously nil :foreground (alist-get 'strong theme-colors) :weight 'light)
 (set-face-attribute 'org-scheduled-today nil :foreground (alist-get 'focus theme-colors))
 (set-face-attribute 'org-sexp-date nil :foreground (alist-get 'meek theme-colors))
-(set-face-attribute 'org-table nil :inherit 'fixed-pitch)
 (set-face-attribute 'org-tag nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-tag-group nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-target nil :foreground (alist-get 'meek theme-colors))
@@ -154,10 +148,9 @@
 (set-face-attribute 'org-todo nil :foreground (alist-get 'orange theme-colors))
 (set-face-attribute 'org-upcoming-deadline nil :foreground (alist-get 'strong theme-colors))
 (set-face-attribute 'org-upcoming-distant-deadline nil :foreground (alist-get 'fg theme-colors))
-(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch) :foreground (alist-get 'meek theme-colors))
+(set-face-attribute 'org-verbatim nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-verse nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-warning nil :foreground (alist-get 'crucial theme-colors))
-(set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
 
 ; Turning off splash screen
 (setq inhibit-splash-screen t)
@@ -173,61 +166,26 @@
 		      ("@misc" . ?m) ("@academic" . ?a)
 		      (:endgroup . nil)
 		      ))
-(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "WAIT(w)" "IDEA(i)" "EVNT(e)" "|" "DONE(d)")))
+(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "WAIT(w)" "|" "DONE(d)")))
 
 ; Files used in agenda
 (setq org-agenda-files (list (expand-file-name "agenda.org" my/work-dir)))
 
 ; General agenda Settings
-(setq org-agenda-span 1
-org-agenda-start-day "+0d"
-org-agenda-skip-timestamp-if-done t
-org-agenda-skip-deadline-if-done t
-org-agenda-skip-scheduled-if-done t
-org-agenda-skip-scheduled-if-deadline-is-shown t
-org-agenda-skip-timestamp-if-deadline-is-shown t)
-
-; Agenda views format
-(setq org-agenda-prefix-format '(
-(agenda . "  %?-2i %t ")
- (todo . " %i %-12:c")
- (tags . " %i %-12:c")
- (search . " %i %-12:c")))
-
-(setq org-agenda-hide-tags-regexp ".*")
+(setq org-agenda-start-day "+0d")
 
 ; Settings for agenda views
-(setq org-deadline-warning-days 0)
-(setq org-agenda-current-time-string "")
-(setq org-agenda-time-grid '((daily) () "" ""))
+(setq org-deadline-warning-days 1)
 (setq org-agenda-start-on-weekday nil)
 
-; Custom agenda view
-(setq org-agenda-custom-commands
-      '(("x" "Custom Agenda"
-	 ; Routine today
-	 ((agenda ""
-		  ((org-agenda-span 1)
-		   (org-agenda-entry-types '(:timestamp))
-		   (org-agenda-skip-function
-		    '(org-agenda-skip-entry-if 'todo 'any))
-		   (org-agenda-overriding-header "Routine")))
+; Refile settings
+(setq org-refile-use-outline-path 'file)
 
-	  ; TODOs scheduled today
-	  (agenda ""
-		  ((org-agenda-span 1)
-		   (org-agenda-show-current-time-in-grid nil)
-		   (org-agenda-skip-function
-		    '(org-agenda-skip-entry-if 'nottodo 'any))
-		   (org-agenda-overriding-header "Work Today")))
-
-	  ; Deadlines in the next 7 days
-	  (agenda ""
-		  ((org-agenda-span 7)
-		   (org-agenda-prefix-format '((agenda . "  %?-2i %t %s")))
-		   (org-agenda-show-current-time-in-grid nil)
-		   (org-agenda-entry-types '(:deadline :scheduled))
-		   (org-agenda-overriding-header "Calendar")))))))
+(setq org-refile-targets
+      '((org-agenda-files . (:level . 1))
+	(("/home/marc/Documents/work/archived/reference.org"
+	  "/home/marc/Documents/work/archived/someday.org")
+	 . (:level . 2))))
 
 ; Capture templates
 (defvar my/note-categories '("readings" "lectures" "projects")
@@ -261,34 +219,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
          "%(format \"#+title: %s\n#+tag: %s\n#+date: [%s]\n#+id: %s\n%s\n\" my-org-note--title my-org-note--tag-choice (format-time-string \"%Y-%m-%d\") (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")
 	("reference" "Reference (Org Protocol)" entry
 	 (file ,(expand-file-name "archived/reference.org" my/work-dir))
-	 "* %:description %:link\n:Captured: %u\n%:annotation\n%i" :immediate-finish t)))
-
-; Refiling inbox entries
-(defun org-handle-project-state ()
-  "Refile inbox entries."
-  (when (member org-state '("PROJ" "TODO"))
-    ; Set priority
-    (org-priority nil)
-    ; Set tags
-    (org-set-tags-command))
-  ; Archive if state is IDEA
-  (when (string= org-state "IDEA")
-    (let ((target-path (expand-file-name "archived/reference.org" my/work-dir)))
-      (org-refile nil nil (list nil target-path nil nil))))
-  ; Set deadline if appropriate
-  (when (and (stringp org-state) (not (member org-state '("NEXT" "WAIT" "IDEA" "DONE"))))
-    (let ((date (read-string "Deadline (empty to skip): ")))
-      (unless (string-empty-p date)
-	(org-deadline nil date))))
-  (when (null org-state) (org-back-to-heading) (end-of-line) (org-timestamp nil))
-  (when (not (member org-state '("IDEA" "DONE")))
-    (let* ((pos (with-current-buffer (find-file-noselect buffer-file-name t)
-		  (widen)
-		  (or (org-find-exact-headline-in-buffer "To-do")
-		      (user-error "No To-do headline")))))
-      (org-refile nil nil (list "To-do" buffer-file-name nil pos)))))
-     
-(add-hook 'org-after-todo-state-change-hook #'org-handle-project-state)
+	 "* LINK: %:description\n:Captured: %u\n%:annotation\n%i" :immediate-finish t)))
 
 ; Misc. settings
 (add-hook 'org-todo-repeat-hook #'org-reset-checkbox-state-subtree) ; To unmark checkboxes
@@ -298,7 +229,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 (setq org-log-repeat nil)
 
 ; Keybindings
-(global-set-key (kbd "C-c a") (lambda () (interactive) (org-agenda nil "x")))
+(global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
 
 ;; --- Coding -------------------------------------------------------
@@ -316,6 +247,15 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
   (org-latex-preview-mode 'toggle))
 (define-key org-mode-map (kbd "C-c C-l") #'my-org-toggle-latex-editing)
 
+; Direnv - for flake development
+(use-package direnv
+  :ensure t
+  :config (direnv-mode))
+
+; Version control with git
+(use-package magit
+  :ensure t)
+
 ;; --- Navigation -------------------------------------------------------
 ; Which key
 (which-key-mode 1)
@@ -323,7 +263,7 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 ; Completion
 (use-package icomplete
   :ensure nil
-  :hook (after-init . fido-vertical-mode)
+  :hook (after-init . icomplete-vertical-mode)
   :bind (:map icomplete-minibuffer-map
          ("TAB" . icomplete-force-complete)
          ("C-n" . icomplete-forward-completions)
@@ -331,6 +271,8 @@ org-agenda-skip-timestamp-if-deadline-is-shown t)
 :config
 (setq tab-always-indent 'complete)  ;; Starts completion with TAB
 (setq icomplete-delay-completions-threshold 0)
+(setq completion-styles '(basic substring partial-completion flex))
+(setq completion-category-overrides '((file (styles basic partial-completion flex))))
 (setq icomplete-compute-delay 0)
 (setq icomplete-show-matches-on-no-input t)
 (setq icomplete-hide-common-prefix nil)
