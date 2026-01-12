@@ -1,5 +1,5 @@
 ;; --- Sane defaults -------------------------------------------------------
-(menu-bar-mode -1) (tool-bar-mode -1) (scroll-bar-mode -1) (blink-cursor-mode -1) (electric-indent-mode -1) (electric-pair-mode 1)
+(menu-bar-mode -1) (tool-bar-mode -1) (scroll-bar-mode -1) (blink-cursor-mode -1) (electric-indent-mode -1) (electric-pair-mode 1) (transient-mark-mode -1)
 (setq org-edit-src-content-indentation 0) ; Indentation
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files"))) ; Trash collection
 (setq ring-bell-function 'ignore) ; Stop bell sounds
@@ -41,7 +41,7 @@
 ; Defining colors
 (defconst theme-colors
   '((fg          . "#EBE9E7")
-    (bg          . "#141414")
+    (bg          . "#121212")
     (ultralight  . "#2c2c34")
     (highlight   . "#212228")
     (lowlight    . "#1A1919")
@@ -160,23 +160,22 @@
 (defvar my/work-dir (expand-file-name "~/Documents/work"))
 (defvar my/notes-directory (expand-file-name "~/Documents/work/notes"))
 
-; GTD tags And TODO Keywords
-(setq org-tag-persistent-alist '((:startgroup . nil)
-		      ("@work" . ?w) ("@knowledge" . ?k)
-		      ("@misc" . ?m) ("@academic" . ?a)
-		      (:endgroup . nil)
-		      ))
-(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "WAIT(w)" "|" "DONE(d)")))
-
 ; Files used in agenda
 (setq org-agenda-files (list (expand-file-name "agenda.org" my/work-dir)))
 
 ; General agenda Settings
-(setq org-agenda-start-day "+0d")
+(setq org-agenda-start-day "+0d"
+      org-agenda-skip-scheduled-repeats-after-deadline t)
 
 ; Settings for agenda views
 (setq org-deadline-warning-days 1)
 (setq org-agenda-start-on-weekday nil)
+(setq org-agenda-prefix-format
+     '((agenda . " %i %?-12t% s")
+       (timeline . "  % s")
+       (todo . " %i ")
+       (tags . " %i ")
+       (search . " %i ")))
 
 ; Refile settings
 (setq org-refile-use-outline-path 'file)
@@ -185,14 +184,14 @@
       '((org-agenda-files . (:level . 1))
 	(("/home/marc/Documents/work/archived/reference.org"
 	  "/home/marc/Documents/work/archived/someday.org")
-	 . (:level . 2))))
+	 . (:level . 0))))
 
 ; Capture templates
-(defvar my/note-categories '("readings" "lectures" "projects")
+(defvar my/note-categories '("readings")
   "Categories for note creation.")
 
 (defvar my/note-templates
-  '(("readings" . "#+author:") ("lectures" . "#+startup: latexpreview\n") ("projects" . "#+projectlink:\n"))
+  '(("readings" . "#+author:"))
   "Templates for categories.")
 
 (defun my/sanitize-filename (name)
@@ -205,21 +204,24 @@
 		  "Choose a tag: "
 		  my/note-categories
 		  nil t))
-  (setq my-org-note--title (my/sanitize-filename (read-string "Title: ")))
+  (setq my-org-note--title  (read-string "Title: "))
   (setq my-org-note--date (format-time-string "%Y%m%dT%H%M%S"))
   (setq my-org-note--template (or (cdr (assoc my-org-note--tag-choice my/note-templates)) ""))
-  (expand-file-name (format "%s--%s__%s.org" my-org-note--date my-org-note--title my-org-note--tag-choice) my/notes-directory))
+  (expand-file-name (format "%s--%s__%s.org" my-org-note--date (my/sanitize-filename my-org-note--title) my-org-note--tag-choice) my/notes-directory))
    
 (setq org-capture-templates
       `(("i" "Inbox" entry
 	 (file+headline ,(expand-file-name "agenda.org" my/work-dir) "Inbox")
-	 "* %^{Header|Entry} \n:Captured: %u\n%^{Description}%i" :immediate-finish t)
+	 "* %^{Header|Entry} \n:PROPERTIES:\n:CREATED: %u\n:END:\n%^{Description}%i" :immediate-finish t)
         ("n" "Note" plain
          (file my/generate-org-note-name)
-         "%(format \"#+title: %s\n#+tag: %s\n#+date: [%s]\n#+id: %s\n%s\n\" my-org-note--title my-org-note--tag-choice (format-time-string \"%Y-%m-%d\") (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")
+         "%(format \"#+title: %s\n#+tag: %s\n#+date: [[%U]]\n#+identifier: %s\n%s\n\" my-org-note--title my-org-note--tag-choice (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")
 	("reference" "Reference (Org Protocol)" entry
 	 (file ,(expand-file-name "archived/reference.org" my/work-dir))
-	 "* LINK: %:description\n:Captured: %u\n%:annotation\n%i" :immediate-finish t)))
+	 "* LINK: %:description\n:PROPERTIES:\n:CREATED: %u\n:END:\n%:annotation\n%i" :immediate-finish t)))
+
+; Attachments
+(setq org-attach-archive-delete t)
 
 ; Misc. settings
 (add-hook 'org-todo-repeat-hook #'org-reset-checkbox-state-subtree) ; To unmark checkboxes
@@ -231,6 +233,7 @@
 ; Keybindings
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
+(global-set-key (kbd "C-c l") #'org-store-link)
 
 ;; --- Coding -------------------------------------------------------
 ; LaTeX
@@ -245,7 +248,7 @@
   "Toggle org-cdlatex-mode and org-latex-preview-mode."
   (interactive)
   (org-latex-preview-mode 'toggle))
-(define-key org-mode-map (kbd "C-c C-l") #'my-org-toggle-latex-editing)
+(define-key org-mode-map (kbd "C-c t") #'my-org-toggle-latex-editing)
 
 ; Direnv - for flake development
 (use-package direnv
@@ -268,24 +271,19 @@
          ("TAB" . icomplete-force-complete)
          ("C-n" . icomplete-forward-completions)
          ("C-p" . icomplete-backward-completions))
-:config
-(setq tab-always-indent 'complete)  ;; Starts completion with TAB
-(setq icomplete-delay-completions-threshold 0)
-(setq completion-styles '(basic substring partial-completion flex))
-(setq completion-category-overrides '((file (styles basic partial-completion flex))))
-(setq icomplete-compute-delay 0)
-(setq icomplete-show-matches-on-no-input t)
-(setq icomplete-hide-common-prefix nil)
-(setq icomplete-prospects-height 10)
-(setq icomplete-separator " . ")
-(setq icomplete-with-completion-tables t)
-(setq icomplete-in-buffer t)
-(setq icomplete-max-delay-chars 0)
-(setq icomplete-scroll t)
-(advice-add 'completion-at-point
-	    :after #'minibuffer-hide-completions))
-
-; Avy
-(use-package avy
-  :ensure t
-  :bind ("C-;" . avy-goto-char-timer))
+  :config
+  (setq tab-always-indent 'complete)  ;; Starts completion with TAB
+  (setq icomplete-delay-completions-threshold 0)
+  (setq completion-styles '(basic substring partial-completion flex))
+  (setq completion-category-overrides '((file (styles basic partial-completion flex))))
+  (setq icomplete-compute-delay 0)
+  (setq icomplete-show-matches-on-no-input t)
+  (setq icomplete-hide-common-prefix nil)
+  (setq icomplete-prospects-height 10)
+  (setq icomplete-separator " . ")
+  (setq icomplete-with-completion-tables t)
+  (setq icomplete-in-buffer t)
+  (setq icomplete-max-delay-chars 0)
+  (setq icomplete-scroll t)
+  (advice-add 'completion-at-point
+	      :after #'minibuffer-hide-completions))
