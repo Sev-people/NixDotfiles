@@ -18,6 +18,7 @@
     ani-cli # Anime
     wget
     aria2 # Torrents
+    ledger # Finances
     
     # Development
     emacs
@@ -27,13 +28,15 @@
       inherit (pkgs.texlive) scheme-small
       dvisvgm mylatexformat preview; # for preview and export as html
     })
+
+    # Email
+    
     
     # Multimedia
     mupdf # PDF viewer
     ffmpeg
     vlc
     mpv # Music player
-    darktable # Photo editor
     
     # System Utilities
     gparted # Disk partitioning
@@ -47,9 +50,6 @@
     # Security and Password Management
     pass # Password manager
     pinentry-curses # Password input (necessary for pass)
-
-    # Fonts
-    libertine
   ];
 
   # Let Home Manager install and manage itself.
