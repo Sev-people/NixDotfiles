@@ -191,7 +191,7 @@
   "Categories for note creation.")
 
 (defvar my/note-templates
-  '(("readings" . "#+author:"))
+  '(("readings" . "#+AUTHOR:"))
   "Templates for categories.")
 
 (defun my/sanitize-filename (name)
@@ -215,7 +215,7 @@
 	 "* %^{Header|Entry} \n:PROPERTIES:\n:CREATED: %u\n:END:\n%^{Description}%i" :immediate-finish t)
         ("n" "Note" plain
          (file my/generate-org-note-name)
-         "%(format \"#+title: %s\n#+tag: %s\n#+date: [[%U]]\n#+identifier: %s\n%s\n\" my-org-note--title my-org-note--tag-choice (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")
+         "%(format \"#+TITLE: %s\n#+TAG: %s\n#+DATE: [[%U]]\n#+IDENTIFIER: %s\n%s\n\" my-org-note--title my-org-note--tag-choice (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")
 	("reference" "Reference (Org Protocol)" entry
 	 (file ,(expand-file-name "archived/reference.org" my/work-dir))
 	 "* LINK: %:description\n:PROPERTIES:\n:CREATED: %u\n:END:\n%:annotation\n%i" :immediate-finish t)))

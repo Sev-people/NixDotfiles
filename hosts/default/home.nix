@@ -28,6 +28,7 @@
       inherit (pkgs.texlive) scheme-small
       dvisvgm mylatexformat preview; # for preview and export as html
     })
+    gnuplot
 
     # Email
     

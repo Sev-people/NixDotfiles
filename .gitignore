@@ -5,9 +5,5 @@ nixos-switch.log
 emacs/*
 
 # Except these specific files
-!emacs/config.org
 !emacs/init.el
-!emacs/early-init.el
 !emacs/.envrc
-!emacs/latex/
-!emacs/latex/**
