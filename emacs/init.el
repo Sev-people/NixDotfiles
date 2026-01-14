@@ -259,6 +259,14 @@
 (use-package magit
   :ensure t)
 
+; Org babel
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (gnuplot . t)
+   (latex . t)
+   (ledger . t))
+
 ;; --- Navigation -------------------------------------------------------
 ; Which key
 (which-key-mode 1)

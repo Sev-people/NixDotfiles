@@ -21,18 +21,6 @@
     pkgs = nixpkgs.legacyPackages.${system};
   in
   {
-    # DevShell for dotfiles
-    devShells.${system}.default = pkgs.mkShell {
-      name = "dotfiles-dev-shell";
-      packages = [
-        pkgs.alejandra
-        pkgs.statix
-        pkgs.deadnix
-        pkgs.nil
-        pkgs.bash-language-server
-      ];
-    };
-
     # System
     nixosConfigurations = {
       default = nixpkgs.lib.nixosSystem {

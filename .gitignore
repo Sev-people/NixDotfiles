@@ -1,4 +1,3 @@
-.direnv/
 nixos-switch.log
 
 # Ignore everything in emacs/
@@ -6,4 +5,3 @@ emacs/*
 
 # Except these specific files
 !emacs/init.el
-!emacs/.envrc

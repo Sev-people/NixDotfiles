@@ -30,9 +30,6 @@
     })
     gnuplot
 
-    # Email
-    
-    
     # Multimedia
     mupdf # PDF viewer
     ffmpeg
