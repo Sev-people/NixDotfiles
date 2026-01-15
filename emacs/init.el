@@ -15,6 +15,7 @@
 (use-package org :load-path "~/.dotfiles/emacs/elpa/org-mode/lisp/")
 (require 'org)
 (require 'org-indent)
+(require 'tempo)
 
 ; Org protocol
 (require 'org-protocol)
@@ -215,7 +216,7 @@
 	 "* %^{Header|Entry} \n:PROPERTIES:\n:CREATED: %u\n:END:\n%^{Description}%i" :immediate-finish t)
         ("n" "Note" plain
          (file my/generate-org-note-name)
-         "%(format \"#+TITLE: %s\n#+TAG: %s\n#+DATE: [[%U]]\n#+IDENTIFIER: %s\n%s\n\" my-org-note--title my-org-note--tag-choice (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")
+         "%(format \"#+TITLE: %s\n#+DATE: [[%U]]\n#+IDENTIFIER: %s\n%s\n\" my-org-note--title (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")
 	("reference" "Reference (Org Protocol)" entry
 	 (file ,(expand-file-name "archived/reference.org" my/work-dir))
 	 "* LINK: %:description\n:PROPERTIES:\n:CREATED: %u\n:END:\n%:annotation\n%i" :immediate-finish t)))
@@ -255,17 +256,22 @@
   :ensure t
   :config (direnv-mode))
 
-; Version control with git
-(use-package magit
-  :ensure t)
-
 ; Org babel
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
-   (gnuplot . t)
    (latex . t)
-   (ledger . t))
+   (gnuplot . t)))
+
+;; --- Programming modes -------------------------------------------------------
+
+; Ledger
+(use-package ledger-mode
+  :ensure t)
+
+; Nix
+(use-package nix-mode
+  :ensure t)
 
 ;; --- Navigation -------------------------------------------------------
 ; Which key
