@@ -42,15 +42,13 @@
     unzip
     gtk3
     yt-dlp
-    easyeffects
-    dconf
 
     # Security and Password Management
     pass # Password manager
     pinentry-curses # Password input (necessary for pass)
   ];
 
-  # Let Home Manager install and manage itself.
+  # Let Home Manager install and manage itself
   programs.home-manager.enable = true;
 
 }
