@@ -133,8 +133,6 @@
 (set-face-attribute 'org-link nil :foreground (alist-get 'focus theme-colors))
 (set-face-attribute 'org-list-dt nil :foreground (alist-get 'strong theme-colors) :weight 'semi-bold)
 (set-face-attribute 'org-macro nil :foreground (alist-get 'meek theme-colors))
-(set-face-attribute 'org-mode-line-clock nil :foreground (alist-get 'meek theme-colors))
-(set-face-attribute 'org-mode-line-clock-overrun nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-priority nil :foreground (alist-get 'meek theme-colors))
 (set-face-attribute 'org-property-value nil :foreground (alist-get 'meek theme-colors) :weight 'light)
 (set-face-attribute 'org-quote nil :foreground (alist-get 'fg theme-colors) :background (alist-get 'faint theme-colors))
