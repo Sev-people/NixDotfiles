@@ -11,6 +11,7 @@
     ./pipewire.nix
     ./printing.nix
     ./security.nix
+    ./shutdown.nix
   ];
 
 }
