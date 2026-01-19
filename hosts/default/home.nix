@@ -29,6 +29,9 @@
       dvisvgm mylatexformat preview; # for preview and export as html
     })
     gnuplot
+    # Rust
+    gcc
+    rustc
 
     # Multimedia
     mupdf # PDF viewer

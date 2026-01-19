@@ -13,49 +13,46 @@
   # Packages
   home.packages = with pkgs; [
     # Terminal and CLI Tools
-    foot
-    htop
-    ani-cli
-    fzf # Fuzzy search
-    ripgrep # Regexp search
-    rsync # SSH file transfer
+    foot # Terminal
+    htop # PC status
+    ani-cli # Anime
     wget
     aria2 # Torrents
-    unp
-    acpi # Battery monitoring (laptop only)
+    ledger # Finances
     
-    # Development Tools and Programming Environments
+    # Development
     emacs
-    auctex
-    ispell
-    lilypond-with-fonts
-    jq # Terminal JSON utility
-    
-    # PDF and Document Viewers
-    zathura
-    
-    # Multimedia and Media Editing
+    ispell # Spelling in Emacs
+    # LaTeX
+    (pkgs.texlive.combine {
+      inherit (pkgs.texlive) scheme-small
+      dvisvgm mylatexformat preview; # for preview and export as html
+    })
+    gnuplot
+    # Rust
+    gcc
+    rustc
+
+    # Multimedia
+    mupdf # PDF viewer
     ffmpeg
     vlc
-    mpv
+    mpv # Music player
     
-    # System Utilities and Maintenance
-    gparted
+    # System Utilities
+    gparted # Disk partitioning
     pulseaudio
     unzip
-    jmtpfs
     gtk3
-    feh
-    pastel
     yt-dlp
+    acpi # Battery optimization (laptop only)
 
     # Security and Password Management
-    pass
-    pinentry-curses
-    keepassxc
+    pass # Password manager
+    pinentry-curses # Password input (necessary for pass)
   ];
 
-  # Let Home Manager install and manage itself.
+  # Let Home Manager install and manage itself
   programs.home-manager.enable = true;
 
 }

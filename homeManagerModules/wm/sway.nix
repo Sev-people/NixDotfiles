@@ -74,7 +74,7 @@ in {
         "Mod4+Shift+U" = "gaps inner current toggle 15";
         "Mod4+U" = "splith";
         "Mod4+I" = "splitv";
-        "Mod4+Shift+X" = "exec grim -g \"$(slurp)\" - | wl-copy && wl-paste > ~/Pictures/Screenshots/Screenshot-$(date +%F_%T).png";
+        "Mod4+Shift+X" = "exec grim -g \"$(slurp)\" - | wl-copy && wl-paste > ~/Pictures/screenshots/Screenshot-$(date +%F_%T).png";
         "Mod4+N"      = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%";
         "Mod4+M"      = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";
 
