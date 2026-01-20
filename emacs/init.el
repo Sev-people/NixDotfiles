@@ -154,7 +154,7 @@
 ; Turning off splash screen
 (setq inhibit-splash-screen t)
 
-;; --- GTD system -------------------------------------------------------
+;; --- Org mode system -------------------------------------------------------
 ; Work directory
 (defvar my/work-dir (expand-file-name "~/Documents/work"))
 (defvar my/notes-directory (expand-file-name "~/Documents/work/notes"))
@@ -221,6 +221,11 @@
 
 ; Attachments
 (setq org-attach-archive-delete t)
+
+; ICalendar export
+(setq org-icalendar-use-scheduled nil
+      org-icalendar-use-deadline nil
+      org-icalendar-include-body nil)
 
 ; Misc. settings
 (add-hook 'org-todo-repeat-hook #'org-reset-checkbox-state-subtree) ; To unmark checkboxes
