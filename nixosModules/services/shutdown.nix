@@ -7,4 +7,12 @@
     "45 21 * * * systemctl hibernate"
   ];
 
+  # Automatic suspension
+	services.logind.extraConfig = ''
+	  IdleAction=suspend
+	  IdleActionSec=30min
+	  HandlePowerKey=suspend
+	  HandleLidSwitch=suspend
+	  HandleLidSwitchDocked=suspend
+	'';
 }
