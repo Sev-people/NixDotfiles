@@ -8,7 +8,7 @@
       desktop = {
         hostname = "default";
         user = "marc";
-        identityFile = "~/.ssh/id_ed25519";
+        identityFile = "~/.ssh/id_ed25519.pub";
       };
     };
   };

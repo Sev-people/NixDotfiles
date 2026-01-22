@@ -225,14 +225,14 @@
 ; ICalendar export
 (setq org-icalendar-use-scheduled nil
       org-icalendar-use-deadline nil
-      org-icalendar-include-body nil)
+      org-icalendar-include-body nil
+      org-icalendar-force-alarm t)
 
 ; Misc. settings
 (add-hook 'org-todo-repeat-hook #'org-reset-checkbox-state-subtree) ; To unmark checkboxes
 (setq org-log-into-drawer t) ; For timestamp logs
-; Remove timestamp logging when tasks are completed
 (setq org-log-done nil)
-(setq org-log-repeat nil)
+(setq org-log-repeat 'time)
 
 ; Keybindings
 (global-set-key (kbd "C-c a") #'org-agenda)
@@ -259,15 +259,7 @@
   :ensure t
   :config (direnv-mode))
 
-; Org babel
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (latex . t)
-   (gnuplot . t)))
-
 ;; --- Programming modes -------------------------------------------------------
-
 ; Ledger
 (use-package ledger-mode
   :ensure t)
@@ -275,6 +267,17 @@
 ; Nix
 (use-package nix-mode
   :ensure t)
+
+; Gnuplot
+(use-package gnuplot
+  :ensure t)
+
+; Org babel
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (latex . t)
+   (gnuplot . t)))
 
 ;; --- Navigation -------------------------------------------------------
 ; Which key

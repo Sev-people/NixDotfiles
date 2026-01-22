@@ -1,9 +1,37 @@
 warning: Git tree '/home/marc/.dotfiles' is dirty
 building the system configuration...
 warning: Git tree '/home/marc/.dotfiles' is dirty
-activating the configuration...
-setting up /etc...
-reloading user units for marc...
-restarting sysinit-reactivation.target
-the following new units were started: NetworkManager-dispatcher.service
-Done. The new configuration is /nix/store/nr4kaj24ga3a1pmn2067vhg89gm8i7cm-nixos-system-nixos-25.11.20260117.72ac591
+error:
+       … while calling the 'head' builtin
+         at /nix/store/j0svprv1655d13l3vbd3bnimq7wzk0s4-source/lib/attrsets.nix:1696:13:
+         1695|           if length values == 1 || pred here (elemAt values 1) (head values) then
+         1696|             head values
+             |             ^
+         1697|           else
+
+       … while evaluating the attribute 'value'
+         at /nix/store/j0svprv1655d13l3vbd3bnimq7wzk0s4-source/lib/modules.nix:1118:7:
+         1117|     // {
+         1118|       value = addErrorContext "while evaluating the option `${showOption loc}':" value;
+             |       ^
+         1119|       inherit (res.defsFinal') highestPrio;
+
+       … while evaluating the option `system.build.toplevel':
+
+       … while evaluating definitions from `/nix/store/j0svprv1655d13l3vbd3bnimq7wzk0s4-source/nixos/modules/system/activation/top-level.nix':
+
+       … while evaluating the option `assertions':
+
+       … while evaluating definitions from `/nix/store/flnpikzqmn2dlnp4scddh7kz6k0lm8b8-source/nixos/common.nix':
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: The option `home-manager.users.marc.users' does not exist. Definition values:
+       - In `/nix/store/m20ln2q2z3y2vf49d3k8lxayyfy54ij4-source/homeManagerModules/system/ssh.nix':
+           {
+             users = {
+               marc = {
+                 openssh = {
+                   authorizedKeys = {
+           ...
+Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '.#nixosConfigurations."default".config.system.build.toplevel' --no-link' returned non-zero exit status 1.

@@ -8,4 +8,6 @@
     pinentryPackage = pkgs.pinentry-curses;
   };
 
+  networking.firewall.allowedTCPPorts = [ 22 ];
+
 }
