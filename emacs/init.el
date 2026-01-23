@@ -211,13 +211,16 @@
 (setq org-capture-templates
       `(("i" "Inbox" entry
 	 (file+headline ,(expand-file-name "agenda.org" my/work-dir) "Inbox")
-	 "* %^{Header|Entry} \n:PROPERTIES:\n:CREATED: %u\n:END:\n%^{Description}%i" :immediate-finish t)
+	 "* %^{Header|Entry}\n:PROPERTIES:\n:CREATED: %u\n:END:\n%^{Description}%i" :immediate-finish t)
         ("n" "Note" plain
          (file my/generate-org-note-name)
          "%(format \"#+TITLE: %s\n#+DATE: [[%U]]\n#+IDENTIFIER: %s\n%s\n\" my-org-note--title (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")
 	("reference" "Reference (Org Protocol)" entry
 	 (file ,(expand-file-name "archived/reference.org" my/work-dir))
-	 "* LINK: %:description\n:PROPERTIES:\n:CREATED: %u\n:END:\n%:annotation\n%i" :immediate-finish t)))
+	 "* LINK: %:description\n:PROPERTIES:\n:CREATED: %u\n:END:\n%:annotation\n%i" :immediate-finish t)
+	("m" "Misc" entry
+	 (file ,(expand-file-name "archived/misc.org" my/work-dir))
+	 "* %^{Header|Entry} %^g")))
 
 ; Attachments
 (setq org-attach-archive-delete t)
