@@ -6,6 +6,7 @@
 (global-visual-line-mode 1) ; Truncate lines
 (setq custom-file null-device) ; Prevent custom-set-variables from editing this file
 (repeat-mode) ; Useful mode for repeated commands
+(setq sentence-end-double-space nil) ; Sentences are ended with one space
 
 ; Melpa - for direnv
 (add-to-list 'package-archives
@@ -220,7 +221,10 @@
 	 "* LINK: %:description\n:PROPERTIES:\n:CREATED: %u\n:END:\n%:annotation\n%i" :immediate-finish t)
 	("m" "Misc" entry
 	 (file ,(expand-file-name "archived/misc.org" my/work-dir))
-	 "* %^{Header|Entry} %^g")))
+	 "* %^{Header|Entry} %^g")
+	("j" "Journal" entry
+	 (file ,(expand-file-name "journal.org" my/work-dir)
+	       "* [%U]\n"))))
 
 ; Attachments
 (setq org-attach-archive-delete t)
@@ -230,6 +234,15 @@
       org-icalendar-use-deadline nil
       org-icalendar-include-body nil
       org-icalendar-force-alarm t)
+
+; Notifications and Ntfy
+(advice-add
+ 'notifications-notify :after
+ (lambda (&rest _)
+   (start-process "" nil
+                  "curl" "-s" "-H" "Title: Org Clock"
+                  "-d" "Effort Exceeded"
+                  "https://ntfy.sh/agenda_OHuVjdCt")))
 
 ; Misc. settings
 (add-hook 'org-todo-repeat-hook #'org-reset-checkbox-state-subtree) ; To unmark checkboxes
