@@ -231,9 +231,8 @@
 
 ; ICalendar export
 (setq org-icalendar-use-scheduled nil
-      org-icalendar-use-deadline nil
       org-icalendar-include-body nil
-      org-icalendar-force-alarm t)
+      org-icalendar-alarm-time 30)
 
 ; Notifications and Ntfy
 (advice-add
