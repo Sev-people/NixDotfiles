@@ -162,6 +162,7 @@
 
 ; Files used in agenda
 (setq org-agenda-files (list (expand-file-name "agenda.org" my/work-dir)))
+(setq org-agenda-include-diary t)
 
 ; General agenda Settings
 (setq org-agenda-start-day "+0d"
@@ -229,19 +230,55 @@
 ; Attachments
 (setq org-attach-archive-delete t)
 
-; ICalendar export
-(setq org-icalendar-use-scheduled nil
-      org-icalendar-include-body nil
-      org-icalendar-alarm-time 30)
+; Appointments
+(require 'notifications)
+(defun bh/org-agenda-to-appt ()
+  "Rebuild appt reminders from today's Org agenda."
+  (interactive)
+  (setq appt-time-msg-list nil)   ; clear old reminders
+  (ignore-errors
+    (org-agenda-to-appt t)))     ; rebuild from agenda
+; Rebuild appointments whenever the agenda is displayed
+(add-hook 'org-agenda-finalize-hook #'bh/org-agenda-to-appt 'append)
+; Build appointments on Emacs startup
+(bh/org-agenda-to-appt)
+; Activate appointment notifications
+(appt-activate t)
+; Reset appointments one minute after midnight if Emacs stays running
+(run-at-time "24:01" nil #'bh/org-agenda-to-appt)
+(use-package appt
+  :after org-agenda
+  :config
+  (setq appt-disp-window-function
+	(lambda (minutes-to _now msg)
+          (let ((title (format "Appointment (%s min)" (or minutes-to 0)))
+		(body (or msg "")))
+            ;; Desktop notification
+            (ignore-errors
+              (notifications-notify
+               :title title
+               :body body)))))
+  ; Appt timing and display preferences
+  (setq appt-display-interval 15
+        appt-display-mode-line nil
+        appt-message-warning-time 60)
+  ; Slow down appt timer — checks every 10 minutes instead of 1
+  (define-advice appt-activate (:after (&optional _arg) throttle)
+    (when (timerp appt-timer)
+      (timer-set-time appt-timer (current-time) 600))))
 
 ; Notifications and Ntfy
 (advice-add
  'notifications-notify :after
- (lambda (&rest _)
-   (start-process "" nil
-                  "curl" "-s" "-H" "Title: Org Clock"
-                  "-d" "Effort Exceeded"
-                  "https://ntfy.sh/agenda_OHuVjdCt")))
+ (lambda (&rest args)
+   (let ((title (plist-get args :title))
+         (body  (plist-get args :body)))
+     (start-process
+      "" nil
+      "curl" "-s"
+      "-H" (format "Title: %s" (or title "Emacs Notification"))
+      "-d" (or body "")
+      "https://ntfy.sh/agenda_OHuVjdCt"))))
 
 ; Misc. settings
 (add-hook 'org-todo-repeat-hook #'org-reset-checkbox-state-subtree) ; To unmark checkboxes

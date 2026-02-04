@@ -1,37 +1,22 @@
 warning: Git tree '/home/marc/.dotfiles' is dirty
 building the system configuration...
 warning: Git tree '/home/marc/.dotfiles' is dirty
-error:
-       … while calling the 'head' builtin
-         at /nix/store/j0svprv1655d13l3vbd3bnimq7wzk0s4-source/lib/attrsets.nix:1696:13:
-         1695|           if length values == 1 || pred here (elemAt values 1) (head values) then
-         1696|             head values
-             |             ^
-         1697|           else
-
-       … while evaluating the attribute 'value'
-         at /nix/store/j0svprv1655d13l3vbd3bnimq7wzk0s4-source/lib/modules.nix:1118:7:
-         1117|     // {
-         1118|       value = addErrorContext "while evaluating the option `${showOption loc}':" value;
-             |       ^
-         1119|       inherit (res.defsFinal') highestPrio;
-
-       … while evaluating the option `system.build.toplevel':
-
-       … while evaluating definitions from `/nix/store/j0svprv1655d13l3vbd3bnimq7wzk0s4-source/nixos/modules/system/activation/top-level.nix':
-
-       … while evaluating the option `assertions':
-
-       … while evaluating definitions from `/nix/store/flnpikzqmn2dlnp4scddh7kz6k0lm8b8-source/nixos/common.nix':
-
-       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
-
-       error: The option `home-manager.users.marc.users' does not exist. Definition values:
-       - In `/nix/store/m20ln2q2z3y2vf49d3k8lxayyfy54ij4-source/homeManagerModules/system/ssh.nix':
-           {
-             users = {
-               marc = {
-                 openssh = {
-                   authorizedKeys = {
-           ...
-Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '.#nixosConfigurations."default".config.system.build.toplevel' --no-link' returned non-zero exit status 1.
+evaluation warning: marc profile: `programs.ssh` default values will be removed in the future.
+                    Consider setting `programs.ssh.enableDefaultConfig` to false,
+                    and manually set the default values you want to keep at
+                    `programs.ssh.matchBlocks."*"`.
+these 3 derivations will be built:
+  /nix/store/0sfhl2pj6zskw0pvdka8i6al0jkd686c-etc-fstab.drv
+  /nix/store/lz5q0yfnkiq13yg9j2hbh79mv4f1w5lz-etc.drv
+  /nix/store/cfcqynjfb3qxiha132wvhdg1vzbmhvny-nixos-system-nixos-25.11.20260128.fa83fd8.drv
+building '/nix/store/0sfhl2pj6zskw0pvdka8i6al0jkd686c-etc-fstab.drv'...
+building '/nix/store/lz5q0yfnkiq13yg9j2hbh79mv4f1w5lz-etc.drv'...
+building '/nix/store/cfcqynjfb3qxiha132wvhdg1vzbmhvny-nixos-system-nixos-25.11.20260128.fa83fd8.drv'...
+stopping swap device: /dev/disk/by-uuid/4cc81918-9649-4508-a922-0a4f2f9f9c53
+Failed to stop swapping to /dev/disk/by-uuid/4cc81918-9649-4508-a922-0a4f2f9f9c53: No such file or directory (os error 2)
+activating the configuration...
+setting up /etc...
+reloading user units for marc...
+restarting sysinit-reactivation.target
+the following new units were started: dev-disk-by\x2duuid-37815d60\x2ddaf1\x2d4c69\x2db5d8\x2dfcd1c64b2cdf.swap, NetworkManager-dispatcher.service, swap.target, sysinit-reactivation.target, systemd-tmpfiles-resetup.service
+Done. The new configuration is /nix/store/y0pmzxgiiclg6i0v58g40b3y1vcsa260-nixos-system-nixos-25.11.20260128.fa83fd8
