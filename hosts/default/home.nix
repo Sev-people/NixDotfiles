@@ -19,6 +19,7 @@
     wget
     aria2 # Torrents
     ledger # Finances
+    signal-desktop
     
     # Development
     emacs
