@@ -235,9 +235,9 @@
 (defun bh/org-agenda-to-appt ()
   "Rebuild appt reminders from today's Org agenda."
   (interactive)
-  (setq appt-time-msg-list nil)   ; clear old reminders
+  (setq appt-time-msg-list nil)   ; Clear old reminders
   (ignore-errors
-    (org-agenda-to-appt t)))     ; rebuild from agenda
+    (org-agenda-to-appt t)))     ; Rebuild from agenda
 ; Rebuild appointments whenever the agenda is displayed
 (add-hook 'org-agenda-finalize-hook #'bh/org-agenda-to-appt 'append)
 ; Build appointments on Emacs startup
@@ -253,7 +253,7 @@
 	(lambda (minutes-to _now msg)
           (let ((title (format "Appointment (%s min)" (or minutes-to 0)))
 		(body (or msg "")))
-            ;; Desktop notification
+            ; Desktop notification
             (ignore-errors
               (notifications-notify
                :title title
@@ -261,8 +261,8 @@
   ; Appt timing and display preferences
   (setq appt-display-interval 15
         appt-display-mode-line nil
-        appt-message-warning-time 60)
-  ; Slow down appt timer — checks every 10 minutes instead of 1
+	appt-warning-time-regexp "wt:\\([0-9]+\\)")
+          ; Slow down appt timer — checks every 10 minutes instead of 1
   (define-advice appt-activate (:after (&optional _arg) throttle)
     (when (timerp appt-timer)
       (timer-set-time appt-timer (current-time) 600))))
