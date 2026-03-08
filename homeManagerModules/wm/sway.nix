@@ -67,7 +67,7 @@ in {
         "Mod4+Shift+C" = "kill";
         "Mod4+Shift+Q" = "exit";
 
-        "Mod4+F"      = "exec zen";
+        "Mod4+F"      = "exec zen-beta";
         "Mod4+E"      = "exec em";
         "Mod4+R"      = "exec emacsclient -c \"org-protocol://capture?template=i\"";
         "Mod4+V"      = "floating toggle";

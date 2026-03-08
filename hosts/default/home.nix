@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
 
@@ -19,6 +19,8 @@
     wget
     aria2 # Torrents
     ledger # Finances
+    w3m
+    feh
     signal-desktop
     
     # Development

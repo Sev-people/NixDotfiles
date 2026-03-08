@@ -13,7 +13,6 @@
              '("melpa" . "https://melpa.org/packages/") t)
 
 ;; --- Org mode -------------------------------------------------------
-(use-package org :load-path "~/.dotfiles/emacs/elpa/org-mode/lisp/")
 (require 'org)
 (require 'org-indent)
 (require 'tempo)
@@ -359,3 +358,20 @@
   (setq icomplete-scroll t)
   (advice-add 'completion-at-point
 	      :after #'minibuffer-hide-completions))
+
+(use-package pdf-tools
+  :ensure t
+  :config
+  ; Initialise
+  (pdf-tools-install)
+  ; Open pdfs scaled to fit page
+  (setq-default pdf-view-display-size 'fit-page)
+  ; Automatically annotate highlights
+  (setq pdf-annot-activate-created-annotations t)
+  ; Use normal isearch
+  (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+  ; More fine-grained zooming
+  (setq pdf-view-resize-factor 1.1)
+  ; Annotation
+  (add-hook 'pdf-view-mode-hook 'pdf-annot-minor-mode))
+(put 'upcase-region 'disabled nil)
