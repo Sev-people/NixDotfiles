@@ -8,6 +8,8 @@
       inputs.home-manager.nixosModules.default
     ];
 
+  myCustom.hibernationFix.enable = true; # Fix for hibernation issues
+
   home-manager = {
     extraSpecialArgs = {inherit inputs;};
     users = {

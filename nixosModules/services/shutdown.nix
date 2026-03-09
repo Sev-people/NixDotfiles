@@ -17,5 +17,5 @@
       HandleLidSwitchDocked = "suspend";
     };
   };
-
+  
 }

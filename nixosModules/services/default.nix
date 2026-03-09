@@ -12,6 +12,7 @@
     ./printing.nix
     ./security.nix
     ./shutdown.nix
+    ./pc-shutdown-fix.nix
   ];
 
 }
