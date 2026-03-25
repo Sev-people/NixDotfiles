@@ -22,6 +22,7 @@
     w3m
     feh
     signal-desktop
+    niri
     
     # Development
     emacs

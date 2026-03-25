@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 
 {
 
@@ -26,5 +26,7 @@
   system.stateVersion = "23.11"; # Did you read the comment?
   
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
 }
