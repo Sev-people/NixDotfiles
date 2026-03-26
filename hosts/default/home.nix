@@ -36,6 +36,8 @@
     # Rust
     gcc
     rustc
+    cargo
+    rust-analyzer
 
     # Multimedia
     mupdf # PDF viewer
