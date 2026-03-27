@@ -4,9 +4,9 @@
   
   users.users.marc = {
     isNormalUser = true;
-    description = "Marc M";
+    description = "Marc";
     extraGroups = [ "networkmanager" "audio" "wheel" ];
-    shell = pkgs.zsh;
+    shell = pkgs.bash;
   };
 
 }

@@ -182,18 +182,26 @@
 
 (setq org-refile-targets
       '((org-agenda-files . (:level . 1))
-	(("/home/marc/Documents/work/archived/reference.org"
-	  "/home/marc/Documents/work/archived/someday.org")
+	("/home/marc/Documents/work/archived/someday.org"
 	 . (:level . 0))))
 
 ; Capture templates
-(defvar my/note-categories '("readings" "media" "concepts")
+(defvar my/note-categories '("literature" "insights" "readings" "projects" "bibliography")
   "Categories for note creation.")
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; - Literature: external knowledge of irrelevant authorship [EPHEMERAL - to be translated to bibliography].				  ;;
+;; - Insights: personal thoughts/conclusions/insights [EPHEMERAL - to be translated to projects].					  ;;
+;; - Readings: important books read.													  ;;
+;; - Projects: documentation and/or development of personal intellectual undertakings (e.g., essays). Links to bibliography and readings. ;;
+;; - Bibliography: collection of pure amassed knowledge. Comprises combined literature and links to readings.				  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar my/note-templates
-  '(("readings" . "#+AUTHOR:")
-    ("media" . "")
-    ("concepts" . ""))
+  '(("literature" . "#+SOURCE:")
+    ("insights" . "")
+    ("readings" . "#+AUTHOR:")
+    ("projects" . "#+DESCRIPTION:")
+    ("bibliography" . ""))
   "Templates for categories.")
 
 (defun my/sanitize-filename (name)
@@ -219,8 +227,8 @@
          (file my/generate-org-note-name)
          "%(format \"#+TITLE: %s\n#+DATE: [[%U]]\n#+IDENTIFIER: %s\n%s\n\" my-org-note--title (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")
 	("reference" "Reference (Org Protocol)" entry
-	 (file ,(expand-file-name "archived/reference.org" my/work-dir))
-	 "* LINK: %:description\n:PROPERTIES:\n:CREATED: %u\n:END:\n%:annotation\n%i" :immediate-finish t)
+	(file+headline ,(expand-file-name "agenda.org" my/work-dir) "Inbox")
+	 "* REFERENCE: %:description\n:PROPERTIES:\n:CREATED: %u\n:END:\n%:annotation\n%i" :immediate-finish t)
 	("m" "Misc" entry
 	 (file ,(expand-file-name "archived/misc.org" my/work-dir))
 	 "* %^{Header|Entry} %^g")

@@ -19,10 +19,9 @@
     wget
     aria2 # Torrents
     ledger # Finances
-    w3m
-    feh
+    w3m # CLI web browser
+    feh # Image viewer
     signal-desktop
-    niri
     
     # Development
     emacs
