@@ -187,11 +187,13 @@
 	 . (:level . 0))))
 
 ; Capture templates
-(defvar my/note-categories '("readings")
+(defvar my/note-categories '("readings" "media" "concepts")
   "Categories for note creation.")
 
 (defvar my/note-templates
-  '(("readings" . "#+AUTHOR:"))
+  '(("readings" . "#+AUTHOR:")
+    ("media" . "")
+    ("concepts" . ""))
   "Templates for categories.")
 
 (defun my/sanitize-filename (name)
@@ -375,3 +377,6 @@
   ; Annotation
   (add-hook 'pdf-view-mode-hook 'pdf-annot-minor-mode))
 (put 'upcase-region 'disabled nil)
+
+(use-package magit
+  :ensure t)
