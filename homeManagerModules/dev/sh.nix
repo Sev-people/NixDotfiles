@@ -6,6 +6,7 @@ let
     ls="ls --color=auto";
     grep="grep --color=auto";
     mpv="mpv --no-video -ytdl";
+    w3m="w3m \"duckduckgo.com\"";
   };
 in
 {

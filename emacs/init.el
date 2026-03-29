@@ -189,6 +189,15 @@
 (defvar my/note-categories '("literature" "insights" "readings" "projects" "bibliography")
   "Categories for note creation.")
 
+; IDs for linking files
+(require 'org-id)
+(setq org-id-link-to-org-use-id t
+      org-id-method 'ts
+      org-id-ts-format "%Y%m%dT%H%M%S"
+      org-id-link-consider-parent-id t
+      org-id-link-use-context t
+      org-id-extra-files (expand-file-name "notes" my/work-dir))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; - Literature: external knowledge of irrelevant authorship [EPHEMERAL - to be translated to bibliography].				  ;;
 ;; - Insights: personal thoughts/conclusions/insights [EPHEMERAL - to be translated to projects].					  ;;
@@ -225,7 +234,7 @@
 	 "* %^{Header|Entry}\n:PROPERTIES:\n:CREATED: %u\n:END:\n%^{Description}%i" :immediate-finish t)
         ("n" "Note" plain
          (file my/generate-org-note-name)
-         "%(format \"#+TITLE: %s\n#+DATE: [[%U]]\n#+IDENTIFIER: %s\n%s\n\" my-org-note--title (format-time-string \"%Y%m%dT%H%M%S\") my-org-note--template)")
+         "%(format \":PROPERTIES:\n:ID: %s\n:END:\n#+TITLE: %s\n#+DATE: [[%U]]\n%s\n\" (org-id-new) my-org-note--title  my-org-note--template)")
 	("reference" "Reference (Org Protocol)" entry
 	(file+headline ,(expand-file-name "agenda.org" my/work-dir) "Inbox")
 	 "* REFERENCE: %:description\n:PROPERTIES:\n:CREATED: %u\n:END:\n%:annotation\n%i" :immediate-finish t)
