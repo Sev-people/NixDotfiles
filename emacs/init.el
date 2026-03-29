@@ -191,7 +191,7 @@
 
 ; IDs for linking files
 (require 'org-id)
-(setq org-id-link-to-org-use-id t
+(setq org-id-link-to-org-use-id 'use-existing
       org-id-method 'ts
       org-id-ts-format "%Y%m%dT%H%M%S"
       org-id-link-consider-parent-id t
@@ -242,8 +242,8 @@
 	 (file ,(expand-file-name "archived/misc.org" my/work-dir))
 	 "* %^{Header|Entry} %^g")
 	("j" "Journal" entry
-	 (file ,(expand-file-name "journal.org" my/work-dir)
-	       "* [%U]\n"))))
+	 (file ,(expand-file-name "journal.org" my/work-dir))
+	       "* [%U]\n")))
 
 ; Attachments
 (setq org-attach-archive-delete t)
