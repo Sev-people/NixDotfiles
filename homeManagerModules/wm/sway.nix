@@ -11,10 +11,11 @@ in {
     config = {
       #–––––– Core
       modifier    = "Mod4";                     # SUPER
-      terminal    = "foot";
+      terminal    = "footclient";
       
       #–––––– Autostart
       startup = [
+        { command = "foot --server"; }
         { command = "swww-daemon --format xrgb"; }
         { command = "gammastep -O 2500"; }
         { command = "emacs --daemon --init-directory ~/.dotfiles/emacs"; }

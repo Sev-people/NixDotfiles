@@ -24,6 +24,8 @@
     signal-desktop
     
     # Development
+    man-pages
+    man-pages-posix
     emacs
     ispell # Spelling in Emacs
     # LaTeX
@@ -33,10 +35,12 @@
     })
     gnuplot
     # Rust
-    gcc
     rustc
     cargo
     rust-analyzer
+    # C
+    gcc
+    gnumake
 
     # Multimedia
     mupdf # PDF viewer

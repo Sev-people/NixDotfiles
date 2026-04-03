@@ -182,7 +182,7 @@
 
 (setq org-refile-targets
       '((org-agenda-files . (:level . 1))
-	("/home/marc/Documents/work/archived/someday.org"
+	("/home/marc/Documents/work/archived/reference.org"
 	 . (:level . 0))))
 
 ; Capture templates
@@ -237,10 +237,10 @@
          "%(format \":PROPERTIES:\n:ID: %s\n:END:\n#+TITLE: %s\n#+DATE: [[%U]]\n%s\n\" (org-id-new) my-org-note--title  my-org-note--template)")
 	("reference" "Reference (Org Protocol)" entry
 	(file+headline ,(expand-file-name "agenda.org" my/work-dir) "Inbox")
-	 "* REFERENCE: %:description\n:PROPERTIES:\n:CREATED: %u\n:END:\n%:annotation\n%i" :immediate-finish t)
-	("m" "Misc" entry
-	 (file ,(expand-file-name "archived/misc.org" my/work-dir))
-	 "* %^{Header|Entry} %^g")
+	 "* LINK %:description\n:PROPERTIES:\n:CREATED: %u\n:END:\n%:annotation\n%i" :immediate-finish t)
+	("r" "Reference" entry
+	 (file ,(expand-file-name "archived/reference.org" my/work-dir))
+	 "* REFR %^{Header|Entry}")
 	("j" "Journal" entry
 	 (file ,(expand-file-name "journal.org" my/work-dir))
 	       "* [%U]\n")))
@@ -310,6 +310,10 @@
 (global-set-key (kbd "C-c l") #'org-store-link)
 
 ;; --- Coding -------------------------------------------------------
+; Magit
+(use-package magit
+  :ensure t)
+
 ; LaTeX
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 (setq org-preview-latex-process 'dvisvgm)
@@ -394,6 +398,3 @@
   ; Annotation
   (add-hook 'pdf-view-mode-hook 'pdf-annot-minor-mode))
 (put 'upcase-region 'disabled nil)
-
-(use-package magit
-  :ensure t)
