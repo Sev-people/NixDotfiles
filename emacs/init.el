@@ -1,5 +1,5 @@
 ;; --- Sane defaults -------------------------------------------------------
-(menu-bar-mode -1) (tool-bar-mode -1) (scroll-bar-mode -1) (blink-cursor-mode -1) (electric-indent-mode -1) (electric-pair-mode 1) (transient-mark-mode -1)
+(menu-bar-mode -1) (tool-bar-mode -1) (scroll-bar-mode -1) (blink-cursor-mode -1) (electric-indent-mode -1) (electric-pair-mode 1) (transient-mark-mode 1)
 (setq org-edit-src-content-indentation 0) ; Indentation
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files"))) ; Trash collection
 (setq ring-bell-function 'ignore) ; Stop bell sounds
